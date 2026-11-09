@@ -1,6 +1,10 @@
 services:
   claude:
     build: ./claude
+    environment:
+      TERM: xterm-256color
+      COLORTERM: truecolor
+      LANG: C.UTF-8
     volumes:
       - .:/workspace
       - claude-config:/home/dev/.claude
