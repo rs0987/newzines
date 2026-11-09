@@ -1,5 +1,7 @@
 # newzines
 
+Rails アプリは `web/` にあります。技術スタックや開発環境の手順は [web/README.md](web/README.md) を参照してください。
+
 ## 開発での AI 利用について
 
 開発では [Claude Code](https://code.claude.com/docs/ja/overview) を、ホストから隔離した Docker コンテナの中で使っています。

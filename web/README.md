@@ -1,24 +1,38 @@
-# README
+# newzines (Rails アプリ)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 技術スタック
 
-Things you may want to cover:
+- Ruby 4.0 / Ruby on Rails
+- PostgreSQL 18
+- Tailwind CSS
+- ホスティング: Render
 
-* Ruby version
+## 開発環境
 
-* System dependencies
+開発は VS Code の Dev Container で行います。手元に Ruby や PostgreSQL を入れる必要はありません。
 
-* Configuration
+### 前提
 
-* Database creation
+- Docker Desktop
+- VS Code と拡張機能「[Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)」
 
-* Database initialization
+### セットアップ
 
-* How to run the test suite
+1. VS Code で `web/` フォルダを開きます（リポジトリのルートではありません）
+2. コマンドパレットから「Dev Containers: Reopen in Container」を実行します
 
-* Services (job queues, cache servers, search engines, etc.)
+初回は `bin/setup` が自動で実行され、gem のインストールとデータベースの作成まで行われます。
 
-* Deployment instructions
+### 起動
 
-* ...
+コンテナ内のターミナルで次を実行します。
+
+```sh
+bin/dev
+```
+
+http://localhost:3000 で開けます。
+
+### コードの整形
+
+Ruby ファイルは、保存時に RuboCop（rubocop-rails-omakase）のルールで自動整形されます。Dev Container を開くと、必要な拡張機能（Ruby LSP）と設定が自動で入ります。
