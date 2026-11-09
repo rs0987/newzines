@@ -1,0 +1,11 @@
+services:
+  claude:
+    build: ./claude
+    volumes:
+      - .:/workspace
+      - claude-config:/home/dev/.claude
+    stdin_open: true
+    tty: true
+
+volumes:
+  claude-config:
