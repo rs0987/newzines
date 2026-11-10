@@ -23,9 +23,10 @@
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
-      "extensions": ["Shopify.ruby-lsp", "marcoroth.herb-lsp"],
+      "extensions": ["Shopify.ruby-lsp", "marcoroth.herb-lsp", "bradlc.vscode-tailwindcss"],
       "settings": {
         "rubyLsp.formatter": "auto",
+        "tailwindCSS.experimental.configFile": "app/assets/tailwind/application.css",
         "[ruby]": {
           "editor.defaultFormatter": "Shopify.ruby-lsp",
           "editor.formatOnSave": true
