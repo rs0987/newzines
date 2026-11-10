@@ -23,11 +23,15 @@
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
-      "extensions": ["Shopify.ruby-lsp"],
+      "extensions": ["Shopify.ruby-lsp", "marcoroth.herb-lsp"],
       "settings": {
         "rubyLsp.formatter": "auto",
         "[ruby]": {
           "editor.defaultFormatter": "Shopify.ruby-lsp",
+          "editor.formatOnSave": true
+        },
+        "[erb]": {
+          "editor.defaultFormatter": "marcoroth.herb-lsp",
           "editor.formatOnSave": true
         }
       }

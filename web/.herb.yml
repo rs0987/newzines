@@ -1,0 +1,4 @@
+framework: actionview
+formatter:
+  enabled: true
+  indentWidth: 2
