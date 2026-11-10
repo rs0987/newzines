@@ -33,6 +33,8 @@ bin/dev
 
 http://localhost:3000 で開けます。
 
+開発環境では、seed で作られる管理者（ユーザー名 `admin`、パスワード `password12345678`）で管理者画面にログインできます。
+
 ### コードの整形
 
 Ruby ファイルは、保存時に RuboCop（rubocop-rails-omakase）のルールで自動整形されます。Dev Container を開くと、必要な拡張機能（Ruby LSP）と設定が自動で入ります。
