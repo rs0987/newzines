@@ -19,7 +19,7 @@ Rails アプリは `web/` にあります。技術スタック、開発環境の
 開発では [Claude Code](https://code.claude.com/docs/ja/overview) を、ホストから隔離した Docker コンテナの中で使っています。
 
 - Claude Code がアクセスできるのは、このリポジトリ（`/workspace` にマウント）だけです。ホストのファイルや認証情報にはアクセスできません
-- コマンドの実行（Bash）は禁止しています。Claude Code が行うのはコードの読み書きだけです
+- コマンドの実行（Bash）は、変更内容を確認するための読み取り専用の git コマンド（`git status`、`git diff`、`git log`、`git show`）だけを許可しています。それ以外のコマンドは、実行のたびに自分で確認します
 - `.env` や `*.key` などの秘密情報は、読み取りも編集も禁止しています（`.claude/settings.json`）
 - Claude Code が書いたコードはすべて自分でレビューしています。テストの実行とコミットは自分で行います
 
