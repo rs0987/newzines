@@ -1,0 +1,17 @@
+<h2>Log in</h2>
+
+<%= form_with model: resource, scope: :administrator, url: administrator_session_path do |f| %>
+  <div class="field">
+    <p><%= f.label :username %></p>
+    <p><%= f.text_field :username, autofocus: true, autocomplete: "username" %></p>
+  </div>
+
+  <div class="field">
+    <p><%= f.label :password %></p>
+    <p><%= f.password_field :password, autocomplete: "current-password" %></p>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Log in" %>
+  </div>
+<% end %>
