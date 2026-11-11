@@ -8,7 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-# 開発環境で管理者画面にログインするための管理者
+# 開発環境で管理者サイトにログインするための管理者
 if Rails.env.development?
   Administrator.find_or_create_by!(username: "admin") do |administrator|
     administrator.password = "password12345678"
