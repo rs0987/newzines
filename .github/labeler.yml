@@ -1,0 +1,8 @@
+feature:
+  - head-branch: ["^feature/"]
+
+chore:
+  - head-branch: ["^chore/"]
+
+docs:
+  - head-branch: ["^docs/"]
