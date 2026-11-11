@@ -18,6 +18,8 @@ gem "stimulus-rails"
 gem "tailwindcss-rails"
 # Flexible authentication for multiple models [https://github.com/heartcombo/devise]
 gem "devise"
+# Authorization with plain Ruby policy objects [https://github.com/varvet/pundit]
+gem "pundit", "~> 2.5"
 # Reusable, testable view components [https://viewcomponent.org]
 gem "view_component", "~> 4.23"
 
