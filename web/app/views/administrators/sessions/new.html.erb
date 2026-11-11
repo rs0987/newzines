@@ -5,15 +5,15 @@
     <h1 class="card-title text-2xl">Log in</h1>
 
     <%= form_with model: resource, scope: :administrator, url: administrator_session_path do |f| %>
-      <fieldset class="fieldset">
-        <%= f.label :username, class: "label" %>
+      <%= component :form_control, f, :username, label: "Username" do %>
         <%= f.text_field :username, autofocus: true, autocomplete: "username", class: "input w-full" %>
+      <% end %>
 
-        <%= f.label :password, class: "label" %>
+      <%= component :form_control, f, :password, label: "Password" do %>
         <%= f.password_field :password, autocomplete: "current-password", class: "input w-full" %>
+      <% end %>
 
-        <%= f.submit "Log in", class: "btn btn-primary mt-4" %>
-      </fieldset>
+      <%= f.submit "Log in", class: "btn btn-primary w-full mt-4" %>
     <% end %>
   </div>
 </div>

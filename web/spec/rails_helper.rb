@@ -74,4 +74,7 @@ RSpec.configure do |config|
 
   # request spec で sign_in / sign_out を使えるようにする
   config.include Devise::Test::IntegrationHelpers, type: :request
+
+  # component spec で render_inline を使えるようにする
+  config.include ViewComponent::TestHelpers, type: :component
 end
