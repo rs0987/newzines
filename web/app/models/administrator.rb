@@ -1,6 +1,8 @@
 class Administrator < ApplicationRecord
   devise :database_authenticatable, :validatable
 
+  enum :role, { viewer: 0, editor: 1 }, default: :viewer, validate: true
+
   validates :username, presence: true,
                        uniqueness: { case_sensitive: false },
                        format: { with: /\A[a-z0-9]+\z/ }

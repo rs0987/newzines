@@ -34,6 +34,26 @@ RSpec.describe Administrator, type: :model do
     end
   end
 
+  describe "role" do
+    it "指定しないと閲覧者になる" do
+      administrator = build(:administrator, username: "admin01", password: "password12345678")
+
+      expect(administrator).to be_viewer
+    end
+
+    it "空なら無効である" do
+      administrator = build(:administrator, username: "admin01", password: "password12345678", role: nil)
+
+      expect(administrator).not_to be_valid
+    end
+
+    it "閲覧者と編集者以外なら無効である" do
+      administrator = build(:administrator, username: "admin01", password: "password12345678", role: "owner")
+
+      expect(administrator).not_to be_valid
+    end
+  end
+
   describe "password" do
     it "空だと保存できない" do
       administrator = build(:administrator, username: "admin01", password: "")
