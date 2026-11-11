@@ -12,5 +12,6 @@
 if Rails.env.development?
   Administrator.find_or_create_by!(username: "admin") do |administrator|
     administrator.password = "password12345678"
+    administrator.role = :editor
   end
 end
