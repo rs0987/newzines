@@ -1,0 +1,13 @@
+ja:
+  activerecord:
+    models:
+      administrator: 管理者
+      studio: スタジオ
+    attributes:
+      administrator:
+        username: ユーザー名
+        password: パスワード
+        role: 役割
+      studio:
+        name: スタジオ名
+        slug: slug

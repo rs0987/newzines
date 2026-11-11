@@ -8,7 +8,15 @@ RSpec.describe FormControlComponent, type: :component do
   it "入力欄と結びついたラベルを表示する" do
     form = form_for(Studio.new(name: "", slug: ""))
 
-    html = render_inline(described_class.new(form, :name, label: "スタジオ名")) { form.text_field(:name) }
+    html = render_inline(described_class.new(form, :name, label: "スタジオの名前")) { form.text_field(:name) }
+
+    expect(html.at_css("label[for='studio_name']").text).to eq "スタジオの名前"
+  end
+
+  it "label を渡さないと、属性名の翻訳をラベルにする" do
+    form = form_for(Studio.new(name: "", slug: ""))
+
+    html = render_inline(described_class.new(form, :name)) { form.text_field(:name) }
 
     expect(html.at_css("label[for='studio_name']").text).to eq "スタジオ名"
   end
