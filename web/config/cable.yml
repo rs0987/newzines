@@ -1,0 +1,6 @@
+# Action Cable is used only by Hotwire Spark in development, so production has no adapter.
+development:
+  adapter: async
+
+test:
+  adapter: test

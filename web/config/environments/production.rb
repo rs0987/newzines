@@ -63,6 +63,9 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
 
+  # Action Cable is loaded only for Hotwire Spark in development, so do not expose /cable.
+  config.action_cable.mount_path = nil
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com
