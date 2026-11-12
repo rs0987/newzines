@@ -14,6 +14,18 @@ RSpec.describe Administrator, type: :model do
       expect(administrator).not_to be_valid
     end
 
+    it "30 文字なら保存できる" do
+      administrator = build(:administrator, username: "a" * 30, password: "password12345678")
+
+      expect(administrator).to be_valid
+    end
+
+    it "31 文字だと保存できない" do
+      administrator = build(:administrator, username: "a" * 31, password: "password12345678")
+
+      expect(administrator).not_to be_valid
+    end
+
     it "英小文字と数字以外を含むと保存できない" do
       administrator = build(:administrator, username: "admin-01", password: "password12345678")
 
