@@ -11,3 +11,10 @@ ja:
       studio:
         name: スタジオ名
         slug: slug
+  views:
+    pagination:
+      first: "« 最初"
+      previous: "‹ 前へ"
+      next: "次へ ›"
+      last: "最後 »"
+      truncate: "…"

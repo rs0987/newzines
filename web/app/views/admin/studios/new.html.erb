@@ -1,0 +1,8 @@
+<% content_for :title, "スタジオを作成" %>
+
+<%= component :page_layout, title: "スタジオを作成" do |page| %>
+  <% page.with_breadcrumb "スタジオ一覧", admin_studios_path %>
+  <% page.with_breadcrumb "スタジオを作成" %>
+
+  <%= render "admin/studios/form", studio: @studio %>
+<% end %>

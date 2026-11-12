@@ -1,0 +1,46 @@
+<% content_for :title, @studio.name %>
+
+<%= component :page_layout, title: @studio.name do |page| %>
+  <% page.with_breadcrumb "スタジオ一覧", admin_studios_path %>
+  <% page.with_breadcrumb @studio.name %>
+
+  <% page.with_action do %>
+    <% if policy([ :admin, @studio ]).update? %>
+      <%= link_to "編集", edit_admin_studio_path(@studio), class: "btn" %>
+    <% else %>
+      <button type="button" class="btn" disabled>編集</button>
+    <% end %>
+  <% end %>
+
+  <div class="flex flex-col gap-6">
+    <%= component :card, title: "基本情報" do %>
+      <%= component :description_list do |list| %>
+        <% list.with_item "ID" do %>
+          <%= @studio.id %>
+        <% end %>
+
+        <% list.with_item "slug" do %>
+          <%= @studio.slug %>
+        <% end %>
+
+        <% list.with_item "作成日時" do %>
+          <%= l @studio.created_at, format: :short %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= component :card, title: "危険な操作", color: :error do %>
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="flex-1">
+          <p class="font-bold">スタジオを削除</p>
+          <p class="text-base-content/60">関連するデータもすべて削除され、元に戻せません。</p>
+        </div>
+
+        <%= button_to "削除", admin_studio_path(@studio), method: :delete,
+                      disabled: !policy([ :admin, @studio ]).destroy?,
+                      form: { data: { turbo_confirm: "「#{@studio.name}」を削除します。関連するデータもすべて削除されます。よろしいですか？" } },
+                      class: "btn btn-outline btn-error" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :administrators, path: "admin", controllers: { sessions: "admin/sessions" }
   namespace :admin do
     root "dashboards#show"
+    resources :studios
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
