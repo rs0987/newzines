@@ -11,7 +11,7 @@
       <% if content_for?(:admin_content) %>
         <%= yield(:admin_content) %>
       <% else %>
-        <div class="px-4 py-8">
+        <div class="px-4 pb-8">
           <%= render "layouts/flash" %>
           <%= yield %>
         </div>
