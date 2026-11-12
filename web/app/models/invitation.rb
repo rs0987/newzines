@@ -22,6 +22,26 @@ class Invitation < ApplicationRecord
     Digest::SHA256.hexdigest(token)
   end
 
+  def status
+    if accepted_at
+      :accepted
+    elsif canceled_at
+      :canceled
+    elsif expires_at.past?
+      :expired
+    else
+      :pending
+    end
+  end
+
+  def pending?
+    status == :pending
+  end
+
+  def cancel!
+    update!(canceled_at: Time.current)
+  end
+
   private
 
   def issue_token

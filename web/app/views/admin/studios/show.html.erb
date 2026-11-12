@@ -29,6 +29,20 @@
       <% end %>
     <% end %>
 
+    <%= component :card, title: "招待" do %>
+      <div class="flex flex-wrap items-center gap-4">
+        <p class="flex-1">受諾待ち <%= @studio.invitations.pending.count %> 件</p>
+
+        <%= link_to "招待一覧", admin_studio_invitations_path(@studio), class: "btn" %>
+
+        <% if policy([ :admin, Invitation ]).create? %>
+          <%= link_to "オーナーを招待", new_admin_studio_invitation_path(@studio), class: "btn btn-primary" %>
+        <% else %>
+          <button type="button" class="btn btn-primary" disabled>オーナーを招待</button>
+        <% end %>
+      </div>
+    <% end %>
+
     <%= component :card, title: "危険な操作", color: :error do %>
       <div class="flex flex-wrap items-center gap-4">
         <div class="flex-1">

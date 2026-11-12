@@ -102,4 +102,42 @@ RSpec.describe Invitation, type: :model do
       end
     end
   end
+
+  describe "#status" do
+    it "受諾もキャンセルもされず、期限内なら受諾待ちを返す" do
+      invitation = create(:invitation, studio:, inviter:, username: "writer01")
+
+      expect(invitation.status).to eq :pending
+    end
+
+    it "受諾されていれば受諾済みを返す" do
+      invitation = create(:invitation, studio:, inviter:, username: "writer01", accepted_at: Time.current)
+
+      expect(invitation.status).to eq :accepted
+    end
+
+    it "キャンセルされていればキャンセル済みを返す" do
+      invitation = create(:invitation, studio:, inviter:, username: "writer01", canceled_at: Time.current)
+
+      expect(invitation.status).to eq :canceled
+    end
+
+    it "期限を過ぎていれば期限切れを返す" do
+      invitation = travel_to(8.days.ago) { create(:invitation, studio:, inviter:, username: "writer01") }
+
+      expect(invitation.status).to eq :expired
+    end
+  end
+
+  describe "#cancel!" do
+    it "キャンセル日時を記録する" do
+      invitation = create(:invitation, studio:, inviter:, username: "writer01")
+
+      travel_to Time.zone.local(2026, 11, 12, 10, 0, 0) do
+        invitation.cancel!
+      end
+
+      expect(invitation.reload.canceled_at).to eq Time.zone.local(2026, 11, 12, 10, 0, 0)
+    end
+  end
 end

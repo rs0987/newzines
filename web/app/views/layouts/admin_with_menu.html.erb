@@ -31,7 +31,7 @@
             <%= link_to "ダッシュボード", admin_root_path, class: ("menu-active" if controller_name == "dashboards") %>
           </li>
           <li>
-            <%= link_to "スタジオ", admin_studios_path, class: ("menu-active" if controller_name == "studios") %>
+            <%= link_to "スタジオ", admin_studios_path, class: ("menu-active" if controller_name.in?(%w[studios invitations])) %>
           </li>
         </ul>
 
