@@ -2,8 +2,16 @@ Rails.application.routes.draw do
   devise_for :administrators, path: "admin", controllers: { sessions: "admin/sessions" }
   namespace :admin do
     root "dashboards#show"
-    resources :studios
+    resources :studios do
+      resources :invitations, only: %i[index new create] do
+        member { patch :cancel }
+      end
+    end
   end
+
+  # 登録画面は別の Issue で作る。招待 URL を組み立てられるよう、ルートだけ先に定義している
+  resource :registration, only: :new
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

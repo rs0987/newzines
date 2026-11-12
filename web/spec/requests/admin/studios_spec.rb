@@ -67,11 +67,11 @@ RSpec.describe "管理者サイトのスタジオ管理", type: :request do
           expect(response.body).to include("cinema01")
         end
 
-        it "編集と削除のボタンを押せない状態で表示する" do
+        it "編集・招待・削除のボタンを押せない状態で表示する" do
           get admin_studio_path(studio)
 
           html = Nokogiri::HTML(response.body)
-          expect(html.css("button[disabled]").map { |button| button.text.squish }).to eq [ "編集", "削除" ]
+          expect(html.css("button[disabled]").map { |button| button.text.squish }).to eq [ "編集", "オーナーを招待", "削除" ]
         end
       end
 

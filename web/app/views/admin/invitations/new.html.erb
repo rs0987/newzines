@@ -1,0 +1,21 @@
+<% content_for :title, "オーナーを招待" %>
+
+<%= component :page_layout, title: "オーナーを招待" do |page| %>
+  <% page.with_breadcrumb "スタジオ一覧", admin_studios_path %>
+  <% page.with_breadcrumb @studio.name, admin_studio_path(@studio) %>
+  <% page.with_breadcrumb "招待一覧", admin_studio_invitations_path(@studio) %>
+  <% page.with_breadcrumb "オーナーを招待" %>
+
+  <%# 作成後は URL を表示する画面をリダイレクトせずに返すため、Turbo のフォーム送信を使わない %>
+  <%= form_with model: [ :admin, @studio, @invitation ], data: { turbo: false } do |f| %>
+    <%= component :form_layout do |layout| %>
+      <%= component :text_field, f, :username, label: "ユーザー名",
+            hint: "英小文字と数字のみ、30 文字まで。招待されたライターのユーザー名になります。",
+            required: true, maxlength: 30, autofocus: true %>
+
+      <% layout.with_action do %>
+        <%= f.submit "招待する", class: "btn btn-primary btn-wide" %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
