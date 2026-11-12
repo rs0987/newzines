@@ -1,0 +1,2 @@
+class TextFieldComponent < InputFieldComponent
+end
