@@ -1,5 +1,5 @@
 class Admin::BaseController < ApplicationController
-  layout "admin"
+  layout "admin_with_menu"
 
   before_action :authenticate_administrator!
   after_action :verify_pundit_authorization
