@@ -1,4 +1,6 @@
 class Studio < ApplicationRecord
+  has_many :invitations, dependent: :destroy
+
   attr_readonly :slug
 
   normalizes :slug, with: ->(slug) { slug.strip.downcase }

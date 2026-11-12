@@ -3,6 +3,7 @@ ja:
     models:
       administrator: 管理者
       studio: スタジオ
+      invitation: 招待
     attributes:
       administrator:
         username: ユーザー名
@@ -11,6 +12,13 @@ ja:
       studio:
         name: スタジオ名
         slug: slug
+      invitation:
+        studio: スタジオ
+        inviter: 招待者
+        username: ユーザー名
+        expires_at: 有効期限
+        accepted_at: 受諾日時
+        canceled_at: キャンセル日時
   views:
     pagination:
       first: "« 最初"
