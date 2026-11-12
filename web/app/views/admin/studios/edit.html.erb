@@ -1,0 +1,9 @@
+<% content_for :title, "スタジオを編集" %>
+
+<%= component :page_layout, title: "スタジオを編集" do |page| %>
+  <% page.with_breadcrumb "スタジオ一覧", admin_studios_path %>
+  <% page.with_breadcrumb @studio.name_in_database, admin_studio_path(@studio) %>
+  <% page.with_breadcrumb "スタジオを編集" %>
+
+  <%= render "admin/studios/form", studio: @studio %>
+<% end %>

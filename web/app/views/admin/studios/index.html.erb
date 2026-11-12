@@ -1,0 +1,47 @@
+<% content_for :title, "スタジオ一覧" %>
+
+<%= component :page_layout, title: "スタジオ一覧" do |page| %>
+  <% page.with_breadcrumb "スタジオ一覧" %>
+
+  <% page.with_action do %>
+    <% if policy([ :admin, Studio ]).create? %>
+      <%= link_to "スタジオを作成", new_admin_studio_path, class: "btn btn-primary" %>
+    <% else %>
+      <button type="button" class="btn btn-primary" disabled>スタジオを作成</button>
+    <% end %>
+  <% end %>
+
+  <% if @studios.any? %>
+    <%= component :table_layout do |layout| %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>スタジオ名</th>
+            <th>slug</th>
+            <th>作成日時</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @studios.each do |studio| %>
+            <tr>
+              <td><%= studio.id %></td>
+
+              <td>
+                <%= link_to studio.name, admin_studio_path(studio), class: "link" %>
+              </td>
+
+              <td><%= studio.slug %></td>
+              <td><%= l studio.created_at, format: :short %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <% layout.with_pagination @studios %>
+    <% end %>
+  <% else %>
+    <p>スタジオはまだありません。</p>
+  <% end %>
+<% end %>

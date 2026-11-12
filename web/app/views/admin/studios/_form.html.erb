@@ -1,0 +1,21 @@
+<%= form_with model: [:admin, studio] do |f| %>
+  <%= component :form_layout do |layout| %>
+    <%= component :text_field, f, :name, label: "スタジオ名", hint: "30 文字まで。",
+          required: true, maxlength: 30, autofocus: true %>
+
+    <% if studio.new_record? %>
+      <%= component :text_field, f, :slug, label: "slug",
+            hint: "英小文字と数字のみ、30 文字まで。スタジオサイトの URL に使い、作成後は変更できません。",
+            required: true, maxlength: 30 %>
+    <% else %>
+      <div class="fieldset">
+        <span class="fieldset-legend">slug</span>
+        <p><%= studio.slug %></p>
+      </div>
+    <% end %>
+
+    <% layout.with_action do %>
+      <%= f.submit "保存", class: "btn btn-primary btn-wide" %>
+    <% end %>
+  <% end %>
+<% end %>

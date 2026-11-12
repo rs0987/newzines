@@ -30,6 +30,9 @@
           <li>
             <%= link_to "ダッシュボード", admin_root_path, class: ("menu-active" if controller_name == "dashboards") %>
           </li>
+          <li>
+            <%= link_to "スタジオ", admin_studios_path, class: ("menu-active" if controller_name == "studios") %>
+          </li>
         </ul>
 
         <details class="dropdown dropdown-top border-t border-base-300 px-2 pt-2">
