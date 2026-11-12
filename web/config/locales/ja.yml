@@ -5,6 +5,7 @@ ja:
       studio: スタジオ
       invitation: 招待
       account: アカウント
+      writer: ライター
     attributes:
       administrator:
         username: ユーザー名
@@ -23,6 +24,8 @@ ja:
       account:
         username: ユーザー名
         password: パスワード
+      writer:
+        account: アカウント
   views:
     pagination:
       first: "« 最初"
