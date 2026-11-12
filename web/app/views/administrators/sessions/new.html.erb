@@ -1,17 +1,17 @@
 <% content_for :title, "ログイン" %>
 
 <div class="mx-auto w-full max-w-sm">
-  <h1 class="mb-4 text-2xl font-bold">管理者サイトにログイン</h1>
+  <%= component :page_layout, title: "管理者サイトにログイン" do %>
+    <%= form_with model: resource, scope: :administrator, url: administrator_session_path do |f| %>
+      <%= component :form_layout do |layout| %>
+        <%= component :text_field, f, :username, autofocus: true, autocomplete: "username" %>
 
-  <%= form_with model: resource, scope: :administrator, url: administrator_session_path do |f| %>
-    <%= component :form_layout do |layout| %>
-      <% layout.with_action do %>
-        <%= f.submit "ログイン", class: "btn btn-primary w-full" %>
+        <%= component :password_field, f, :password, autocomplete: "current-password" %>
+
+        <% layout.with_action do %>
+          <%= f.submit "ログイン", class: "btn btn-primary w-full" %>
+        <% end %>
       <% end %>
-
-      <%= component :text_field, f, :username, autofocus: true, autocomplete: "username" %>
-
-      <%= component :password_field, f, :password, autocomplete: "current-password" %>
     <% end %>
   <% end %>
 </div>
