@@ -7,12 +7,13 @@
   </head>
 
   <body class="min-h-screen bg-base-200">
+    <%= render "layouts/flash" %>
+
     <main class="mx-auto min-h-screen max-w-7xl bg-base-100">
       <% if content_for?(:admin_content) %>
         <%= yield(:admin_content) %>
       <% else %>
         <div class="px-4 pb-8">
-          <%= render "layouts/flash" %>
           <%= yield %>
         </div>
       <% end %>
