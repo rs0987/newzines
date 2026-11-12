@@ -1,0 +1,13 @@
+<div class="card w-full bg-base-100 shadow">
+  <div class="card-body">
+    <%= content %>
+
+    <% if actions? %>
+      <div class="card-actions mt-4 justify-end">
+        <% actions.each do |action| %>
+          <%= action %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

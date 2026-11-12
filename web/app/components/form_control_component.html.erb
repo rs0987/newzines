@@ -2,4 +2,16 @@
   <%= @form.label @attribute, @label, class: "fieldset-legend" %>
 
   <%= content %>
+
+  <% if @hint %>
+    <p class="text-base-content/60" id="<%= hint_id %>"><%= @hint %></p>
+  <% end %>
+
+  <% if errors.any? %>
+    <div id="<%= error_id %>">
+      <% errors.each do |message| %>
+        <p class="text-error"><%= message %></p>
+      <% end %>
+    </div>
+  <% end %>
 </div>

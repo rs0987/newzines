@@ -1,0 +1,2 @@
+class PasswordFieldComponent < InputFieldComponent
+end
