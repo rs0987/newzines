@@ -4,6 +4,7 @@ ja:
       administrator: 管理者
       studio: スタジオ
       invitation: 招待
+      account: アカウント
     attributes:
       administrator:
         username: ユーザー名
@@ -19,6 +20,9 @@ ja:
         expires_at: 有効期限
         accepted_at: 受諾日時
         canceled_at: キャンセル日時
+      account:
+        username: ユーザー名
+        password: パスワード
   views:
     pagination:
       first: "« 最初"
