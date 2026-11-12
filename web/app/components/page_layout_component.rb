@@ -1,4 +1,4 @@
-class PageLayoutComponent < ViewComponent::Base
+class PageLayoutComponent < ApplicationComponent
   renders_many :actions
 
   def initialize(title:)

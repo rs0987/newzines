@@ -1,4 +1,4 @@
-class FormControlComponent < ViewComponent::Base
+class FormControlComponent < ApplicationComponent
   def initialize(form, attribute, label: nil)
     @form = form
     @attribute = attribute
