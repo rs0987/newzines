@@ -5,15 +5,12 @@
     <h1 class="card-title text-2xl">管理者サイトにログイン</h1>
 
     <%= form_with model: resource, scope: :administrator, url: administrator_session_path do |f| %>
-      <%= component :form_control, f, :username do %>
-        <%= f.text_field :username, autofocus: true, autocomplete: "username", class: "input w-full" %>
-      <% end %>
+      <%= component :text_field, f, :username, autofocus: true, autocomplete: "username" %>
 
-      <%= component :form_control, f, :password do %>
-        <%= f.password_field :password, autocomplete: "current-password", class: "input w-full" %>
-      <% end %>
+      <%= component :password_field, f, :password, autocomplete: "current-password" %>
 
       <%= f.submit "ログイン", class: "btn btn-primary w-full mt-4" %>
     <% end %>
   </div>
 </div>
+
