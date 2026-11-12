@@ -7,7 +7,7 @@ class CardComponent < ApplicationComponent
   private
 
   def card_class
-    class_names("card card-border bg-base-100 shadow", "border-error/60": error?)
+    class_names("card bg-base-100 shadow", "card-border border-error/30": error?)
   end
 
   def title_class

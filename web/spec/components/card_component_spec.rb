@@ -11,6 +11,6 @@ RSpec.describe CardComponent, type: :component do
   it "color に :error を渡すと、エラーの色で表示する" do
     html = render_inline(described_class.new(title: "危険な操作", color: :error)) { "本文" }
 
-    expect([ html.at_css(".card")["class"].split, html.at_css("h2")["class"].split ].flatten).to include("border-error/60", "text-error")
+    expect([ html.at_css(".card")["class"].split, html.at_css("h2")["class"].split ].flatten).to include("card-border", "border-error/30", "text-error")
   end
 end
