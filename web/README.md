@@ -39,19 +39,9 @@ http://localhost:3000 で開けます。
 
 Ruby ファイルは、保存時に RuboCop（rubocop-rails-omakase）のルールで自動整形されます。Dev Container を開くと、必要な拡張機能（Ruby LSP）と設定が自動で入ります。
 
-## フロントエンドの実装方針
+## コードのルール
 
-- 画面の部品は [ViewComponent](https://viewcomponent.org) で `app/components/` に作る
-- スタイルは Tailwind CSS と daisyUI のクラスで書く
-- ビューからは `render` ではなく、`component` ヘルパーで呼び出す
-
-```erb
-<%# NG %>
-<%= render TitleBarComponent.new(title: "スタジオ一覧") %>
-
-<%# OK %>
-<%= component :title_bar, title: "スタジオ一覧" %>
-```
+コードやテストの書き方は [CONTRIBUTING.md](../CONTRIBUTING.md) を参照してください。
 
 ## 用語集
 
