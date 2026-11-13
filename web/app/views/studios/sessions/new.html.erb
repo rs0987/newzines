@@ -1,0 +1,17 @@
+<% content_for :title, "ログイン" %>
+
+<div class="mx-auto w-full max-w-sm">
+  <%= component :page_layout, title: "スタジオサイトにログイン" do %>
+    <%= form_with model: resource, scope: :account, url: account_session_path do |f| %>
+      <%= component :form_layout do |layout| %>
+        <%= component :text_field, f, :username, autofocus: true, autocomplete: "username" %>
+
+        <%= component :password_field, f, :password, autocomplete: "current-password" %>
+
+        <% layout.with_action do %>
+          <%= f.submit "ログイン", class: "btn btn-primary w-full" %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :administrators, path: "admin", controllers: { sessions: "admin/sessions" }
+  devise_for :accounts, path: "studios", controllers: { sessions: "studios/sessions" }
   namespace :admin do
     root "dashboards#show"
     resources :studios do
