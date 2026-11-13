@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_12_193759) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_13_110321) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -47,6 +47,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_193759) do
     t.index ["username"], name: "index_invitations_on_username"
   end
 
+  create_table "studio_memberships", force: :cascade do |t|
+    t.bigint "studio_id", null: false
+    t.bigint "writer_id", null: false
+    t.integer "role", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["studio_id", "writer_id"], name: "index_studio_memberships_on_studio_id_and_writer_id", unique: true
+    t.index ["writer_id"], name: "index_studio_memberships_on_writer_id"
+  end
+
   create_table "studios", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
@@ -64,5 +74,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_193759) do
 
   add_foreign_key "invitations", "administrators", column: "inviter_id"
   add_foreign_key "invitations", "studios"
+  add_foreign_key "studio_memberships", "studios"
+  add_foreign_key "studio_memberships", "writers"
   add_foreign_key "writers", "accounts"
 end
