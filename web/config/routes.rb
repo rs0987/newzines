@@ -10,6 +10,10 @@ Rails.application.routes.draw do
     end
   end
 
+  scope "studios/:studio_slug", module: :studios, as: :studio do
+    root "dashboards#show"
+  end
+
   # 登録画面は別の Issue で作る。招待 URL を組み立てられるよう、ルートだけ先に定義している
   resource :registration, only: :new
 
