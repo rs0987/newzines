@@ -31,6 +31,9 @@ ja:
         studio: スタジオ
         writer: ライター
         role: 役割
+      studio_membership/role:
+        member: メンバー
+        owner: オーナー
   views:
     pagination:
       first: "« 最初"
