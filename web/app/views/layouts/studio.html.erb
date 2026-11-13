@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html data-theme="light" class="overflow-y-scroll">
+  <head>
+    <title><%= content_for(:title) || "スタジオサイト" %> | NewZINES</title>
+    <%= render "layouts/head" %>
+  </head>
+
+  <body class="min-h-screen bg-base-200">
+    <%= render "layouts/flash" %>
+
+    <main class="mx-auto min-h-screen max-w-7xl bg-base-100">
+      <% if content_for?(:studio_content) %>
+        <%= yield(:studio_content) %>
+      <% else %>
+        <div class="px-4 pb-8">
+          <%= yield %>
+        </div>
+      <% end %>
+    </main>
+  </body>
+</html>
