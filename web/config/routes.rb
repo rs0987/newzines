@@ -10,8 +10,11 @@ Rails.application.routes.draw do
     end
   end
 
-  # 招待 URL を組み立てられるよう、登録画面のルートだけ先に定義している
-  get "studios/sign_up", to: "studios/registrations#new", as: :new_studio_registration
+  scope "studios", module: :studios do
+    get "sign_up", to: "registrations#new", as: :new_studio_registration
+    post "sign_up", to: "registrations#create", as: :studio_registration
+    get "sign_up/invalid", to: "registrations#invalid", as: :invalid_studio_registration
+  end
 
   scope "studios/:studio_slug", module: :studios, as: :studio do
     root "dashboards#show"

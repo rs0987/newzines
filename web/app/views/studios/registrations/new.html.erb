@@ -1,0 +1,21 @@
+<% content_for :title, "スタジオに参加" %>
+
+<div class="mx-auto w-full max-w-sm">
+  <%= component :page_layout, title: "スタジオに参加" do %>
+    <%= form_with model: @account, url: studio_registration_path do |f| %>
+      <%= hidden_field_tag :token, params[:token] %>
+
+      <%= component :form_layout do |layout| %>
+        <%= component :text_field, f, :username, hint: "招待されたユーザー名を入力してください。",
+              required: true, autofocus: true, autocomplete: "username" %>
+
+        <%= component :password_field, f, :password, hint: "16 文字以上。",
+              required: true, autocomplete: "new-password" %>
+
+        <% layout.with_action do %>
+          <%= f.submit "登録して参加する", class: "btn btn-primary w-full" %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
