@@ -140,4 +140,61 @@ RSpec.describe Invitation, type: :model do
       expect(invitation.reload.canceled_at).to eq Time.zone.local(2026, 11, 12, 10, 0, 0)
     end
   end
+
+  describe "#accept" do
+    context "パスワードが正しいとき" do
+      it "招待のユーザー名でアカウントを作る" do
+        invitation = create(:invitation, studio:, inviter:, username: "writer01")
+
+        account = invitation.accept(password: "password12345678")
+
+        expect(account).to have_attributes(persisted?: true, username: "writer01")
+      end
+
+      it "作ったアカウントを、ライターとしてスタジオのオーナーにする" do
+        invitation = create(:invitation, studio:, inviter:, username: "writer01")
+
+        account = invitation.accept(password: "password12345678")
+
+        studio_membership = account.writer.studio_memberships.sole
+        expect(studio_membership).to have_attributes(studio:, role: "owner")
+      end
+
+      it "招待を受諾済みにする" do
+        invitation = create(:invitation, studio:, inviter:, username: "writer01")
+
+        invitation.accept(password: "password12345678")
+
+        expect(invitation.reload.status).to eq :accepted
+      end
+    end
+
+    context "パスワードが短いとき" do
+      it "パスワードが短すぎるというエラーとともに、保存していないアカウントを返す" do
+        invitation = create(:invitation, studio:, inviter:, username: "writer01")
+
+        account = invitation.accept(password: "a" * 15)
+
+        expect([ account.persisted?, account.errors.of_kind?(:password, :too_short) ]).to eq [ false, true ]
+      end
+
+      it "招待を受諾待ちのままにする" do
+        invitation = create(:invitation, studio:, inviter:, username: "writer01")
+
+        invitation.accept(password: "a" * 15)
+
+        expect(invitation.reload.status).to eq :pending
+      end
+    end
+
+    context "受諾待ちではないとき" do
+      it "例外を発生させる" do
+        invitation = create(:invitation, studio:, inviter:, username: "writer01", canceled_at: Time.current)
+
+        expect {
+          invitation.accept(password: "password12345678")
+        }.to raise_error(Invitation::NotPendingError)
+      end
+    end
+  end
 end
