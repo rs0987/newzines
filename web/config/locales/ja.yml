@@ -6,6 +6,7 @@ ja:
       invitation: 招待
       account: アカウント
       writer: ライター
+      studio_membership: スタジオメンバー
     attributes:
       administrator:
         username: ユーザー名
@@ -26,6 +27,10 @@ ja:
         password: パスワード
       writer:
         account: アカウント
+      studio_membership:
+        studio: スタジオ
+        writer: ライター
+        role: 役割
   views:
     pagination:
       first: "« 最初"

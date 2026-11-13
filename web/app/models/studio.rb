@@ -1,5 +1,6 @@
 class Studio < ApplicationRecord
   has_many :invitations, dependent: :destroy
+  has_many :studio_memberships, dependent: :destroy
 
   attr_readonly :slug
 
