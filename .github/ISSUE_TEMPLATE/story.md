@@ -2,6 +2,7 @@
 name: ストーリー
 about: ユーザーにとっての価値がある変更
 labels: feature
+projects: ["rs0987/4"]
 ---
 
 ## 背景（任意）
