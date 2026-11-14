@@ -1,4 +1,6 @@
 class Invitation < ApplicationRecord
+  class NotPendingError < StandardError; end
+
   include HasUsername
 
   belongs_to :studio
@@ -40,6 +42,23 @@ class Invitation < ApplicationRecord
 
   def cancel!
     update!(canceled_at: Time.current)
+  end
+
+  def accept(password:)
+    account = Account.new(username:, password:)
+
+    transaction do
+      lock!
+      raise NotPendingError unless pending?
+
+      if account.save
+        writer = Writer.create!(account:)
+        studio.studio_memberships.create!(writer:, role: :owner)
+        update!(accepted_at: Time.current)
+      end
+    end
+
+    account
   end
 
   private

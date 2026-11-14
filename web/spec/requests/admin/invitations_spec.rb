@@ -136,7 +136,7 @@ RSpec.describe "管理者サイトの招待管理", type: :request do
             post admin_studio_invitations_path(studio), params: valid_params
 
             html = Nokogiri::HTML(response.body)
-            expect(html.at_css("button[data-action='clipboard#copy']").text).to eq "コピー"
+            expect(html.at_css("button[data-action='clipboard#copy']").text.squish).to eq "コピー"
           end
         end
 

@@ -10,12 +10,15 @@ Rails.application.routes.draw do
     end
   end
 
+  scope "studios", module: :studios do
+    get "sign_up", to: "registrations#new", as: :new_studio_registration
+    post "sign_up", to: "registrations#create", as: :studio_registration
+    get "sign_up/invalid", to: "registrations#invalid", as: :invalid_studio_registration
+  end
+
   scope "studios/:studio_slug", module: :studios, as: :studio do
     root "dashboards#show"
   end
-
-  # 登録画面は別の Issue で作る。招待 URL を組み立てられるよう、ルートだけ先に定義している
-  resource :registration, only: :new
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -12,10 +12,24 @@
     </div>
 
     <div class="join w-full" data-controller="clipboard">
-      <input type="text" value="<%= new_registration_url(token: @invitation.token) %>" readonly
-             aria-label="招待 URL" class="input join-item w-full" data-clipboard-target="source">
-      <button type="button" class="btn btn-primary join-item"
-              data-action="clipboard#copy" data-clipboard-target="button">コピー</button>
+      <input
+        type="text"
+        value="<%= new_studio_registration_url(token: @invitation.token) %>"
+        readonly
+        autocomplete="off"
+        aria-label="招待 URL"
+        class="input join-item w-full"
+        data-clipboard-target="source"
+      >
+
+      <button
+        type="button"
+        class="btn btn-primary join-item"
+        data-action="clipboard#copy"
+        data-clipboard-target="button"
+      >
+        コピー
+      </button>
     </div>
 
     <p>有効期限：<%= l @invitation.expires_at, format: :short %></p>
