@@ -1,0 +1,36 @@
+name: ストーリー
+description: ユーザーにとっての価値がある変更
+labels: ["feature"]
+projects: ["rs0987/4"]
+body:
+  - type: textarea
+    id: background
+    attributes:
+      label: 背景（任意）
+      description: 今どうなっていて、何が困るか。目的だけで伝わるなら空でよい
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目的
+      description: タイトルとは違って、運営目線で書く
+    validations:
+      required: true
+  - type: textarea
+    id: means
+    attributes:
+      label: 手段
+      description: どう実現するかの方針。詳細は PR に書く
+    validations:
+      required: true
+  - type: textarea
+    id: not-doing
+    attributes:
+      label: あえてやらないこと
+      description: 判断としてやらないことと、その理由
+    validations:
+      required: true
+  - type: textarea
+    id: future
+    attributes:
+      label: 今後やること（任意）
+      description: この Issue ではやらないが、あとでやること。Issue を作ったら番号を書く
