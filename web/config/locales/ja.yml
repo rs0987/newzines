@@ -7,6 +7,13 @@ ja:
       account: アカウント
       writer: ライター
       studio_membership: スタジオメンバー
+      zine: ZINE
+    errors:
+      models:
+        zine:
+          attributes:
+            editor:
+              not_studio_member: はスタジオのメンバーから選んでください
     attributes:
       administrator:
         username: ユーザー名
@@ -34,6 +41,12 @@ ja:
       studio_membership/role:
         member: メンバー
         owner: オーナー
+      zine:
+        studio: スタジオ
+        editor: 責任編集者
+        title: タイトル
+        description: 紹介文
+        published_at: 発行日時
   views:
     pagination:
       first: "« 最初"
