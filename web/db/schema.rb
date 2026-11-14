@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_13_110321) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_14_182445) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -72,9 +72,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_110321) do
     t.index ["account_id"], name: "index_writers_on_account_id", unique: true
   end
 
+  create_table "zines", force: :cascade do |t|
+    t.bigint "studio_id", null: false
+    t.bigint "editor_id", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["editor_id"], name: "index_zines_on_editor_id"
+    t.index ["studio_id"], name: "index_zines_on_studio_id"
+  end
+
   add_foreign_key "invitations", "administrators", column: "inviter_id"
   add_foreign_key "invitations", "studios"
   add_foreign_key "studio_memberships", "studios"
   add_foreign_key "studio_memberships", "writers"
   add_foreign_key "writers", "accounts"
+  add_foreign_key "zines", "studios"
+  add_foreign_key "zines", "writers", column: "editor_id"
 end
