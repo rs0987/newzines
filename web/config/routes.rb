@@ -18,7 +18,9 @@ Rails.application.routes.draw do
 
   scope "studios/:studio_slug", module: :studios, as: :studio do
     root "dashboards#show"
-    resources :zines
+    resources :zines do
+      resources :pages
+    end
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

@@ -25,6 +25,14 @@
       <% end %>
     <% end %>
 
+    <%= component :card, title: "ページ" do %>
+      <div class="flex flex-wrap items-center gap-4">
+        <p class="flex-1"><%= @zine.pages.count %> ページ</p>
+
+        <%= link_to "ページ一覧", studio_zine_pages_path(@studio.slug, @zine), class: "btn" %>
+      </div>
+    <% end %>
+
     <%= component :card, title: "危険な操作", color: :error do %>
       <div class="flex flex-wrap items-center gap-4">
         <div class="flex-1">
