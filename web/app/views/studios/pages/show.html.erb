@@ -23,7 +23,15 @@
       <% end %>
     <% end %>
 
-    <%= component :card, title: "プレビュー" do %>
+    <%= component :card, title: "内容" do |card| %>
+      <% card.with_action do %>
+        <% if policy([ :studios, @page ]).write? %>
+          <%= link_to "書く", edit_studio_zine_page_writing_path(@studio.slug, @zine, @page), class: "btn btn-primary btn-sm" %>
+        <% else %>
+          <button type="button" class="btn btn-primary btn-sm" disabled>書く</button>
+        <% end %>
+      <% end %>
+
       <article>
         <h3 class="text-xl font-bold"><%= @page.title %></h3>
         <p class="whitespace-pre-wrap"><%= @page.body %></p>
