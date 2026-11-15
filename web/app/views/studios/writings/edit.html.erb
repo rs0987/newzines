@@ -1,0 +1,23 @@
+<% content_for :title, "ページ内容編集" %>
+
+<%= component :page_layout, title: "ページ内容編集" do |page| %>
+  <% page.with_breadcrumb "ZINE 一覧", studio_zines_path(@studio.slug) %>
+  <% page.with_breadcrumb @zine.title, studio_zine_path(@studio.slug, @zine) %>
+  <% page.with_breadcrumb "ページ一覧", studio_zine_pages_path(@studio.slug, @zine) %>
+  <% page.with_breadcrumb @page.title_in_database, studio_zine_page_path(@studio.slug, @zine, @page) %>
+  <% page.with_breadcrumb "ページ内容編集" %>
+
+  <%= form_with model: @page, url: studio_zine_page_writing_path(@studio.slug, @zine, @page), method: :patch do |f| %>
+    <%= component :form_layout do |layout| %>
+      <%= component :text_field, f, :title, label: "タイトル", hint: "30 文字まで。",
+            required: true, maxlength: 30 %>
+
+      <%= component :text_area_field, f, :body, label: "本文", hint: "800 文字まで。改行はそのまま表示されます。",
+            maxlength: 800, rows: 20, autofocus: true %>
+
+      <% layout.with_action do %>
+        <%= f.submit "保存", class: "btn btn-primary btn-wide" %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

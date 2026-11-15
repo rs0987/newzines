@@ -20,6 +20,22 @@ RSpec.describe Studios::PagePolicy do
     end
   end
 
+  permissions :write? do
+    it "担当ライターには許可する" do
+      writer = create(:writer)
+      create(:studio_membership, studio:, writer:, role: :member)
+
+      expect(described_class).to permit(writer.account, build(:page, zine:, writer:, title: "夏の名画座"))
+    end
+
+    it "担当ではないスタジオのメンバーには許可しない" do
+      writer = create(:writer)
+      create(:studio_membership, studio:, writer:, role: :owner)
+
+      expect(described_class).not_to permit(writer.account, build(:page, zine:, title: "夏の名画座"))
+    end
+  end
+
   describe "Scope" do
     it "所属しているスタジオの ZINE のページだけを返す" do
       writer = create(:writer)

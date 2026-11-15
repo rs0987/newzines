@@ -5,6 +5,8 @@ class Studios::BaseController < ApplicationController
   before_action :set_studio_membership
   after_action :verify_pundit_authorization
 
+  rescue_from Pundit::NotAuthorizedError, with: :account_not_authorized
+
   private
 
   def pundit_user
@@ -25,5 +27,9 @@ class Studios::BaseController < ApplicationController
     else
       verify_authorized
     end
+  end
+
+  def account_not_authorized
+    redirect_back_or_to studio_root_path(@studio.slug), alert: "この操作を行う権限がありません", status: :see_other
   end
 end

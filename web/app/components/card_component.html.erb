@@ -1,6 +1,12 @@
 <div class="<%= card_class %>">
   <div class="card-body">
-    <h2 class="<%= title_class %>"><%= @title %></h2>
+    <div class="flex items-center gap-2">
+      <h2 class="<%= title_class %> flex-1"><%= @title %></h2>
+
+      <% actions.each do |action| %>
+        <%= action %>
+      <% end %>
+    </div>
 
     <%= content %>
   </div>

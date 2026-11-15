@@ -6,12 +6,12 @@
   <% page.with_breadcrumb "ページ一覧", studio_zine_pages_path(@studio.slug, @zine) %>
   <% page.with_breadcrumb @page.title %>
 
-  <% page.with_action do %>
-    <%= link_to "編集", edit_studio_zine_page_path(@studio.slug, @zine, @page), class: "btn" %>
-  <% end %>
-
   <div class="flex flex-col gap-6">
-    <%= component :card, title: "基本情報" do %>
+    <%= component :card, title: "基本情報" do |card| %>
+      <% card.with_action do %>
+        <%= link_to "編集", edit_studio_zine_page_path(@studio.slug, @zine, @page), class: "btn btn-sm" %>
+      <% end %>
+
       <%= component :description_list do |list| %>
         <% list.with_item "担当ライター" do %>
           <%= @page.writer.account.username %>
@@ -23,7 +23,15 @@
       <% end %>
     <% end %>
 
-    <%= component :card, title: "プレビュー" do %>
+    <%= component :card, title: "内容" do |card| %>
+      <% card.with_action do %>
+        <% if policy([ :studios, @page ]).write? %>
+          <%= link_to "編集", edit_studio_zine_page_writing_path(@studio.slug, @zine, @page), class: "btn btn-sm" %>
+        <% else %>
+          <button type="button" class="btn btn-sm" disabled>編集</button>
+        <% end %>
+      <% end %>
+
       <article>
         <h3 class="text-xl font-bold"><%= @page.title %></h3>
         <p class="whitespace-pre-wrap"><%= @page.body %></p>
