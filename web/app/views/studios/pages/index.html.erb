@@ -1,0 +1,42 @@
+<% content_for :title, "ページ一覧" %>
+
+<%= component :page_layout, title: "ページ一覧" do |page| %>
+  <% page.with_breadcrumb "ZINE 一覧", studio_zines_path(@studio.slug) %>
+  <% page.with_breadcrumb @zine.title, studio_zine_path(@studio.slug, @zine) %>
+  <% page.with_breadcrumb "ページ一覧" %>
+
+  <% page.with_action do %>
+    <%= link_to "ページを追加", new_studio_zine_page_path(@studio.slug, @zine), class: "btn btn-primary" %>
+  <% end %>
+
+  <% if @pages.any? %>
+    <%= component :table_layout do |layout| %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>タイトル</th>
+            <th>担当ライター</th>
+            <th>状態</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @pages.each do |zine_page| %>
+            <tr>
+              <td>
+                <%= link_to zine_page.title, studio_zine_page_path(@studio.slug, @zine, zine_page), class: "link" %>
+              </td>
+
+              <td><%= zine_page.writer.account.username %></td>
+              <td><%= Page.human_attribute_name("status.#{zine_page.status}") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <% layout.with_pagination @pages %>
+    <% end %>
+  <% else %>
+    <p>ページはまだありません。</p>
+  <% end %>
+<% end %>

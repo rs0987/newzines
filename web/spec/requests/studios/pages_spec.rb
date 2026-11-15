@@ -1,0 +1,196 @@
+require "rails_helper"
+
+RSpec.describe "スタジオサイトのページ管理", type: :request do
+  let(:studio) { create(:studio, name: "映画好きの集まり", slug: "cinema01") }
+  let(:writer) { create(:writer, account: create(:account, username: "writer01", password: "password12345678")) }
+  let(:zine) { create(:zine, studio:, editor: writer, title: "映画の夏") }
+
+  before { create(:studio_membership, studio:, writer:, role: :member) }
+
+  describe "GET /studios/:studio_slug/zines/:zine_id/pages" do
+    context "ログインしていないとき" do
+      it "ログイン画面にリダイレクトする" do
+        get studio_zine_pages_path(studio.slug, zine)
+
+        expect(response).to redirect_to(new_account_session_path)
+      end
+    end
+
+    context "ログインしているとき" do
+      before { sign_in writer.account }
+
+      it "ページの一覧を表示する" do
+        create(:page, zine:, writer:, title: "夏の名画座")
+
+        get studio_zine_pages_path(studio.slug, zine)
+
+        expect(response.body).to include("夏の名画座")
+      end
+    end
+  end
+
+  describe "GET /studios/:studio_slug/zines/:zine_id/pages/:id" do
+    context "ログインしているとき" do
+      before { sign_in writer.account }
+
+      it "ページの詳細を表示する" do
+        page = create(:page, zine:, writer:, title: "夏の名画座")
+
+        get studio_zine_page_path(studio.slug, zine, page)
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
+  describe "GET /studios/:studio_slug/zines/:zine_id/pages/new" do
+    context "ログインしていないとき" do
+      it "ログイン画面にリダイレクトする" do
+        get new_studio_zine_page_path(studio.slug, zine)
+
+        expect(response).to redirect_to(new_account_session_path)
+      end
+    end
+
+    context "ログインしているとき" do
+      before { sign_in writer.account }
+
+      it "追加画面を表示する" do
+        get new_studio_zine_page_path(studio.slug, zine)
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
+  describe "POST /studios/:studio_slug/zines/:zine_id/pages" do
+    let(:valid_params) { { page: { title: "夏の名画座", writer_id: writer.id } } }
+
+    context "ログインしていないとき" do
+      it "ページを追加しない" do
+        expect {
+          post studio_zine_pages_path(studio.slug, zine), params: valid_params
+        }.not_to change(Page, :count)
+      end
+    end
+
+    context "ログインしているとき" do
+      before { sign_in writer.account }
+
+      context "入力が正しいとき" do
+        it "ページを追加する" do
+          post studio_zine_pages_path(studio.slug, zine), params: valid_params
+
+          page = zine.pages.find_by(title: "夏の名画座")
+          expect(page.writer).to eq writer
+        end
+
+        it "追加したページの詳細画面にリダイレクトする" do
+          post studio_zine_pages_path(studio.slug, zine), params: valid_params
+
+          page = zine.pages.find_by(title: "夏の名画座")
+          expect(response).to redirect_to(studio_zine_page_path(studio.slug, zine, page))
+        end
+      end
+
+      context "入力が正しくないとき" do
+        let(:invalid_params) { { page: { title: "", writer_id: writer.id } } }
+
+        it "ページを追加しない" do
+          expect {
+            post studio_zine_pages_path(studio.slug, zine), params: invalid_params
+          }.not_to change(Page, :count)
+        end
+
+        it "422 を返して追加画面を再表示する" do
+          post studio_zine_pages_path(studio.slug, zine), params: invalid_params
+
+          expect(response).to have_http_status(:unprocessable_content)
+        end
+      end
+    end
+  end
+
+  describe "GET /studios/:studio_slug/zines/:zine_id/pages/:id/edit" do
+    context "ログインしているとき" do
+      before { sign_in writer.account }
+
+      it "編集画面を表示する" do
+        page = create(:page, zine:, writer:, title: "夏の名画座")
+
+        get edit_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
+  describe "PATCH /studios/:studio_slug/zines/:zine_id/pages/:id" do
+    let(:page) { create(:page, zine:, writer:, title: "夏の名画座") }
+    let(:other_writer) { create(:studio_membership, studio:, role: :member).writer }
+    let(:valid_params) { { page: { title: "秋の名画座", writer_id: other_writer.id } } }
+
+    context "ログインしていないとき" do
+      it "ページを更新しない" do
+        patch studio_zine_page_path(studio.slug, zine, page), params: valid_params
+
+        expect(page.reload.title).to eq "夏の名画座"
+      end
+    end
+
+    context "ログインしているとき" do
+      before { sign_in writer.account }
+
+      context "入力が正しいとき" do
+        it "ページを更新する" do
+          patch studio_zine_page_path(studio.slug, zine, page), params: valid_params
+
+          page.reload
+          expect([ page.title, page.writer ]).to eq [ "秋の名画座", other_writer ]
+        end
+
+        it "ページの詳細画面にリダイレクトする" do
+          patch studio_zine_page_path(studio.slug, zine, page), params: valid_params
+
+          expect(response).to redirect_to(studio_zine_page_path(studio.slug, zine, page))
+        end
+      end
+
+      context "入力が正しくないとき" do
+        it "422 を返して編集画面を再表示する" do
+          patch studio_zine_page_path(studio.slug, zine, page), params: { page: { title: "" } }
+
+          expect(response).to have_http_status(:unprocessable_content)
+        end
+      end
+    end
+  end
+
+  describe "DELETE /studios/:studio_slug/zines/:zine_id/pages/:id" do
+    let(:page) { create(:page, zine:, writer:, title: "夏の名画座") }
+
+    context "ログインしていないとき" do
+      it "ページを削除しない" do
+        delete studio_zine_page_path(studio.slug, zine, page)
+
+        expect(Page.exists?(page.id)).to be true
+      end
+    end
+
+    context "ログインしているとき" do
+      before { sign_in writer.account }
+
+      it "ページを削除する" do
+        delete studio_zine_page_path(studio.slug, zine, page)
+
+        expect(Page.exists?(page.id)).to be false
+      end
+
+      it "303 でページの一覧にリダイレクトする" do
+        delete studio_zine_page_path(studio.slug, zine, page)
+
+        expect([ response.status, response.location ]).to eq [ 303, studio_zine_pages_url(studio.slug, zine) ]
+      end
+    end
+  end
+end
