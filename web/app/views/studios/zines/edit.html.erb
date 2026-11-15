@@ -1,0 +1,9 @@
+<% content_for :title, "ZINE を編集" %>
+
+<%= component :page_layout, title: "ZINE を編集" do |page| %>
+  <% page.with_breadcrumb "ZINE 一覧", studio_zines_path(@studio.slug) %>
+  <% page.with_breadcrumb @zine.title_in_database, studio_zine_path(@studio.slug, @zine) %>
+  <% page.with_breadcrumb "ZINE を編集" %>
+
+  <%= render "studios/zines/form", zine: @zine, studio: @studio %>
+<% end %>

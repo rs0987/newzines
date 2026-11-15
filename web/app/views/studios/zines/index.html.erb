@@ -1,0 +1,40 @@
+<% content_for :title, "ZINE 一覧" %>
+
+<%= component :page_layout, title: "ZINE 一覧" do |page| %>
+  <% page.with_breadcrumb "ZINE 一覧" %>
+
+  <% page.with_action do %>
+    <%= link_to "ZINE を作成", new_studio_zine_path(@studio.slug), class: "btn btn-primary" %>
+  <% end %>
+
+  <% if @zines.any? %>
+    <%= component :table_layout do |layout| %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>タイトル</th>
+            <th>責任編集者</th>
+            <th>作成日時</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @zines.each do |zine| %>
+            <tr>
+              <td>
+                <%= link_to zine.title, studio_zine_path(@studio.slug, zine), class: "link" %>
+              </td>
+
+              <td><%= zine.editor.account.username %></td>
+              <td><%= l zine.created_at, format: :short %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <% layout.with_pagination @zines %>
+    <% end %>
+  <% else %>
+    <p>ZINE はまだありません。</p>
+  <% end %>
+<% end %>

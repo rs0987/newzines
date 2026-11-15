@@ -1,0 +1,41 @@
+<% content_for :title, @zine.title %>
+
+<%= component :page_layout, title: @zine.title do |page| %>
+  <% page.with_breadcrumb "ZINE 一覧", studio_zines_path(@studio.slug) %>
+  <% page.with_breadcrumb @zine.title %>
+
+  <% page.with_action do %>
+    <%= link_to "編集", edit_studio_zine_path(@studio.slug, @zine), class: "btn" %>
+  <% end %>
+
+  <div class="flex flex-col gap-6">
+    <%= component :card, title: "基本情報" do %>
+      <%= component :description_list do |list| %>
+        <% list.with_item "紹介文" do %>
+          <p class="whitespace-pre-wrap"><%= @zine.description %></p>
+        <% end %>
+
+        <% list.with_item "責任編集者" do %>
+          <%= @zine.editor.account.username %>
+        <% end %>
+
+        <% list.with_item "作成日時" do %>
+          <%= l @zine.created_at, format: :short %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= component :card, title: "危険な操作", color: :error do %>
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="flex-1">
+          <p class="font-bold">ZINE を削除</p>
+          <p class="text-base-content/60">関連するデータもすべて削除され、元に戻せません。</p>
+        </div>
+
+        <%= button_to "削除", studio_zine_path(@studio.slug, @zine), method: :delete,
+                      form: { data: { turbo_confirm: "「#{@zine.title}」を削除します。関連するデータもすべて削除されます。よろしいですか？" } },
+                      class: "btn btn-outline btn-error" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

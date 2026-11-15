@@ -55,6 +55,10 @@
           <li>
             <%= link_to "ダッシュボード", studio_root_path(@studio.slug), class: ("menu-active" if controller_name == "dashboards") %>
           </li>
+
+          <li>
+            <%= link_to "ZINE", studio_zines_path(@studio.slug), class: ("menu-active" if controller_name == "zines") %>
+          </li>
         </ul>
 
         <details class="dropdown dropdown-top border-t border-base-300 px-2 pt-2">
