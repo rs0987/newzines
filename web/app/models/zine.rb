@@ -1,6 +1,7 @@
 class Zine < ApplicationRecord
   belongs_to :studio
   belongs_to :editor, class_name: "Writer"
+  has_many :pages, dependent: :destroy
 
   validates :title, presence: true,
                     length: { maximum: 30 }

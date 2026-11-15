@@ -8,6 +8,7 @@ ja:
       writer: ライター
       studio_membership: スタジオメンバー
       zine: ZINE
+      page: ページ
     errors:
       models:
         zine:
@@ -47,6 +48,16 @@ ja:
         title: タイトル
         description: 紹介文
         published_at: 発行日時
+      page:
+        zine: ZINE
+        writer: 担当ライター
+        title: タイトル
+        body: 本文
+        status: 状態
+      page/status:
+        draft: 下書き
+        reviewing: 確認中
+        confirmed: 確定
   views:
     pagination:
       first: "« 最初"

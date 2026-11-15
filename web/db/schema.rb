@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_14_182445) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_15_155102) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,6 +45,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_14_182445) do
     t.index ["studio_id"], name: "index_invitations_on_studio_id"
     t.index ["token_digest"], name: "index_invitations_on_token_digest", unique: true
     t.index ["username"], name: "index_invitations_on_username"
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.bigint "zine_id", null: false
+    t.bigint "writer_id", null: false
+    t.string "title", null: false
+    t.text "body"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["writer_id"], name: "index_pages_on_writer_id"
+    t.index ["zine_id"], name: "index_pages_on_zine_id"
   end
 
   create_table "studio_memberships", force: :cascade do |t|
@@ -86,6 +98,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_14_182445) do
 
   add_foreign_key "invitations", "administrators", column: "inviter_id"
   add_foreign_key "invitations", "studios"
+  add_foreign_key "pages", "writers"
+  add_foreign_key "pages", "zines"
   add_foreign_key "studio_memberships", "studios"
   add_foreign_key "studio_memberships", "writers"
   add_foreign_key "writers", "accounts"
