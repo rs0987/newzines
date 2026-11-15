@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "スタジオサイトのページを書く画面", type: :request do
+RSpec.describe "スタジオサイトのページ内容編集", type: :request do
   let(:studio) { create(:studio) }
   let(:writer) { create(:writer) }
   let(:zine) { create(:zine, studio:, editor: writer, title: "映画の夏") }
@@ -20,7 +20,7 @@ RSpec.describe "スタジオサイトのページを書く画面", type: :reques
     context "担当ライターとしてログインしているとき" do
       before { sign_in writer.account }
 
-      it "書く画面を表示する" do
+      it "ページ内容編集画面を表示する" do
         get edit_studio_zine_page_writing_path(studio.slug, zine, page)
 
         expect(response).to have_http_status(:ok)
@@ -71,7 +71,7 @@ RSpec.describe "スタジオサイトのページを書く画面", type: :reques
       end
 
       context "入力が正しくないとき" do
-        it "422 を返して書く画面を再表示する" do
+        it "422 を返してページ内容編集画面を再表示する" do
           patch studio_zine_page_writing_path(studio.slug, zine, page), params: { page: { title: "夏の名画座", body: "あ" * 801 } }
 
           expect(response).to have_http_status(:unprocessable_content)
