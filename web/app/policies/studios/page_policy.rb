@@ -15,6 +15,10 @@ class Studios::PagePolicy < Studios::ApplicationPolicy
     zine_policy.update?
   end
 
+  def write?
+    record.writer == user.writer
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.where(zine_id: Studios::ZinePolicy::Scope.new(user, Zine).resolve.select(:id))
