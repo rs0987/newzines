@@ -1,4 +1,6 @@
 class CardComponent < ApplicationComponent
+  renders_many :actions
+
   def initialize(title:, color: nil)
     @title = title
     @color = color
