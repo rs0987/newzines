@@ -1,0 +1,3 @@
+<%= component :form_control, @form, @attribute, label: @label, hint: @hint do |control| %>
+  <%= @form.select @attribute, @choices, {}, **@options, aria: control.aria, class: select_class %>
+<% end %>
