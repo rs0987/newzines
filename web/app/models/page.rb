@@ -4,6 +4,8 @@ class Page < ApplicationRecord
 
   enum :status, { draft: 0, reviewing: 1, confirmed: 2 }, default: :draft, validate: true
 
+  normalizes :body, with: ->(body) { body.gsub("\r\n", "\n") }
+
   validates :title, presence: true,
                     length: { maximum: 30 }
   validates :body, length: { maximum: 800 }

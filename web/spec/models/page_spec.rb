@@ -49,6 +49,12 @@ RSpec.describe Page, type: :model do
 
       expect(page).not_to be_valid
     end
+
+    it "\\r\\n の改行を 1 文字として数える" do
+      page = build(:page, zine:, writer:, title: "夏の名画座", body: "#{"あ" * 399}\r\n#{"あ" * 400}")
+
+      expect(page).to be_valid
+    end
   end
 
   describe "writer" do
