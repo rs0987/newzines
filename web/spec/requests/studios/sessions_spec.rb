@@ -22,7 +22,7 @@ RSpec.describe "スタジオサイトのログインとログアウト", type: :
         it "所属しているスタジオのトップにリダイレクトする" do
           post account_session_path, params: { account: { username: "writer01", password: "password12345678" } }
 
-          expect(response).to redirect_to(studio_root_path("cinema01"))
+          expect(response).to redirect_to(studio_root_path(studio.slug))
         end
 
         it "管理者サイトにはログインさせない" do
@@ -42,7 +42,7 @@ RSpec.describe "スタジオサイトのログインとログアウト", type: :
 
         it "ログインさせない" do
           post account_session_path, params: { account: { username: "writer01", password: "wrongpassword123" } }
-          get studio_root_path("cinema01")
+          get studio_root_path(studio.slug)
 
           expect(response).to redirect_to(new_account_session_path)
         end
@@ -58,17 +58,19 @@ RSpec.describe "スタジオサイトのログインとログアウト", type: :
     end
 
     context "ログイン前にスタジオのページを開こうとしていたとき" do
+      let(:other_studio) { create(:studio, name: "本の虫", slug: "books01") }
+
       before do
         writer = create(:writer, account: create(:account, username: "writer01", password: "password12345678"))
         create(:studio_membership, studio:, writer:, role: :owner)
-        create(:studio_membership, studio: create(:studio, name: "本の虫", slug: "books01"), writer:, role: :member)
+        create(:studio_membership, studio: other_studio, writer:, role: :member)
       end
 
       it "開こうとしていたページにリダイレクトする" do
-        get studio_root_path("books01")
+        get studio_root_path(other_studio.slug)
         post account_session_path, params: { account: { username: "writer01", password: "password12345678" } }
 
-        expect(response).to redirect_to(studio_root_path("books01"))
+        expect(response).to redirect_to(studio_root_path(other_studio.slug))
       end
     end
 

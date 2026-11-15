@@ -1,8 +1,6 @@
 require "rails_helper"
 
 RSpec.describe Studios::ZinePolicy do
-  subject { described_class }
-
   let(:studio) { create(:studio, name: "映画好きの集まり", slug: "cinema01") }
 
   permissions :show?, :create?, :update?, :destroy? do
@@ -10,20 +8,20 @@ RSpec.describe Studios::ZinePolicy do
       writer = create(:writer)
       create(:studio_membership, studio:, writer:, role: :member)
 
-      expect(subject).to permit(writer.account, build(:zine, studio:, editor: writer, title: "映画の夏"))
+      expect(described_class).to permit(writer.account, build(:zine, studio:, editor: writer, title: "映画の夏"))
     end
 
     it "スタジオのメンバーではないライターには許可しない" do
       writer = create(:writer)
       create(:studio_membership, studio: create(:studio, name: "本の虫", slug: "books01"), writer:, role: :owner)
 
-      expect(subject).not_to permit(writer.account, build(:zine, studio:, title: "映画の夏"))
+      expect(described_class).not_to permit(writer.account, build(:zine, studio:, title: "映画の夏"))
     end
 
     it "ライターではないアカウントには許可しない" do
       account = create(:account)
 
-      expect(subject).not_to permit(account, build(:zine, studio:, title: "映画の夏"))
+      expect(described_class).not_to permit(account, build(:zine, studio:, title: "映画の夏"))
     end
   end
 

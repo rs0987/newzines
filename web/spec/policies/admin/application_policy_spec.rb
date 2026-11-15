@@ -1,31 +1,23 @@
 require "rails_helper"
 
 RSpec.describe Admin::ApplicationPolicy do
-  context "閲覧者のとき" do
-    it "一覧と詳細の表示を許可する" do
-      administrator = build(:administrator, username: "admin01", password: "password12345678", role: :viewer)
-
-      policy = described_class.new(administrator, :record)
-
-      expect([ policy.index?, policy.show? ]).to eq [ true, true ]
+  permissions :index?, :show? do
+    it "閲覧者には許可する" do
+      expect(described_class).to permit(build(:administrator, role: :viewer), :record)
     end
 
-    it "作成・更新・削除を許可しない" do
-      administrator = build(:administrator, username: "admin01", password: "password12345678", role: :viewer)
-
-      policy = described_class.new(administrator, :record)
-
-      expect([ policy.create?, policy.update?, policy.destroy? ]).to eq [ false, false, false ]
+    it "編集者には許可する" do
+      expect(described_class).to permit(build(:administrator, role: :editor), :record)
     end
   end
 
-  context "編集者のとき" do
-    it "作成・更新・削除を許可する" do
-      administrator = build(:administrator, username: "admin01", password: "password12345678", role: :editor)
+  permissions :create?, :update?, :destroy? do
+    it "閲覧者には許可しない" do
+      expect(described_class).not_to permit(build(:administrator, role: :viewer), :record)
+    end
 
-      policy = described_class.new(administrator, :record)
-
-      expect([ policy.create?, policy.update?, policy.destroy? ]).to eq [ true, true, true ]
+    it "編集者には許可する" do
+      expect(described_class).to permit(build(:administrator, role: :editor), :record)
     end
   end
 end

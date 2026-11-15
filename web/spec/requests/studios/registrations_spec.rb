@@ -56,12 +56,12 @@ RSpec.describe "招待 URL からの登録", type: :request do
       it "スタジオのダッシュボードにリダイレクトする" do
         post studio_registration_path, params: valid_params
 
-        expect(response).to redirect_to(studio_root_path("cinema01"))
+        expect(response).to redirect_to(studio_root_path(studio.slug))
       end
 
       it "ログインさせる" do
         post studio_registration_path, params: valid_params
-        get studio_root_path("cinema01")
+        get studio_root_path(studio.slug)
 
         expect(response).to have_http_status(:ok)
       end
