@@ -20,19 +20,81 @@ RSpec.describe Studios::PagePolicy do
     end
   end
 
-  permissions :write? do
-    it "担当ライターには許可する" do
-      writer = create(:writer)
-      create(:studio_membership, studio:, writer:, role: :member)
+  permissions :write?, :submit? do
+    context "担当ライターのとき" do
+      let(:writer) { create(:studio_membership, studio:, role: :member).writer }
 
-      expect(described_class).to permit(writer.account, build(:page, zine:, writer:, title: "夏の名画座"))
+      it "下書きなら許可する" do
+        expect(described_class).to permit(writer.account, build(:page, zine:, writer:, title: "夏の名画座", status: :draft))
+      end
+
+      it "確認中なら許可しない" do
+        expect(described_class).not_to permit(writer.account, build(:page, zine:, writer:, title: "夏の名画座", status: :reviewing))
+      end
     end
 
-    it "担当ではないスタジオのメンバーには許可しない" do
-      writer = create(:writer)
-      create(:studio_membership, studio:, writer:, role: :owner)
+    context "担当ではないスタジオのメンバーのとき" do
+      let(:writer) { create(:studio_membership, studio:, role: :owner).writer }
 
-      expect(described_class).not_to permit(writer.account, build(:page, zine:, title: "夏の名画座"))
+      it "下書きでも許可しない" do
+        expect(described_class).not_to permit(writer.account, build(:page, zine:, title: "夏の名画座", status: :draft))
+      end
+    end
+  end
+
+  permissions :confirm? do
+    context "責任編集者のとき" do
+      let(:editor) { zine.editor }
+
+      context "担当ライターではないとき" do
+        it "確認中なら許可する" do
+          expect(described_class).to permit(editor.account, build(:page, zine:, title: "夏の名画座", status: :reviewing))
+        end
+
+        it "下書きなら許可しない" do
+          expect(described_class).not_to permit(editor.account, build(:page, zine:, title: "夏の名画座", status: :draft))
+        end
+      end
+
+      context "担当ライターを兼ねているとき" do
+        it "下書きでも許可する" do
+          expect(described_class).to permit(editor.account, build(:page, zine:, writer: editor, title: "夏の名画座", status: :draft))
+        end
+      end
+    end
+
+    context "責任編集者ではないスタジオのメンバーのとき" do
+      let(:writer) { create(:studio_membership, studio:, role: :owner).writer }
+
+      it "確認中でも許可しない" do
+        expect(described_class).not_to permit(writer.account, build(:page, zine:, title: "夏の名画座", status: :reviewing))
+      end
+    end
+  end
+
+  permissions :send_back? do
+    context "責任編集者のとき" do
+      let(:editor) { zine.editor }
+
+      it "確認中なら許可する" do
+        expect(described_class).to permit(editor.account, build(:page, zine:, title: "夏の名画座", status: :reviewing))
+      end
+
+      it "確定なら許可する" do
+        expect(described_class).to permit(editor.account, build(:page, zine:, title: "夏の名画座", status: :confirmed))
+      end
+
+      it "下書きなら許可しない" do
+        expect(described_class).not_to permit(editor.account, build(:page, zine:, title: "夏の名画座", status: :draft))
+      end
+    end
+
+    context "責任編集者ではないスタジオのメンバーのとき" do
+      let(:writer) { create(:studio_membership, studio:, role: :owner).writer }
+
+      it "確認中でも許可しない" do
+        expect(described_class).not_to permit(writer.account, build(:page, zine:, title: "夏の名画座", status: :reviewing))
+      end
     end
   end
 
