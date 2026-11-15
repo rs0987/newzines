@@ -20,10 +20,10 @@ RSpec.describe "スタジオサイトのトップ", type: :request do
         before { create(:studio_membership, studio:, writer:, role: :owner) }
 
         it "メニューにスタジオ名を表示する" do
-          get studio_root_path("cinema01")
+          get studio_root_path(studio.slug)
 
           html = Nokogiri::HTML(response.body)
-          expect(html.at_css("nav[aria-label='スタジオメニュー'] a[href='#{studio_root_path("cinema01")}']").text).to eq "映画好きの集まり"
+          expect(html.at_css("nav[aria-label='スタジオメニュー'] a[href='#{studio_root_path(studio.slug)}']").text).to eq "映画好きの集まり"
         end
       end
 
