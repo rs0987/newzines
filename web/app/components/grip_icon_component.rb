@@ -1,0 +1,2 @@
+class GripIconComponent < ApplicationComponent
+end
