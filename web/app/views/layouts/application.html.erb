@@ -1,14 +1,55 @@
 <!DOCTYPE html>
 
-<html>
+<html data-theme="lofi" class="overflow-y-scroll">
   <head>
-    <title><%= content_for(:title) || "Newzines" %></title>
+    <title><%= content_for?(:title) ? "#{yield(:title)} | NewZINES" : "NewZINES" %></title>
     <%= render "layouts/head" %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+  <body class="min-h-screen bg-base-200">
+    <%= render "layouts/flash" %>
+
+    <div
+      class="
+        drawer mx-auto max-w-6xl bg-base-100 lg:drawer-open
+        lg:grid-cols-[1fr_var(--container-md)]
+      "
+    >
+      <input id="reader-menu" type="checkbox" class="drawer-toggle">
+
+      <div class="drawer-content min-h-screen border-base-300 lg:border-x">
+        <div
+          class="
+            sticky top-0 z-20 flex h-14 items-center gap-2 border-b
+            border-base-300 bg-base-100 px-2 lg:hidden
+          "
+        >
+          <label
+            for="reader-menu"
+            aria-label="メニューを開く"
+            class="btn btn-square btn-ghost"
+          >
+            <%= component :hamburger_icon %>
+          </label>
+
+          <%= link_to "NewZINES", root_path, class: "text-lg font-bold" %>
+        </div>
+
+        <main>
+          <%= yield %>
+        </main>
+      </div>
+
+      <div class="drawer-side z-40">
+        <label for="reader-menu" aria-label="メニューを閉じる" class="drawer-overlay"></label>
+
+        <nav
+          aria-label="メニュー"
+          class="flex min-h-full w-64 flex-col gap-2 bg-base-100 p-4 lg:w-full"
+        >
+          <%= link_to "NewZINES", root_path, class: "text-2xl font-bold" %>
+        </nav>
+      </div>
+    </div>
   </body>
 </html>
