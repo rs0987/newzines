@@ -34,4 +34,32 @@ RSpec.describe "スタジオサイトの ZINE の発行", type: :request do
       end
     end
   end
+
+  describe "DELETE /studios/:studio_slug/zines/:zine_id/publication" do
+    before { zine.update!(published_at: Time.current) }
+
+    context "ログインしていないとき" do
+      it "ZINE の発行を取り消さない" do
+        delete studio_zine_publication_path(studio.slug, zine)
+
+        expect(zine.reload.published_at).to be_present
+      end
+    end
+
+    context "責任編集者としてログインしているとき" do
+      before { sign_in writer.account }
+
+      it "ZINE の発行を取り消す" do
+        delete studio_zine_publication_path(studio.slug, zine)
+
+        expect(zine.reload.published_at).to be_nil
+      end
+
+      it "303 で ZINE の詳細にリダイレクトする" do
+        delete studio_zine_publication_path(studio.slug, zine)
+
+        expect([ response.status, response.location ]).to eq [ 303, studio_zine_url(studio.slug, zine) ]
+      end
+    end
+  end
 end

@@ -19,6 +19,10 @@ class Studios::ZinePolicy < Studios::ApplicationPolicy
     zine_editor? && !record.published_at? && record.publishable?
   end
 
+  def unpublish?
+    zine_editor? && record.published_at?
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.where(studio_id: StudioMembership.where(writer: user.writer).select(:studio_id))

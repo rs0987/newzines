@@ -62,6 +62,28 @@ RSpec.describe Studios::ZinePolicy do
     end
   end
 
+  permissions :unpublish? do
+    context "責任編集者のとき" do
+      let(:editor) { create(:studio_membership, studio:, role: :member).writer }
+
+      it "発行済みなら許可する" do
+        expect(described_class).to permit(editor.account, build(:zine, studio:, editor:, title: "映画の夏", published_at: Time.current))
+      end
+
+      it "未発行なら許可しない" do
+        expect(described_class).not_to permit(editor.account, build(:zine, studio:, editor:, title: "映画の夏", published_at: nil))
+      end
+    end
+
+    context "責任編集者ではないスタジオのメンバーのとき" do
+      let(:writer) { create(:studio_membership, studio:, role: :owner).writer }
+
+      it "発行済みでも許可しない" do
+        expect(described_class).not_to permit(writer.account, build(:zine, studio:, title: "映画の夏", published_at: Time.current))
+      end
+    end
+  end
+
   describe "Scope" do
     it "所属しているスタジオの ZINE だけを返す" do
       writer = create(:writer)
