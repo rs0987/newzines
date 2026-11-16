@@ -5,8 +5,6 @@ class Studios::PagesController < Studios::BaseController
   def index
     @pages = policy_scope([ :studios, @zine.pages ])
                .includes(writer: :account)
-               .order(:id)
-               .page(params[:page])
   end
 
   def show

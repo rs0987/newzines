@@ -57,6 +57,17 @@ RSpec.describe Page, type: :model do
     end
   end
 
+  describe "position" do
+    it "ZINE ごとに 1 から始まり、ページを作るたびに 1 ずつ増える" do
+      other_zine = create(:zine, studio:)
+      first_page = create(:page, zine:, writer:, title: "夏の名画座")
+      other_zine_page = create(:page, zine: other_zine, writer:, title: "読書の秋")
+      second_page = create(:page, zine:, writer:, title: "秋の名画座")
+
+      expect([ first_page.position, second_page.position, other_zine_page.position ]).to eq [ 1, 2, 1 ]
+    end
+  end
+
   describe "writer" do
     it "スタジオのメンバーでなくても有効である" do
       outside_writer = create(:writer)
