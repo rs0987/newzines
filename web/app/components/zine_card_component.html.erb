@@ -11,7 +11,7 @@
 
       <div class="card-actions justify-end">
         <%# カードのどこを押しても読めるように、リンクの押せる範囲をカード全体に広げる %>
-        <%= link_to "読む", "#",
+        <%= link_to "読む", zine_path(@zine),
                     aria: { label: "#{@zine.title}を読む" },
                     class: "btn btn-sm btn-primary after:absolute after:inset-0" %>
       </div>
