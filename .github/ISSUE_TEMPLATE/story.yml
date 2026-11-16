@@ -12,7 +12,7 @@ body:
     id: goal
     attributes:
       label: 目的
-      description: タイトルとは違って、運営目線で書く
+      description: タイトルとは違って、運営目線で書く（例：「〇〇に〜してもらう」「〇〇に〜を伝える」）
     validations:
       required: true
   - type: textarea
