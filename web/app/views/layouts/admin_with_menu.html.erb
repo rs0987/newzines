@@ -5,9 +5,7 @@
     <div class="drawer-content min-w-0">
       <div class="sticky top-0 z-20 flex h-14 items-center gap-2 border-b border-base-300 bg-base-100 px-2 md:hidden">
         <label for="admin-menu" aria-label="メニューを開く" class="btn btn-square btn-ghost">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
+          <%= component :hamburger_icon %>
         </label>
         <%= link_to "NewZINES 管理者サイト", admin_root_path, class: "text-lg font-bold" %>
       </div>
