@@ -1,0 +1,20 @@
+<div class="card bg-base-100 shadow-md">
+  <div class="card-body flex-row items-start">
+    <div class="w-40 shrink-0">
+      <%= component :zine_cover, title: @zine.title, studio_name: @zine.studio.name %>
+    </div>
+
+    <div class="flex flex-1 flex-col gap-2 self-end">
+      <% if @zine.description.present? %>
+        <p><%= @zine.description %></p>
+      <% end %>
+
+      <div class="card-actions justify-end">
+        <%# カードのどこを押しても読めるように、リンクの押せる範囲をカード全体に広げる %>
+        <%= link_to "読む", "#",
+                    aria: { label: "#{@zine.title}を読む" },
+                    class: "btn btn-sm btn-primary after:absolute after:inset-0" %>
+      </div>
+    </div>
+  </div>
+</div>
