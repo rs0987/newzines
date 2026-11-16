@@ -20,6 +20,12 @@ Rails.application.routes.draw do
     root "dashboards#show"
     resources :zines do
       resources :pages do
+        member do
+          patch :submit
+          patch :confirm
+          patch :send_back
+        end
+
         resource :writing, only: %i[edit update]
       end
     end

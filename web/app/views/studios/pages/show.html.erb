@@ -32,6 +32,32 @@
         <% end %>
       <% end %>
 
+      <% if @page.draft? && !policy([ :studios, @page ]).confirm? %>
+        <% card.with_action do %>
+          <%= button_to "提出", submit_studio_zine_page_path(@studio.slug, @zine, @page), method: :patch,
+                        disabled: !policy([ :studios, @page ]).submit?,
+                        form: { data: { turbo_confirm: "「#{@page.title}」を提出します。提出すると、差し戻されるまで内容を編集できません。よろしいですか？" } },
+                        class: "btn btn-sm btn-primary" %>
+        <% end %>
+      <% end %>
+
+      <% if @page.reviewing? || policy([ :studios, @page ]).confirm? %>
+        <% card.with_action do %>
+          <%= button_to "確定", confirm_studio_zine_page_path(@studio.slug, @zine, @page), method: :patch,
+                        disabled: !policy([ :studios, @page ]).confirm?,
+                        form: { data: { turbo_confirm: "「#{@page.title}」を確定します。確定すると、差し戻されるまで内容を編集できません。よろしいですか？" } },
+                        class: "btn btn-sm btn-primary" %>
+        <% end %>
+      <% end %>
+
+      <% if @page.reviewing? || @page.confirmed? %>
+        <% card.with_action do %>
+          <%= button_to "差し戻す", send_back_studio_zine_page_path(@studio.slug, @zine, @page), method: :patch,
+                        disabled: !policy([ :studios, @page ]).send_back?,
+                        class: "btn btn-sm" %>
+        <% end %>
+      <% end %>
+
       <article>
         <h3 class="text-xl font-bold"><%= @page.title %></h3>
         <p class="whitespace-pre-wrap"><%= @page.body %></p>

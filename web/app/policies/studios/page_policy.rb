@@ -16,7 +16,19 @@ class Studios::PagePolicy < Studios::ApplicationPolicy
   end
 
   def write?
-    record.writer == user.writer
+    page_writer? && record.draft?
+  end
+
+  def submit?
+    page_writer? && record.draft?
+  end
+
+  def confirm?
+    zine_editor? && (record.reviewing? || (page_writer? && record.draft?))
+  end
+
+  def send_back?
+    zine_editor? && (record.reviewing? || record.confirmed?)
   end
 
   class Scope < ApplicationPolicy::Scope
@@ -29,5 +41,13 @@ class Studios::PagePolicy < Studios::ApplicationPolicy
 
   def zine_policy
     Studios::ZinePolicy.new(user, record.zine)
+  end
+
+  def page_writer?
+    record.writer == user.writer
+  end
+
+  def zine_editor?
+    record.zine.editor == user.writer
   end
 end

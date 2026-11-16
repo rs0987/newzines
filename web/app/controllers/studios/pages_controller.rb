@@ -1,6 +1,6 @@
 class Studios::PagesController < Studios::BaseController
   before_action :set_zine
-  before_action :set_page, only: %i[show edit update destroy]
+  before_action :set_page, only: %i[show edit update destroy submit confirm send_back]
 
   def index
     @pages = policy_scope([ :studios, @zine.pages ])
@@ -48,6 +48,27 @@ class Studios::PagesController < Studios::BaseController
 
     @page.destroy!
     redirect_to studio_zine_pages_path(@studio.slug, @zine), notice: "ページを削除しました", status: :see_other
+  end
+
+  def submit
+    authorize [ :studios, @page ]
+
+    @page.reviewing!
+    redirect_to studio_zine_page_path(@studio.slug, @zine, @page), notice: "ページを提出しました", status: :see_other
+  end
+
+  def confirm
+    authorize [ :studios, @page ]
+
+    @page.confirmed!
+    redirect_to studio_zine_page_path(@studio.slug, @zine, @page), notice: "ページを確定しました", status: :see_other
+  end
+
+  def send_back
+    authorize [ :studios, @page ]
+
+    @page.draft!
+    redirect_to studio_zine_page_path(@studio.slug, @zine, @page), notice: "ページを差し戻しました", status: :see_other
   end
 
   private

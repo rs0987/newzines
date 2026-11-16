@@ -193,4 +193,101 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
       end
     end
   end
+
+  describe "PATCH /studios/:studio_slug/zines/:zine_id/pages/:id/submit" do
+    let(:page_writer) { create(:studio_membership, studio:, role: :member).writer }
+    let(:page) { create(:page, zine:, writer: page_writer, title: "夏の名画座", status: :draft) }
+
+    context "ログインしていないとき" do
+      it "ページを提出しない" do
+        patch submit_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(page.reload.status).to eq "draft"
+      end
+    end
+
+    context "担当ライターとしてログインしているとき" do
+      before { sign_in page_writer.account }
+
+      it "ページを確認中にする" do
+        patch submit_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(page.reload.status).to eq "reviewing"
+      end
+
+      it "303 でページの詳細画面にリダイレクトする" do
+        patch submit_studio_zine_page_path(studio.slug, zine, page)
+
+        expect([ response.status, response.location ]).to eq [ 303, studio_zine_page_url(studio.slug, zine, page) ]
+      end
+    end
+  end
+
+  describe "PATCH /studios/:studio_slug/zines/:zine_id/pages/:id/confirm" do
+    context "ログインしていないとき" do
+      it "ページを確定しない" do
+        page = create(:page, zine:, title: "夏の名画座", status: :reviewing)
+
+        patch confirm_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(page.reload.status).to eq "reviewing"
+      end
+    end
+
+    context "責任編集者としてログインしているとき" do
+      before { sign_in writer.account }
+
+      it "確認中のページを確定にする" do
+        page = create(:page, zine:, title: "夏の名画座", status: :reviewing)
+
+        patch confirm_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(page.reload.status).to eq "confirmed"
+      end
+
+      it "自分が担当する下書きのページを、提出せずに確定にする" do
+        page = create(:page, zine:, writer:, title: "夏の名画座", status: :draft)
+
+        patch confirm_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(page.reload.status).to eq "confirmed"
+      end
+
+      it "303 でページの詳細画面にリダイレクトする" do
+        page = create(:page, zine:, title: "夏の名画座", status: :reviewing)
+
+        patch confirm_studio_zine_page_path(studio.slug, zine, page)
+
+        expect([ response.status, response.location ]).to eq [ 303, studio_zine_page_url(studio.slug, zine, page) ]
+      end
+    end
+  end
+
+  describe "PATCH /studios/:studio_slug/zines/:zine_id/pages/:id/send_back" do
+    let(:page) { create(:page, zine:, title: "夏の名画座", status: :confirmed) }
+
+    context "ログインしていないとき" do
+      it "ページを差し戻さない" do
+        patch send_back_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(page.reload.status).to eq "confirmed"
+      end
+    end
+
+    context "責任編集者としてログインしているとき" do
+      before { sign_in writer.account }
+
+      it "ページを下書きに戻す" do
+        patch send_back_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(page.reload.status).to eq "draft"
+      end
+
+      it "303 でページの詳細画面にリダイレクトする" do
+        patch send_back_studio_zine_page_path(studio.slug, zine, page)
+
+        expect([ response.status, response.location ]).to eq [ 303, studio_zine_page_url(studio.slug, zine, page) ]
+      end
+    end
+  end
 end
