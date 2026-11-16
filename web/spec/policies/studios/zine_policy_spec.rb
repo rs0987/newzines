@@ -25,6 +25,43 @@ RSpec.describe Studios::ZinePolicy do
     end
   end
 
+  permissions :publish? do
+    let(:zine) { create(:zine, studio:, title: "映画の夏") }
+
+    context "責任編集者のとき" do
+      let(:editor) { zine.editor }
+
+      it "すべてのページが確定なら許可する" do
+        create(:page, zine:, title: "夏の名画座", status: :confirmed)
+
+        expect(described_class).to permit(editor.account, zine)
+      end
+
+      it "確定ではないページがあれば許可しない" do
+        create(:page, zine:, title: "夏の名画座", status: :reviewing)
+
+        expect(described_class).not_to permit(editor.account, zine)
+      end
+
+      it "発行済みなら許可しない" do
+        create(:page, zine:, title: "夏の名画座", status: :confirmed)
+        zine.update!(published_at: Time.current)
+
+        expect(described_class).not_to permit(editor.account, zine)
+      end
+    end
+
+    context "責任編集者ではないスタジオのメンバーのとき" do
+      let(:writer) { create(:studio_membership, studio:, role: :owner).writer }
+
+      it "すべてのページが確定でも許可しない" do
+        create(:page, zine:, title: "夏の名画座", status: :confirmed)
+
+        expect(described_class).not_to permit(writer.account, zine)
+      end
+    end
+  end
+
   describe "Scope" do
     it "所属しているスタジオの ZINE だけを返す" do
       writer = create(:writer)

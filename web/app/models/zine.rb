@@ -8,6 +8,10 @@ class Zine < ApplicationRecord
   validates :description, length: { maximum: 200 }
   validate :editor_must_be_studio_member
 
+  def publishable?
+    pages.exists? && pages.where.not(status: :confirmed).none?
+  end
+
   def sort_pages(page_ids)
     transaction do
       page_ids.each.with_index(1) do |page_id, position|
