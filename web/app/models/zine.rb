@@ -8,6 +8,14 @@ class Zine < ApplicationRecord
   validates :description, length: { maximum: 200 }
   validate :editor_must_be_studio_member
 
+  def sort_pages(page_ids)
+    transaction do
+      page_ids.each.with_index(1) do |page_id, position|
+        pages.find(page_id).update!(position:)
+      end
+    end
+  end
+
   private
 
   def editor_must_be_studio_member

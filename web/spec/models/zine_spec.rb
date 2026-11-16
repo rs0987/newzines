@@ -64,4 +64,29 @@ RSpec.describe Zine, type: :model do
       expect(zine).not_to be_valid
     end
   end
+
+  describe "#sort_pages" do
+    let(:zine) { create(:zine, studio:, editor:, title: "映画の夏") }
+
+    it "渡したページの順に、position を 1 から振り直す" do
+      first_page = create(:page, zine:, title: "夏の名画座")
+      second_page = create(:page, zine:, title: "秋の名画座")
+      third_page = create(:page, zine:, title: "冬の名画座")
+
+      zine.sort_pages([ third_page.id, first_page.id, second_page.id ])
+
+      expect(zine.pages.reload).to eq [ third_page, first_page, second_page ]
+    end
+
+    it "別の ZINE のページが混ざっていたら、どのページも並べ替えない" do
+      first_page = create(:page, zine:, title: "夏の名画座")
+      second_page = create(:page, zine:, title: "秋の名画座")
+      other_zine_page = create(:page, zine: create(:zine, studio:), title: "読書の秋")
+
+      expect {
+        zine.sort_pages([ second_page.id, other_zine_page.id, first_page.id ])
+      }.to raise_error(ActiveRecord::RecordNotFound)
+      expect(zine.pages.reload).to eq [ first_page, second_page ]
+    end
+  end
 end
