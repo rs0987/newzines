@@ -1,0 +1,2 @@
+class HamburgerIconComponent < ApplicationComponent
+end
