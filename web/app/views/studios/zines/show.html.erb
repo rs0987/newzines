@@ -33,6 +33,24 @@
       </div>
     <% end %>
 
+    <%= component :card, title: "発行" do %>
+      <div class="flex flex-wrap items-center gap-4">
+        <% if @zine.published_at? %>
+          <p class="flex-1"><%= l @zine.published_at, format: :short %> に発行しました。</p>
+        <% else %>
+          <div class="flex-1">
+            <p class="font-bold">未発行</p>
+            <p class="text-base-content/60">すべてのページが確定すると、責任編集者が発行できます。</p>
+          </div>
+
+          <%= button_to "発行", studio_zine_publication_path(@studio.slug, @zine),
+                        disabled: !policy([ :studios, @zine ]).publish?,
+                        form: { data: { turbo_confirm: "「#{@zine.title}」を発行します。よろしいですか？" } },
+                        class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    <% end %>
+
     <%= component :card, title: "危険な操作", color: :error do %>
       <div class="flex flex-wrap items-center gap-4">
         <div class="flex-1">
