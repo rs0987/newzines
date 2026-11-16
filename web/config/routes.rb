@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     root "dashboards#show"
     resources :zines do
       resource :page_order, only: %i[update]
+      resource :publication, only: %i[create]
 
       resources :pages do
         member do
