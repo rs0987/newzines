@@ -10,30 +10,56 @@
   <% end %>
 
   <% if @pages.any? %>
-    <%= component :table_layout do %>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>タイトル</th>
-            <th>担当ライター</th>
-            <th>状態</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @pages.each do |zine_page| %>
+    <%# ハンドルの外で離されると、ハンドルの mouseup が来ないので、window の mouseup で戻す %>
+    <div data-controller="sortable" data-action="mouseup@window->sortable#release">
+      <%= component :table_layout do %>
+        <table class="table">
+          <thead>
             <tr>
-              <td>
-                <%= link_to zine_page.title, studio_zine_page_path(@studio.slug, @zine, zine_page), class: "link" %>
-              </td>
-
-              <td><%= zine_page.writer.account.username %></td>
-              <td><%= Page.human_attribute_name("status.#{zine_page.status}") %></td>
+              <th><span class="sr-only">並び替え</span></th>
+              <th>タイトル</th>
+              <th>担当ライター</th>
+              <th>状態</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% end %>
+          </thead>
+
+          <tbody>
+            <% @pages.each do |zine_page| %>
+              <tr
+                data-sortable-target="row"
+                data-page-id="<%= zine_page.id %>"
+                data-action="dragstart->sortable#start dragover->sortable#over drop->sortable#drop dragend->sortable#end"
+              >
+                <td class="w-0">
+                  <button
+                    type="button"
+                    aria-label="並び替え"
+                    class="btn btn-square btn-ghost btn-sm cursor-grab"
+                    data-action="mousedown->sortable#grab"
+                  >
+                    <%= component :grip_icon %>
+                  </button>
+                </td>
+
+                <td>
+                  <%= link_to zine_page.title, studio_zine_page_path(@studio.slug, @zine, zine_page), class: "link" %>
+                </td>
+
+                <td><%= zine_page.writer.account.username %></td>
+
+                <td>
+                  <%= Page.human_attribute_name("status.#{zine_page.status}") %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+
+      <%# ページの並び順を送信するためのフォーム。ドロップしたときに、sortable コントローラーが page_ids[] を足して送信する %>
+      <%= form_with url: studio_zine_page_order_path(@studio.slug, @zine), method: :patch, data: { sortable_target: "form" } do %>
+      <% end %>
+    </div>
   <% else %>
     <p>ページはまだありません。</p>
   <% end %>
