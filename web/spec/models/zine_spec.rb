@@ -65,6 +65,28 @@ RSpec.describe Zine, type: :model do
     end
   end
 
+  describe "#publishable?" do
+    let(:zine) { create(:zine, studio:, editor:, title: "映画の夏") }
+
+    it "すべてのページが確定なら true を返す" do
+      create(:page, zine:, title: "夏の名画座", status: :confirmed)
+      create(:page, zine:, title: "秋の名画座", status: :confirmed)
+
+      expect(zine.publishable?).to be true
+    end
+
+    it "確定ではないページが 1 枚でもあれば false を返す" do
+      create(:page, zine:, title: "夏の名画座", status: :confirmed)
+      create(:page, zine:, title: "秋の名画座", status: :reviewing)
+
+      expect(zine.publishable?).to be false
+    end
+
+    it "ページが 1 枚もなければ false を返す" do
+      expect(zine.publishable?).to be false
+    end
+  end
+
   describe "#sort_pages" do
     let(:zine) { create(:zine, studio:, editor:, title: "映画の夏") }
 
