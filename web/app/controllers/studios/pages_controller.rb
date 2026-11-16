@@ -6,7 +6,6 @@ class Studios::PagesController < Studios::BaseController
     @pages = policy_scope([ :studios, @zine.pages ])
                .includes(writer: :account)
                .order(:id)
-               .page(params[:page])
   end
 
   def show
