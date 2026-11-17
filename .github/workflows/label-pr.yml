@@ -14,4 +14,4 @@ jobs:
 
     steps:
       - name: Add labels from the branch name
-        uses: actions/labeler@v6
+        uses: actions/labeler@v7
