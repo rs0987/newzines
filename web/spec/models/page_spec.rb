@@ -5,8 +5,8 @@ RSpec.describe Page, type: :model do
   let(:zine) { create(:zine, studio:) }
   let(:writer) { create(:studio_membership, studio:).writer }
 
-  it "ZINE・担当ライター・タイトルがあれば有効である" do
-    page = build(:page, zine:, writer:, title: "夏の名画座")
+  it "ZINE・担当ライターがあれば有効である" do
+    page = build(:page, zine:, writer:)
 
     expect(page).to be_valid
   end
