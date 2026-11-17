@@ -29,6 +29,15 @@ RSpec.describe PublicPageLayoutComponent, type: :component do
     expect(html.at_css("a")).to be_nil
   end
 
+  it "action を表示する" do
+    html = render_inline(described_class.new(title: "映画の夏")) do |page|
+      page.with_action { "もくじ" }
+      "本文"
+    end
+
+    expect(html.text).to include "もくじ"
+  end
+
   it "description を表示する" do
     html = render_inline(described_class.new(title: "映画の夏")) do |page|
       page.with_description { "夏に観たい名作を紹介します" }
