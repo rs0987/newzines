@@ -9,8 +9,8 @@
 
   <%= form_with model: @page, url: studio_zine_page_writing_path(@studio.slug, @zine, @page), method: :patch do |f| %>
     <%= component :form_layout do |layout| %>
-      <%= component :text_field, f, :title, label: "タイトル", hint: "30 文字まで。",
-            required: true, maxlength: 30 %>
+      <%= component :text_field, f, :title, label: "タイトル", hint: "30 文字まで。提出するときに必要です。",
+            maxlength: 30 %>
 
       <%= component :text_area_field, f, :body, label: "本文", hint: "800 文字まで。改行はそのまま表示されます。",
             maxlength: 800, rows: 20, autofocus: true %>

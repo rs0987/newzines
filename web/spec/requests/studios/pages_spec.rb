@@ -94,7 +94,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
       end
 
       context "入力が正しくないとき" do
-        let(:invalid_params) { { page: { title: "", writer_id: writer.id } } }
+        let(:invalid_params) { { page: { title: "あ" * 31, writer_id: writer.id } } }
 
         it "ページを追加しない" do
           expect {
@@ -158,7 +158,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
 
       context "入力が正しくないとき" do
         it "422 を返して編集画面を再表示する" do
-          patch studio_zine_page_path(studio.slug, zine, page), params: { page: { title: "" } }
+          patch studio_zine_page_path(studio.slug, zine, page), params: { page: { title: "あ" * 31 } }
 
           expect(response).to have_http_status(:unprocessable_content)
         end
@@ -220,6 +220,22 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
 
         expect([ response.status, response.location ]).to eq [ 303, studio_zine_page_url(studio.slug, zine, page) ]
       end
+
+      it "タイトルが空なら、下書きのままにする" do
+        page.update!(title: "")
+
+        patch submit_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(page.reload.status).to eq "draft"
+      end
+
+      it "タイトルが空なら、理由を表示する" do
+        page.update!(title: "")
+
+        patch submit_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(flash[:alert]).to eq "タイトルを入力してください"
+      end
     end
   end
 
@@ -251,6 +267,14 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
         patch confirm_studio_zine_page_path(studio.slug, zine, page)
 
         expect(page.reload.status).to eq "confirmed"
+      end
+
+      it "自分が担当する下書きのページでも、タイトルが空なら下書きのままにする" do
+        page = create(:page, zine:, writer:, title: "", status: :draft)
+
+        patch confirm_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(page.reload.status).to eq "draft"
       end
 
       it "303 でページの詳細画面にリダイレクトする" do

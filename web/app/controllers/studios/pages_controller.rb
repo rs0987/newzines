@@ -51,15 +51,21 @@ class Studios::PagesController < Studios::BaseController
   def submit
     authorize [ :studios, @page ]
 
-    @page.reviewing!
-    redirect_to studio_zine_page_path(@studio.slug, @zine, @page), notice: "ページを提出しました", status: :see_other
+    if @page.update(status: :reviewing)
+      redirect_to studio_zine_page_path(@studio.slug, @zine, @page), notice: "ページを提出しました", status: :see_other
+    else
+      redirect_to studio_zine_page_path(@studio.slug, @zine, @page), alert: @page.errors.full_messages.to_sentence, status: :see_other
+    end
   end
 
   def confirm
     authorize [ :studios, @page ]
 
-    @page.confirmed!
-    redirect_to studio_zine_page_path(@studio.slug, @zine, @page), notice: "ページを確定しました", status: :see_other
+    if @page.update(status: :confirmed)
+      redirect_to studio_zine_page_path(@studio.slug, @zine, @page), notice: "ページを確定しました", status: :see_other
+    else
+      redirect_to studio_zine_page_path(@studio.slug, @zine, @page), alert: @page.errors.full_messages.to_sentence, status: :see_other
+    end
   end
 
   def send_back
