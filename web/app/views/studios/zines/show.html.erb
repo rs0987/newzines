@@ -19,6 +19,10 @@
           <%= @zine.editor.account.username %>
         <% end %>
 
+        <% list.with_item Zine.human_attribute_name(:theme_color) do %>
+          <%= component :zine_theme_color_sample, theme_color: @zine.theme_color %>
+        <% end %>
+
         <% list.with_item "作成日時" do %>
           <%= l @zine.created_at, format: :short %>
         <% end %>

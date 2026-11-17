@@ -58,10 +58,10 @@
         <% end %>
       <% end %>
 
-      <article>
-        <h3 class="text-xl font-bold"><%= @page.title %></h3>
-        <p class="whitespace-pre-wrap"><%= @page.body %></p>
-      </article>
+      <%# 読者が読むときの見た目で確かめられるように、公開サイトと同じ部品を ZINE のテーマカラーで表示する %>
+      <%= tag.div data: { theme: @zine.theme_color }, class: "max-w-2xl overflow-hidden rounded-box border border-base-300 bg-base-100 text-base-content" do %>
+        <%= component :zine_page, page: @page, number: @zine.pages.ids.index(@page.id) + 1 %>
+      <% end %>
     <% end %>
 
     <%= component :card, title: "危険な操作", color: :error do %>

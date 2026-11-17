@@ -140,13 +140,13 @@ RSpec.describe "スタジオサイトの ZINE 管理", type: :request do
 
       context "入力が正しいとき" do
         let(:other_writer) { create(:studio_membership, studio:, role: :member).writer }
-        let(:valid_params) { { zine: { title: "映画の秋", description: "秋に観たい映画を集めました", editor_id: other_writer.id } } }
+        let(:valid_params) { { zine: { title: "映画の秋", description: "秋に観たい映画を集めました", editor_id: other_writer.id, theme_color: "abyss" } } }
 
         it "ZINE を更新する" do
           patch studio_zine_path(studio.slug, zine), params: valid_params
 
           zine.reload
-          expect([ zine.title, zine.description, zine.editor ]).to eq [ "映画の秋", "秋に観たい映画を集めました", other_writer ]
+          expect([ zine.title, zine.description, zine.editor, zine.theme_color ]).to eq [ "映画の秋", "秋に観たい映画を集めました", other_writer, "abyss" ]
         end
 
         it "ZINE の詳細画面にリダイレクトする" do

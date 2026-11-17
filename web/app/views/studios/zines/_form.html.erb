@@ -11,6 +11,9 @@
           label: "責任編集者", hint: "スタジオのメンバーから選びます。",
           required: true %>
 
+    <%= component :zine_theme_color_field, f,
+          hint: "表紙と、読者が読む画面の色合いになります。" %>
+
     <% layout.with_action do %>
       <%= f.submit "保存", class: "btn btn-primary btn-wide" %>
     <% end %>

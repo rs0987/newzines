@@ -3,6 +3,21 @@ class Zine < ApplicationRecord
   belongs_to :editor, class_name: "Writer"
   has_many :pages, -> { order(:position, :id) }, dependent: :destroy
 
+  # 値は data-theme にそのまま渡すので、daisyUI のテーマ名と一致させる
+  # 並び順は選択欄の並び順になる。初期値の retro から明るいテーマを色相の順に並べ、暗いテーマを最後に置く
+  enum :theme_color, {
+    retro: "retro",
+    caramellatte: "caramellatte",
+    lemonade: "lemonade",
+    cupcake: "cupcake",
+    winter: "winter",
+    valentine: "valentine",
+    cyberpunk: "cyberpunk",
+    aqua: "aqua",
+    abyss: "abyss",
+    coffee: "coffee"
+  }, prefix: true, validate: true
+
   validates :title, presence: true,
                     length: { maximum: 30 }
   validates :description, length: { maximum: 200 }

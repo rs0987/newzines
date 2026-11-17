@@ -65,6 +65,20 @@ RSpec.describe Zine, type: :model do
     end
   end
 
+  describe "theme_color" do
+    it "選べるテーマカラーなら有効である" do
+      zine = build(:zine, studio:, editor:, title: "映画の夏", theme_color: "abyss")
+
+      expect(zine).to be_valid
+    end
+
+    it "選べないテーマカラーなら無効である" do
+      zine = build(:zine, studio:, editor:, title: "映画の夏", theme_color: "lofi")
+
+      expect(zine).not_to be_valid
+    end
+  end
+
   describe "#publishable?" do
     let(:zine) { create(:zine, studio:, editor:, title: "映画の夏") }
 
