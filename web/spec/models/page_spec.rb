@@ -12,8 +12,20 @@ RSpec.describe Page, type: :model do
   end
 
   describe "title" do
-    it "空なら無効である" do
-      page = build(:page, zine:, writer:, title: "")
+    it "下書きなら空でも有効である" do
+      page = build(:page, zine:, writer:, title: "", status: :draft)
+
+      expect(page).to be_valid
+    end
+
+    it "確認中なら空だと無効である" do
+      page = build(:page, zine:, writer:, title: "", status: :reviewing)
+
+      expect(page).not_to be_valid
+    end
+
+    it "確定なら空だと無効である" do
+      page = build(:page, zine:, writer:, title: "", status: :confirmed)
 
       expect(page).not_to be_valid
     end

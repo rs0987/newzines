@@ -8,7 +8,7 @@ class Page < ApplicationRecord
 
   normalizes_line_breaks :body
 
-  validates :title, presence: true,
+  validates :title, presence: { unless: :draft? },
                     length: { maximum: 30 }
   validates :body, length: { maximum: 800 }
 
