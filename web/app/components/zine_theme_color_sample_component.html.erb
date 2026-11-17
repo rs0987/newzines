@@ -1,0 +1,23 @@
+<div class="w-41">
+  <span class="sr-only"><%= @theme_color %></span>
+
+  <%# ZINE 詳細画面を小さくした見本。見出しの帯・ページの見出し・本文・ノンブルを、そのテーマカラーで並べる %>
+  <%# 色合いを目で確かめるためのものなので、読み上げるのはテーマカラーの名前だけにする %>
+  <div
+    data-theme="<%= @theme_color %>"
+    aria-hidden="true"
+    class="
+      flex flex-col overflow-hidden rounded-box border border-base-300
+      bg-base-100 text-xs text-base-content
+    "
+  >
+    <p class="bg-primary px-2 py-1 font-bold text-primary-content"><%= @theme_color %></p>
+
+    <div class="flex flex-col gap-1 p-2">
+      <p class="font-bold">見出し</p>
+      <div class="h-0.5 w-6 bg-primary"></div>
+      <p>吾輩は猫である。名前はまだ無い。</p>
+      <p class="mt-2 text-center">- 1 -</p>
+    </div>
+  </div>
+</div>
