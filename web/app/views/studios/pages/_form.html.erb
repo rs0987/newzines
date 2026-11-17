@@ -1,12 +1,12 @@
 <%= form_with model: page, url: (page.new_record? ? studio_zine_pages_path(studio.slug, zine) : studio_zine_page_path(studio.slug, zine, page)) do |f| %>
   <%= component :form_layout do |layout| %>
-    <%= component :text_field, f, :title, label: "タイトル", hint: "30 文字まで。",
-          required: true, maxlength: 30, autofocus: true %>
-
     <%= component :select_field, f, :writer_id,
           studio.writers.includes(:account).map { |writer| [ writer.account.username, writer.id ] }.sort,
           label: "担当ライター", hint: "スタジオのメンバーから選びます。",
           required: true %>
+
+    <%= component :text_area_field, f, :note, label: "メモ", hint: "担当ライターへの依頼などを書きます。200 文字まで。",
+          maxlength: 200, rows: 4 %>
 
     <% layout.with_action do %>
       <%= f.submit "保存", class: "btn btn-primary btn-wide" %>

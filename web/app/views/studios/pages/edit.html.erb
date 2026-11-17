@@ -4,7 +4,7 @@
   <% page.with_breadcrumb "ZINE 一覧", studio_zines_path(@studio.slug) %>
   <% page.with_breadcrumb @zine.title, studio_zine_path(@studio.slug, @zine) %>
   <% page.with_breadcrumb "ページ一覧", studio_zine_pages_path(@studio.slug, @zine) %>
-  <% page.with_breadcrumb @page.title_in_database, studio_zine_page_path(@studio.slug, @zine, @page) %>
+  <% page.with_breadcrumb decorate(@page).display_title, studio_zine_page_path(@studio.slug, @zine, @page) %>
   <% page.with_breadcrumb "ページを編集" %>
 
   <%= render "studios/pages/form", page: @page, zine: @zine, studio: @studio %>

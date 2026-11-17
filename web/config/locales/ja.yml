@@ -54,6 +54,7 @@ ja:
         writer: 担当ライター
         title: タイトル
         body: 本文
+        note: メモ
         status: 状態
       page/status:
         draft: 下書き

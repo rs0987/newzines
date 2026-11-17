@@ -34,7 +34,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
       before { sign_in writer.account }
 
       it "ページの詳細を表示する" do
-        page = create(:page, zine:, writer:, title: "夏の名画座")
+        page = create(:page, zine:, writer:)
 
         get studio_zine_page_path(studio.slug, zine, page)
 
@@ -64,7 +64,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
   end
 
   describe "POST /studios/:studio_slug/zines/:zine_id/pages" do
-    let(:valid_params) { { page: { title: "夏の名画座", writer_id: writer.id } } }
+    let(:valid_params) { { page: { writer_id: writer.id, note: "夏に観た映画を 1 本紹介してください" } } }
 
     context "ログインしていないとき" do
       it "ページを追加しない" do
@@ -81,20 +81,20 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
         it "ページを追加する" do
           post studio_zine_pages_path(studio.slug, zine), params: valid_params
 
-          page = zine.pages.find_by(title: "夏の名画座")
-          expect(page.writer).to eq writer
+          page = zine.pages.last
+          expect([ page.writer, page.note ]).to eq [ writer, "夏に観た映画を 1 本紹介してください" ]
         end
 
         it "追加したページの詳細画面にリダイレクトする" do
           post studio_zine_pages_path(studio.slug, zine), params: valid_params
 
-          page = zine.pages.find_by(title: "夏の名画座")
+          page = zine.pages.last
           expect(response).to redirect_to(studio_zine_page_path(studio.slug, zine, page))
         end
       end
 
       context "入力が正しくないとき" do
-        let(:invalid_params) { { page: { title: "", writer_id: writer.id } } }
+        let(:invalid_params) { { page: { writer_id: "" } } }
 
         it "ページを追加しない" do
           expect {
@@ -116,7 +116,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
       before { sign_in writer.account }
 
       it "編集画面を表示する" do
-        page = create(:page, zine:, writer:, title: "夏の名画座")
+        page = create(:page, zine:, writer:)
 
         get edit_studio_zine_page_path(studio.slug, zine, page)
 
@@ -126,15 +126,15 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
   end
 
   describe "PATCH /studios/:studio_slug/zines/:zine_id/pages/:id" do
-    let(:page) { create(:page, zine:, writer:, title: "夏の名画座") }
+    let(:page) { create(:page, zine:, writer:) }
     let(:other_writer) { create(:studio_membership, studio:, role: :member).writer }
-    let(:valid_params) { { page: { title: "秋の名画座", writer_id: other_writer.id } } }
+    let(:valid_params) { { page: { writer_id: other_writer.id, note: "秋に観た映画を 1 本紹介してください" } } }
 
     context "ログインしていないとき" do
       it "ページを更新しない" do
         patch studio_zine_page_path(studio.slug, zine, page), params: valid_params
 
-        expect(page.reload.title).to eq "夏の名画座"
+        expect(page.reload.writer).to eq writer
       end
     end
 
@@ -146,7 +146,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
           patch studio_zine_page_path(studio.slug, zine, page), params: valid_params
 
           page.reload
-          expect([ page.title, page.writer ]).to eq [ "秋の名画座", other_writer ]
+          expect([ page.writer, page.note ]).to eq [ other_writer, "秋に観た映画を 1 本紹介してください" ]
         end
 
         it "ページの詳細画面にリダイレクトする" do
@@ -158,7 +158,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
 
       context "入力が正しくないとき" do
         it "422 を返して編集画面を再表示する" do
-          patch studio_zine_page_path(studio.slug, zine, page), params: { page: { title: "" } }
+          patch studio_zine_page_path(studio.slug, zine, page), params: { page: { writer_id: "" } }
 
           expect(response).to have_http_status(:unprocessable_content)
         end
@@ -167,7 +167,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
   end
 
   describe "DELETE /studios/:studio_slug/zines/:zine_id/pages/:id" do
-    let(:page) { create(:page, zine:, writer:, title: "夏の名画座") }
+    let(:page) { create(:page, zine:, writer:) }
 
     context "ログインしていないとき" do
       it "ページを削除しない" do
@@ -220,6 +220,22 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
 
         expect([ response.status, response.location ]).to eq [ 303, studio_zine_page_url(studio.slug, zine, page) ]
       end
+
+      it "タイトルが空なら、下書きのままにする" do
+        page.update!(title: "")
+
+        patch submit_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(page.reload.status).to eq "draft"
+      end
+
+      it "タイトルが空なら、理由を表示する" do
+        page.update!(title: "")
+
+        patch submit_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(flash[:alert]).to eq "タイトルを入力してください"
+      end
     end
   end
 
@@ -251,6 +267,14 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
         patch confirm_studio_zine_page_path(studio.slug, zine, page)
 
         expect(page.reload.status).to eq "confirmed"
+      end
+
+      it "自分が担当する下書きのページでも、タイトルが空なら下書きのままにする" do
+        page = create(:page, zine:, writer:, title: "", status: :draft)
+
+        patch confirm_studio_zine_page_path(studio.slug, zine, page)
+
+        expect(page.reload.status).to eq "draft"
       end
 
       it "303 でページの詳細画面にリダイレクトする" do

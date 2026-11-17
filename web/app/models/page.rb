@@ -6,11 +6,12 @@ class Page < ApplicationRecord
 
   enum :status, { draft: 0, reviewing: 1, confirmed: 2 }, default: :draft, validate: true
 
-  normalizes_line_breaks :body
+  normalizes_line_breaks :body, :note
 
-  validates :title, presence: true,
+  validates :title, presence: { unless: :draft? },
                     length: { maximum: 30 }
   validates :body, length: { maximum: 800 }
+  validates :note, length: { maximum: 200 }
 
   before_create :place_at_end
 
