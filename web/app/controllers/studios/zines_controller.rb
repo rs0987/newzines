@@ -56,6 +56,6 @@ class Studios::ZinesController < Studios::BaseController
     end
 
     def zine_params
-      params.expect(zine: %i[title description editor_id])
+      params.expect(zine: %i[title description editor_id theme_color])
     end
 end
