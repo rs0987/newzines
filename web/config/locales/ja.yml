@@ -47,6 +47,7 @@ ja:
         editor: 責任編集者
         title: タイトル
         description: 紹介文
+        theme_color: テーマカラー
         published_at: 発行日時
       page:
         zine: ZINE
