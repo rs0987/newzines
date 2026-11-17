@@ -1,4 +1,6 @@
 class Zine < ApplicationRecord
+  include NormalizesLineBreaks
+
   belongs_to :studio
   belongs_to :editor, class_name: "Writer"
   has_many :pages, -> { order(:position, :id) }, dependent: :destroy
@@ -17,6 +19,8 @@ class Zine < ApplicationRecord
     abyss: "abyss",
     coffee: "coffee"
   }, prefix: true, validate: true
+
+  normalizes_line_breaks :description
 
   validates :title, presence: true,
                     length: { maximum: 30 }

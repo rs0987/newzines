@@ -1,10 +1,12 @@
 class Page < ApplicationRecord
+  include NormalizesLineBreaks
+
   belongs_to :zine
   belongs_to :writer
 
   enum :status, { draft: 0, reviewing: 1, confirmed: 2 }, default: :draft, validate: true
 
-  normalizes :body, with: ->(body) { body.gsub("\r\n", "\n") }
+  normalizes_line_breaks :body
 
   validates :title, presence: true,
                     length: { maximum: 30 }

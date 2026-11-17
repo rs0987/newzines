@@ -48,6 +48,12 @@ RSpec.describe Zine, type: :model do
 
       expect(zine).not_to be_valid
     end
+
+    it "\\r\\n の改行を 1 文字として数える" do
+      zine = build(:zine, studio:, editor:, title: "映画の夏", description: "#{"あ" * 99}\r\n#{"あ" * 100}")
+
+      expect(zine).to be_valid
+    end
   end
 
   describe "editor" do
