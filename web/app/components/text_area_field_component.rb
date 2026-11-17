@@ -9,7 +9,7 @@ class TextAreaFieldComponent < ApplicationComponent
 
   private
 
-  def text_area_class
-    class_names("textarea w-full aria-invalid:border-error", @options[:class])
-  end
+    def text_area_class
+      class_names("textarea w-full aria-invalid:border-error", @options[:class])
+    end
 end

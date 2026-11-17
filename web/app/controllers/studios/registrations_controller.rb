@@ -30,7 +30,7 @@ class Studios::RegistrationsController < ApplicationController
 
   private
 
-  def account_params
-    params.expect(account: %i[username password])
-  end
+    def account_params
+      params.expect(account: %i[username password])
+    end
 end

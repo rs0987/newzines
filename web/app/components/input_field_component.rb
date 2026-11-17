@@ -9,7 +9,7 @@ class InputFieldComponent < ApplicationComponent
 
   private
 
-  def input_class
-    class_names("input w-full aria-invalid:border-error", @options[:class])
-  end
+    def input_class
+      class_names("input w-full aria-invalid:border-error", @options[:class])
+    end
 end

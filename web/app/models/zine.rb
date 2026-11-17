@@ -22,9 +22,9 @@ class Zine < ApplicationRecord
 
   private
 
-  def editor_must_be_studio_member
-    return if studio.nil? || editor.nil?
+    def editor_must_be_studio_member
+      return if studio.nil? || editor.nil?
 
-    errors.add(:editor, :not_studio_member) unless studio.studio_memberships.exists?(writer: editor)
-  end
+      errors.add(:editor, :not_studio_member) unless studio.studio_memberships.exists?(writer: editor)
+    end
 end

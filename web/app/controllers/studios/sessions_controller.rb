@@ -18,19 +18,19 @@ class Studios::SessionsController < Devise::SessionsController
 
   private
 
-  def pundit_user
-    current_account
-  end
+    def pundit_user
+      current_account
+    end
 
-  def after_sign_in_path_for(account)
-    stored_location_for(account) || studio_root_path(first_studio.slug)
-  end
+    def after_sign_in_path_for(account)
+      stored_location_for(account) || studio_root_path(first_studio.slug)
+    end
 
-  def after_sign_out_path_for(_resource_or_scope)
-    new_account_session_path
-  end
+    def after_sign_out_path_for(_resource_or_scope)
+      new_account_session_path
+    end
 
-  def first_studio
-    policy_scope([ :studios, StudioMembership ]).order(:id).first&.studio
-  end
+    def first_studio
+      policy_scope([ :studios, StudioMembership ]).order(:id).first&.studio
+    end
 end

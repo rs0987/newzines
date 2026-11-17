@@ -71,15 +71,15 @@ class Studios::PagesController < Studios::BaseController
 
   private
 
-  def set_zine
-    @zine = @studio.zines.find(params.expect(:zine_id))
-  end
+    def set_zine
+      @zine = @studio.zines.find(params.expect(:zine_id))
+    end
 
-  def set_page
-    @page = @zine.pages.find(params.expect(:id))
-  end
+    def set_page
+      @page = @zine.pages.find(params.expect(:id))
+    end
 
-  def page_params
-    params.expect(page: %i[title writer_id])
-  end
+    def page_params
+      params.expect(page: %i[title writer_id])
+    end
 end

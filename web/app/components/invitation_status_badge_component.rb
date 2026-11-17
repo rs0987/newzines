@@ -12,11 +12,11 @@ class InvitationStatusBadgeComponent < ApplicationComponent
 
   private
 
-  def label
-    STATUSES.fetch(@status)[:label]
-  end
+    def label
+      STATUSES.fetch(@status)[:label]
+    end
 
-  def color
-    STATUSES.fetch(@status)[:color]
-  end
+    def color
+      STATUSES.fetch(@status)[:color]
+    end
 end

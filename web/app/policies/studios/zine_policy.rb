@@ -31,11 +31,11 @@ class Studios::ZinePolicy < Studios::ApplicationPolicy
 
   private
 
-  def zine_editor?
-    record.editor == user.writer
-  end
+    def zine_editor?
+      record.editor == user.writer
+    end
 
-  def studio_member?
-    record.studio.studio_memberships.exists?(writer: user.writer)
-  end
+    def studio_member?
+      record.studio.studio_memberships.exists?(writer: user.writer)
+    end
 end

@@ -39,15 +39,15 @@ class Studios::PagePolicy < Studios::ApplicationPolicy
 
   private
 
-  def zine_policy
-    Studios::ZinePolicy.new(user, record.zine)
-  end
+    def zine_policy
+      Studios::ZinePolicy.new(user, record.zine)
+    end
 
-  def page_writer?
-    record.writer == user.writer
-  end
+    def page_writer?
+      record.writer == user.writer
+    end
 
-  def zine_editor?
-    record.zine.editor == user.writer
-  end
+    def zine_editor?
+      record.zine.editor == user.writer
+    end
 end

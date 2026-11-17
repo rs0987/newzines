@@ -8,15 +8,15 @@ class CardComponent < ApplicationComponent
 
   private
 
-  def card_class
-    class_names("card bg-base-100 shadow", "card-border border-error/30": error?)
-  end
+    def card_class
+      class_names("card bg-base-100 shadow", "card-border border-error/30": error?)
+    end
 
-  def title_class
-    class_names("card-title", "text-error": error?)
-  end
+    def title_class
+      class_names("card-title", "text-error": error?)
+    end
 
-  def error?
-    @color == :error
-  end
+    def error?
+      @color == :error
+    end
 end

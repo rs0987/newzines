@@ -38,11 +38,11 @@ class Admin::InvitationsController < Admin::BaseController
 
   private
 
-  def set_studio
-    @studio = Studio.find(params.expect(:studio_id))
-  end
+    def set_studio
+      @studio = Studio.find(params.expect(:studio_id))
+    end
 
-  def invitation_params
-    params.expect(invitation: %i[username])
-  end
+    def invitation_params
+      params.expect(invitation: %i[username])
+    end
 end
