@@ -17,7 +17,7 @@ class Studios::PublicationsController < Studios::BaseController
 
   private
 
-  def set_zine
-    @zine = @studio.zines.find(params.expect(:zine_id))
-  end
+    def set_zine
+      @zine = @studio.zines.find(params.expect(:zine_id))
+    end
 end

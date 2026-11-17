@@ -48,16 +48,16 @@ class Admin::StudiosController < Admin::BaseController
 
   private
 
-  def set_studio
-    @studio = Studio.find(params.expect(:id))
-  end
+    def set_studio
+      @studio = Studio.find(params.expect(:id))
+    end
 
-  def create_params
-    params.expect(studio: %i[name slug])
-  end
+    def create_params
+      params.expect(studio: %i[name slug])
+    end
 
-  # slug は attr_readonly で、作成後に代入すると例外になるため、更新では受け取らない
-  def update_params
-    params.expect(studio: %i[name])
-  end
+    # slug は attr_readonly で、作成後に代入すると例外になるため、更新では受け取らない
+    def update_params
+      params.expect(studio: %i[name])
+    end
 end

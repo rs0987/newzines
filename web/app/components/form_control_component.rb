@@ -14,15 +14,15 @@ class FormControlComponent < ApplicationComponent
 
   private
 
-  def hint_id
-    @form.field_id(@attribute, :hint)
-  end
+    def hint_id
+      @form.field_id(@attribute, :hint)
+    end
 
-  def error_id
-    @form.field_id(@attribute, :error)
-  end
+    def error_id
+      @form.field_id(@attribute, :error)
+    end
 
-  def errors
-    @form.object&.errors&.full_messages_for(@attribute) || []
-  end
+    def errors
+      @form.object&.errors&.full_messages_for(@attribute) || []
+    end
 end

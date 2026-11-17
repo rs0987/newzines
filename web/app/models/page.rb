@@ -14,7 +14,7 @@ class Page < ApplicationRecord
 
   private
 
-  def place_at_end
-    self.position = (zine.pages.maximum(:position) || 0) + 1
-  end
+    def place_at_end
+      self.position = (zine.pages.maximum(:position) || 0) + 1
+    end
 end

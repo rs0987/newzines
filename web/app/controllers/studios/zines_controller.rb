@@ -51,11 +51,11 @@ class Studios::ZinesController < Studios::BaseController
 
   private
 
-  def set_zine
-    @zine = @studio.zines.find(params.expect(:id))
-  end
+    def set_zine
+      @zine = @studio.zines.find(params.expect(:id))
+    end
 
-  def zine_params
-    params.expect(zine: %i[title description editor_id])
-  end
+    def zine_params
+      params.expect(zine: %i[title description editor_id])
+    end
 end

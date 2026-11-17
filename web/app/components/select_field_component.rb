@@ -10,7 +10,7 @@ class SelectFieldComponent < ApplicationComponent
 
   private
 
-  def select_class
-    class_names("select w-full aria-invalid:border-error", @options[:class])
-  end
+    def select_class
+      class_names("select w-full aria-invalid:border-error", @options[:class])
+    end
 end

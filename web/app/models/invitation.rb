@@ -63,15 +63,15 @@ class Invitation < ApplicationRecord
 
   private
 
-  def issue_token
-    @token = SecureRandom.urlsafe_base64(32)
-    self.token_digest = self.class.digest(@token)
-  end
+    def issue_token
+      @token = SecureRandom.urlsafe_base64(32)
+      self.token_digest = self.class.digest(@token)
+    end
 
-  def username_not_reserved
-    return if username.blank?
+    def username_not_reserved
+      return if username.blank?
 
-    reserved = Invitation.pending.or(Invitation.accepted).where(username:)
-    errors.add(:username, :taken) if reserved.exists?
-  end
+      reserved = Invitation.pending.or(Invitation.accepted).where(username:)
+      errors.add(:username, :taken) if reserved.exists?
+    end
 end

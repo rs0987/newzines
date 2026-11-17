@@ -17,12 +17,12 @@ class Studios::WritingsController < Studios::BaseController
 
   private
 
-  def set_page
-    @zine = @studio.zines.find(params.expect(:zine_id))
-    @page = @zine.pages.find(params.expect(:page_id))
-  end
+    def set_page
+      @zine = @studio.zines.find(params.expect(:zine_id))
+      @page = @zine.pages.find(params.expect(:page_id))
+    end
 
-  def writing_params
-    params.expect(page: %i[title body])
-  end
+    def writing_params
+      params.expect(page: %i[title body])
+    end
 end
