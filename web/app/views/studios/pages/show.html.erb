@@ -1,10 +1,11 @@
-<% content_for :title, @page.title %>
+<% display_title = decorate(@page).display_title %>
+<% content_for :title, display_title %>
 
-<%= component :page_layout, title: @page.title do |page| %>
+<%= component :page_layout, title: display_title do |page| %>
   <% page.with_breadcrumb "ZINE 一覧", studio_zines_path(@studio.slug) %>
   <% page.with_breadcrumb @zine.title, studio_zine_path(@studio.slug, @zine) %>
   <% page.with_breadcrumb "ページ一覧", studio_zine_pages_path(@studio.slug, @zine) %>
-  <% page.with_breadcrumb @page.title %>
+  <% page.with_breadcrumb display_title %>
 
   <div class="flex flex-col gap-6">
     <%= component :card, title: "基本情報" do |card| %>
@@ -40,7 +41,7 @@
         <% card.with_action do %>
           <%= button_to "提出", submit_studio_zine_page_path(@studio.slug, @zine, @page), method: :patch,
                         disabled: !policy([ :studios, @page ]).submit?,
-                        form: { data: { turbo_confirm: "「#{@page.title}」を提出します。提出すると、差し戻されるまで内容を編集できません。よろしいですか？" } },
+                        form: { data: { turbo_confirm: "「#{display_title}」を提出します。提出すると、差し戻されるまで内容を編集できません。よろしいですか？" } },
                         class: "btn btn-sm btn-primary" %>
         <% end %>
       <% end %>
@@ -49,7 +50,7 @@
         <% card.with_action do %>
           <%= button_to "確定", confirm_studio_zine_page_path(@studio.slug, @zine, @page), method: :patch,
                         disabled: !policy([ :studios, @page ]).confirm?,
-                        form: { data: { turbo_confirm: "「#{@page.title}」を確定します。確定すると、差し戻されるまで内容を編集できません。よろしいですか？" } },
+                        form: { data: { turbo_confirm: "「#{display_title}」を確定します。確定すると、差し戻されるまで内容を編集できません。よろしいですか？" } },
                         class: "btn btn-sm btn-primary" %>
         <% end %>
       <% end %>
@@ -76,7 +77,7 @@
         </div>
 
         <%= button_to "削除", studio_zine_page_path(@studio.slug, @zine, @page), method: :delete,
-                      form: { data: { turbo_confirm: "「#{@page.title}」を削除します。本文も削除されます。よろしいですか？" } },
+                      form: { data: { turbo_confirm: "「#{display_title}」を削除します。本文も削除されます。よろしいですか？" } },
                       class: "btn btn-outline btn-error" %>
       </div>
     <% end %>

@@ -42,7 +42,7 @@
                 </td>
 
                 <td>
-                  <%= link_to zine_page.title, studio_zine_page_path(@studio.slug, @zine, zine_page), class: "link" %>
+                  <%= link_to decorate(zine_page).display_title, studio_zine_page_path(@studio.slug, @zine, zine_page), class: "link" %>
                 </td>
 
                 <td><%= zine_page.writer.account.username %></td>
