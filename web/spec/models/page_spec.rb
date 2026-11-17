@@ -69,6 +69,32 @@ RSpec.describe Page, type: :model do
     end
   end
 
+  describe "note" do
+    it "空でも有効である" do
+      page = build(:page, zine:, writer:, note: "")
+
+      expect(page).to be_valid
+    end
+
+    it "200 文字なら有効である" do
+      page = build(:page, zine:, writer:, note: "あ" * 200)
+
+      expect(page).to be_valid
+    end
+
+    it "201 文字なら無効である" do
+      page = build(:page, zine:, writer:, note: "あ" * 201)
+
+      expect(page).not_to be_valid
+    end
+
+    it "\\r\\n の改行を 1 文字として数える" do
+      page = build(:page, zine:, writer:, note: "#{"あ" * 99}\r\n#{"あ" * 100}")
+
+      expect(page).to be_valid
+    end
+  end
+
   describe "position" do
     it "ZINE ごとに 1 から始まり、ページを作るたびに 1 ずつ増える" do
       other_zine = create(:zine, studio:)
