@@ -1,0 +1,16 @@
+<%# アンカーで飛んだときにページの上端が上の帯（スマホは h-14 と h-12、PC は h-12）に隠れないよう、その分ずらす %>
+<article id="<%= dom_id(@page) %>" class="flex scroll-mt-26 flex-col gap-2 px-4 py-8 md:scroll-mt-12">
+  <h2 class="text-lg font-bold"><%= @page.title %></h2>
+  <div class="h-1 w-12 bg-primary" aria-hidden="true"></div>
+  <p class="text-right text-sm"><%= @page.writer.account.username %></p>
+
+  <% if @page.body.present? %>
+    <p class="leading-relaxed tracking-wide whitespace-pre-wrap"><%= @page.body %></p>
+  <% end %>
+
+  <p class="mt-8 text-center text-sm">
+    <span aria-hidden="true">-</span>
+    <%= @number %>
+    <span aria-hidden="true">-</span>
+  </p>
+</article>
