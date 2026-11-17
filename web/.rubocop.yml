@@ -9,3 +9,9 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
 Layout/InitialIndentation:
   Enabled: true
+
+Layout/IndentationWidth:
+  Enabled: true
+
+Layout/IndentationConsistency:
+  Enabled: true
