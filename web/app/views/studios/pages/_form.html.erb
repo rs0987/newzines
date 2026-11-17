@@ -5,6 +5,9 @@
           label: "担当ライター", hint: "スタジオのメンバーから選びます。",
           required: true %>
 
+    <%= component :text_area_field, f, :note, label: "メモ", hint: "担当ライターへの依頼などを書きます。200 文字まで。",
+          maxlength: 200, rows: 4 %>
+
     <% layout.with_action do %>
       <%= f.submit "保存", class: "btn btn-primary btn-wide" %>
     <% end %>

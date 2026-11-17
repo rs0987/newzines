@@ -64,7 +64,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
   end
 
   describe "POST /studios/:studio_slug/zines/:zine_id/pages" do
-    let(:valid_params) { { page: { writer_id: writer.id } } }
+    let(:valid_params) { { page: { writer_id: writer.id, note: "夏に観た映画を 1 本紹介してください" } } }
 
     context "ログインしていないとき" do
       it "ページを追加しない" do
@@ -82,7 +82,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
           post studio_zine_pages_path(studio.slug, zine), params: valid_params
 
           page = zine.pages.last
-          expect(page.writer).to eq writer
+          expect([ page.writer, page.note ]).to eq [ writer, "夏に観た映画を 1 本紹介してください" ]
         end
 
         it "追加したページの詳細画面にリダイレクトする" do
@@ -128,7 +128,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
   describe "PATCH /studios/:studio_slug/zines/:zine_id/pages/:id" do
     let(:page) { create(:page, zine:, writer:) }
     let(:other_writer) { create(:studio_membership, studio:, role: :member).writer }
-    let(:valid_params) { { page: { writer_id: other_writer.id } } }
+    let(:valid_params) { { page: { writer_id: other_writer.id, note: "秋に観た映画を 1 本紹介してください" } } }
 
     context "ログインしていないとき" do
       it "ページを更新しない" do
@@ -146,7 +146,7 @@ RSpec.describe "スタジオサイトのページ管理", type: :request do
           patch studio_zine_page_path(studio.slug, zine, page), params: valid_params
 
           page.reload
-          expect(page.writer).to eq other_writer
+          expect([ page.writer, page.note ]).to eq [ other_writer, "秋に観た映画を 1 本紹介してください" ]
         end
 
         it "ページの詳細画面にリダイレクトする" do

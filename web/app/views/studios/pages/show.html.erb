@@ -20,6 +20,10 @@
         <% list.with_item "状態" do %>
           <%= Page.human_attribute_name("status.#{@page.status}") %>
         <% end %>
+
+        <% list.with_item "メモ" do %>
+          <p class="whitespace-pre-wrap"><%= @page.note %></p>
+        <% end %>
       <% end %>
     <% end %>
 
