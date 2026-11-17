@@ -1,14 +1,15 @@
 <%# 冊子の表紙に見えるよう、A 判（210 × 297）の縦横比にする %>
 <div
-  data-theme="retro"
+  data-theme="<%= @zine.theme_color %>"
   class="
-    flex aspect-[210/297] w-full flex-col overflow-hidden bg-base-100 pt-4
+    flex aspect-[210/297] w-full flex-col overflow-hidden border border-base-300
+    bg-base-100 pt-4
   "
 >
   <div class="bg-primary px-3 py-2 text-primary-content">
-    <h3 class="text-lg font-bold break-words"><%= @title %></h3>
+    <h3 class="text-lg font-bold break-words"><%= @zine.title %></h3>
   </div>
 
   <%# スタジオ名を表紙の一番下に置こうとしたときに、カードの中では daisyUI の .card-body p が干渉しているので、打ち消すために grow-0 を付ける %>
-  <p class="mt-auto grow-0 px-3 pb-3 text-right text-xs"><%= @studio_name %></p>
+  <p class="mt-auto grow-0 px-3 pb-3 text-right text-xs"><%= @zine.studio.name %></p>
 </div>

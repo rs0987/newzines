@@ -1,7 +1,7 @@
 <div class="card bg-base-100 shadow-md">
   <div class="card-body flex-row items-start">
     <div class="w-40 shrink-0">
-      <%= component :zine_cover, title: @zine.title, studio_name: @zine.studio.name %>
+      <%= component :zine_cover, zine: @zine %>
     </div>
 
     <div class="flex flex-1 flex-col gap-2 self-end">

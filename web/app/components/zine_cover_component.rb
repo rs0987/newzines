@@ -1,6 +1,5 @@
 class ZineCoverComponent < ApplicationComponent
-  def initialize(title:, studio_name:)
-    @title = title
-    @studio_name = studio_name
+  def initialize(zine:)
+    @zine = zine
   end
 end
