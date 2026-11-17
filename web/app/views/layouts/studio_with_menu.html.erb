@@ -9,13 +9,17 @@
           border-base-300 bg-base-100 px-2 md:hidden
         "
       >
-        <label
-          for="studio-menu"
-          aria-label="メニューを開く"
+        <button
+          type="button"
+          aria-label="スタジオメニュー"
+          aria-controls="studio-menu-panel"
           class="btn btn-square btn-ghost"
+          data-controller="drawer"
+          data-drawer-id-value="studio-menu"
+          data-action="drawer#toggle"
         >
           <%= component :hamburger_icon %>
-        </label>
+        </button>
 
         <%= link_to @studio.name, studio_root_path(@studio.slug), class: "text-lg font-bold" %>
       </div>
@@ -29,6 +33,7 @@
       <label for="studio-menu" aria-label="メニューを閉じる" class="drawer-overlay"></label>
 
       <nav
+        id="studio-menu-panel"
         aria-label="スタジオメニュー"
         class="
           flex min-h-full w-64 flex-col gap-2 border-r border-base-300

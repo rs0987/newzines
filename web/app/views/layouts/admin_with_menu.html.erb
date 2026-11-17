@@ -4,9 +4,17 @@
 
     <div class="drawer-content min-w-0">
       <div class="sticky top-0 z-20 flex h-14 items-center gap-2 border-b border-base-300 bg-base-100 px-2 md:hidden">
-        <label for="admin-menu" aria-label="メニューを開く" class="btn btn-square btn-ghost">
+        <button
+          type="button"
+          aria-label="管理メニュー"
+          aria-controls="admin-menu-panel"
+          class="btn btn-square btn-ghost"
+          data-controller="drawer"
+          data-drawer-id-value="admin-menu"
+          data-action="drawer#toggle"
+        >
           <%= component :hamburger_icon %>
-        </label>
+        </button>
         <%= link_to "NewZINES 管理者サイト", admin_root_path, class: "text-lg font-bold" %>
       </div>
 
@@ -19,6 +27,7 @@
       <label for="admin-menu" aria-label="メニューを閉じる" class="drawer-overlay"></label>
 
       <nav
+        id="admin-menu-panel"
         aria-label="管理メニュー"
         class="flex min-h-full w-64 flex-col gap-2 border-r border-base-300 bg-base-100 py-4"
       >

@@ -25,13 +25,17 @@
             border-base-300 bg-base-100 px-2 md:hidden
           "
         >
-          <label
-            for="reader-menu"
-            aria-label="メニューを開く"
+          <button
+            type="button"
+            aria-label="メニュー"
+            aria-controls="reader-menu-panel"
             class="btn btn-square btn-ghost"
+            data-controller="drawer"
+            data-drawer-id-value="reader-menu"
+            data-action="drawer#toggle"
           >
             <%= component :hamburger_icon %>
-          </label>
+          </button>
 
           <%= link_to "NewZINES", root_path, class: "text-lg font-bold" %>
         </div>
@@ -45,6 +49,7 @@
         <label for="reader-menu" aria-label="メニューを閉じる" class="drawer-overlay"></label>
 
         <nav
+          id="reader-menu-panel"
           aria-label="メニュー"
           class="flex min-h-full w-64 flex-col gap-2 bg-base-100 p-4 md:w-full"
         >
