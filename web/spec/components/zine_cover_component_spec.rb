@@ -1,8 +1,11 @@
 require "rails_helper"
 
 RSpec.describe ZineCoverComponent, type: :component do
-  it "title と studio_name を表示する" do
-    html = render_inline(described_class.new(title: "映画の夏", studio_name: "映画好きの集まり"))
+  it "タイトルとスタジオ名を表示する" do
+    studio = create(:studio, name: "映画好きの集まり", slug: "cinema01")
+    zine = create(:zine, studio:, title: "映画の夏")
+
+    html = render_inline(described_class.new(zine:))
 
     expect(html.text.squish).to eq "映画の夏 映画好きの集まり"
   end
