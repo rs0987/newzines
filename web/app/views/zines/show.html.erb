@@ -1,9 +1,15 @@
 <% content_for :theme, "retro" %>
 
-<%= component :public_page_layout, title: @zine.title do |page| %>
-  <% page.with_back("ホーム", root_path) %>
+<%= component :public_page_layout, title: @zine.title do |layout| %>
+  <% layout.with_back("ホーム", root_path) %>
 
   <% if @zine.description.present? %>
-    <% page.with_description { @zine.description } %>
+    <% layout.with_description { @zine.description } %>
   <% end %>
+
+  <div class="divide-y divide-base-300 border-y border-base-300">
+    <% @pages.each.with_index(1) do |page, number| %>
+      <%= component :zine_page, page:, number: %>
+    <% end %>
+  </div>
 <% end %>

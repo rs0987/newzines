@@ -11,9 +11,10 @@
 
       <div class="card-actions justify-end">
         <%# カードのどこを押しても読めるように、リンクの押せる範囲をカード全体に広げる %>
+        <%# 押している間に daisyUI の .btn:active が translate を付けると、広げた範囲がボタンの大きさに縮んでクリックが成立しないので、打ち消すために active:translate-none を付ける %>
         <%= link_to "読む", zine_path(@zine),
                     aria: { label: "#{@zine.title}を読む" },
-                    class: "btn btn-sm btn-primary after:absolute after:inset-0" %>
+                    class: "btn btn-sm btn-primary after:absolute after:inset-0 active:translate-none" %>
       </div>
     </div>
   </div>
