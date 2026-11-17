@@ -1,5 +1,21 @@
-<div class="flex flex-col gap-4 p-4">
-  <h1 class="text-xl font-bold"><%= @title %></h1>
+<% if back? %>
+  <%# スマホでは、レイアウトの上の帯（h-14）の真下に固定する %>
+  <div
+    class="
+      sticky top-14 z-10 flex h-12 items-center border-b border-base-300
+      bg-base-100 px-2 lg:top-0
+    "
+  >
+    <%= back %>
+  </div>
+<% end %>
+
+<div class="flex flex-col gap-4 px-4 pb-4">
+  <h1 class="-mx-4 bg-primary px-4 py-2 text-xl font-bold text-primary-content"><%= @title %></h1>
+
+  <% if description? %>
+    <p><%= description %></p>
+  <% end %>
 
   <div>
     <%= content %>

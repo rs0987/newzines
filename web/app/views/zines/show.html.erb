@@ -1,0 +1,9 @@
+<% content_for :theme, "retro" %>
+
+<%= component :public_page_layout, title: @zine.title do |page| %>
+  <% page.with_back("ホーム", root_path) %>
+
+  <% if @zine.description.present? %>
+    <% page.with_description { @zine.description } %>
+  <% end %>
+<% end %>
