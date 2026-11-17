@@ -74,7 +74,7 @@
         <div class="drawer-side z-40">
           <label for="reader-toc" aria-label="もくじを閉じる" class="drawer-overlay"></label>
 
-          <%= tag.div data: { theme: content_for(:theme) }, class: "min-h-full w-64 bg-base-100 p-4" do %>
+          <%= tag.div id: "reader-toc-panel", data: { theme: content_for(:theme) }, class: "min-h-full w-64 bg-base-100 p-4" do %>
             <%= yield :toc %>
           <% end %>
         </div>
