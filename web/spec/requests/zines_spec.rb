@@ -13,6 +13,18 @@ RSpec.describe "公開サイトの ZINE", type: :request do
       expect([ html.at_css("h1").text, html.at_css("h1").next_element.text ]).to eq [ "映画の夏", "夏に観たい名作を紹介します" ]
     end
 
+    it "ページを並び順のとおりに表示する" do
+      zine = create(:zine, studio:, title: "映画の夏", published_at: Time.current)
+      second_page = create(:page, zine:, title: "秋の名画座", status: :confirmed)
+      first_page = create(:page, zine:, title: "夏の名画座", status: :confirmed)
+      zine.sort_pages([ first_page.id, second_page.id ])
+
+      get zine_path(zine)
+
+      titles = Nokogiri::HTML(response.body).css("h2").map(&:text)
+      expect(titles).to eq [ "夏の名画座", "秋の名画座" ]
+    end
+
     it "未発行なら 404 を返す" do
       zine = create(:zine, studio:, title: "映画の夏", published_at: nil)
 
