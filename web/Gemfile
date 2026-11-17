@@ -25,7 +25,7 @@ gem "rails-i18n"
 # Authorization with plain Ruby policy objects [https://github.com/varvet/pundit]
 gem "pundit", "~> 2.5"
 # Reusable, testable view components [https://viewcomponent.org]
-gem "view_component", "~> 4.23"
+gem "view_component", "~> 4.24"
 # Paginate Active Record queries [https://github.com/kaminari/kaminari]
 gem "kaminari", "~> 1.2"
 
