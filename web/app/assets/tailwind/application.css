@@ -3,5 +3,6 @@
 @source not "./daisyui{,*}.mjs";
 
 @plugin "./daisyui.mjs" {
-  themes: corporate --default, light, lofi, retro;
+  themes: corporate --default, light, lofi,
+    retro, caramellatte, lemonade, cupcake, winter, valentine, cyberpunk, aqua, abyss, coffee;
 }
