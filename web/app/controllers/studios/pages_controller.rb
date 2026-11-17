@@ -86,6 +86,6 @@ class Studios::PagesController < Studios::BaseController
     end
 
     def page_params
-      params.expect(page: %i[title writer_id])
+      params.expect(page: %i[writer_id])
     end
 end
