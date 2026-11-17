@@ -25,6 +25,16 @@ RSpec.describe "公開サイトの ZINE", type: :request do
       expect(titles).to eq [ "夏の名画座", "秋の名画座" ]
     end
 
+    it "もくじに、各ページへのリンクを表示する" do
+      zine = create(:zine, studio:, title: "映画の夏", published_at: Time.current)
+      page = create(:page, zine:, title: "夏の名画座", status: :confirmed)
+
+      get zine_path(zine)
+
+      link = Nokogiri::HTML(response.body).at_css("nav[aria-label='もくじ'] a[href='#page_#{page.id}']")
+      expect(link.text.squish).to eq "夏の名画座 1"
+    end
+
     it "未発行なら 404 を返す" do
       zine = create(:zine, studio:, title: "映画の夏", published_at: nil)
 

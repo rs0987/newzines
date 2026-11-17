@@ -1,7 +1,38 @@
 <% content_for :theme, "retro" %>
 
+<% content_for :toc do %>
+  <nav aria-label="もくじ" data-controller="drawer" data-drawer-id-value="reader-toc">
+    <ul class="menu w-full rounded-box bg-base-200">
+      <li class="menu-title text-base-content">もくじ</li>
+      <% @pages.each.with_index(1) do |page, number| %>
+        <li>
+          <%= link_to "##{dom_id(page)}", class: "flex", data: { action: "drawer#close" } do %>
+            <span><%= page.title %></span>
+            <span class="flex-1 self-end border-b-2 border-dotted mb-1" aria-hidden="true"></span>
+            <span><%= number %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+<% end %>
+
 <%= component :public_page_layout, title: @zine.title do |layout| %>
   <% layout.with_back("ホーム", root_path) %>
+
+  <% layout.with_action do %>
+    <%# PC 幅ではもくじが右の列に常に出ているので、タブレット幅とスマホ幅だけに出す %>
+    <button
+      type="button"
+      class="btn btn-sm btn-primary lg:hidden"
+      aria-controls="reader-toc-panel"
+      data-controller="drawer"
+      data-drawer-id-value="reader-toc"
+      data-action="drawer#toggle"
+    >
+      もくじ
+    </button>
+  <% end %>
 
   <% if @zine.description.present? %>
     <% layout.with_description { @zine.description } %>

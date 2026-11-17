@@ -1,4 +1,4 @@
-<% if back? %>
+<% if back? || actions? %>
   <%# スマホでは、レイアウトの上の帯（h-14）の真下に固定する %>
   <div
     class="
@@ -7,6 +7,14 @@
     "
   >
     <%= back %>
+
+    <% if actions? %>
+      <div class="ml-auto flex items-center gap-2">
+        <% actions.each do |action| %>
+          <%= action %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 <% end %>
 

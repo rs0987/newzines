@@ -4,6 +4,7 @@ class PublicPageLayoutComponent < ApplicationComponent
       safe_join([ tag.span("‹", aria: { hidden: true }), "#{name}に戻る" ], " ")
     end
   }
+  renders_many :actions
   renders_one :description
 
   def initialize(title:)
