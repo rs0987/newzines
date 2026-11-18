@@ -8,6 +8,8 @@ services:
     dockerfilePath: ./web/Dockerfile
     # Render のプロキシが前に立つので Thruster は使わず、Render が渡す PORT で Puma を直接待ち受ける
     dockerCommand: ./bin/rails server
+    # 起動コマンドを変えたことで docker-entrypoint の db:prepare が動かなくなるので、デプロイ前に実行する
+    preDeployCommand: ./bin/rails db:prepare
     healthCheckPath: /up
     buildFilter:
       paths:
