@@ -51,6 +51,43 @@ RSpec.describe "管理者のログインとログアウト", type: :request do
         expect(response).to redirect_to(new_administrator_session_path)
       end
     end
+
+    context "9 回続けてパスワードを間違えたあと" do
+      before do
+        9.times do
+          post administrator_session_path, params: { administrator: { username: "admin01", password: "wrongpassword123" } }
+        end
+      end
+
+      it "パスワードが正しければログインできる" do
+        post administrator_session_path, params: { administrator: { username: "admin01", password: "password12345678" } }
+
+        expect(response).to redirect_to(admin_root_path)
+      end
+    end
+
+    context "10 回続けてパスワードを間違えたあと" do
+      before do
+        10.times do
+          post administrator_session_path, params: { administrator: { username: "admin01", password: "wrongpassword123" } }
+        end
+      end
+
+      it "パスワードが正しくてもログインさせない" do
+        post administrator_session_path, params: { administrator: { username: "admin01", password: "password12345678" } }
+        get admin_root_path
+
+        expect(response).to redirect_to(new_administrator_session_path)
+      end
+
+      it "1 時間を過ぎればログインできる" do
+        travel 1.hour + 1.second do
+          post administrator_session_path, params: { administrator: { username: "admin01", password: "password12345678" } }
+
+          expect(response).to redirect_to(admin_root_path)
+        end
+      end
+    end
   end
 
   describe "DELETE /admin/sign_out" do

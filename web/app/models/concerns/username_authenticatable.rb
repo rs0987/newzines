@@ -3,7 +3,7 @@ module UsernameAuthenticatable
   include HasUsername
 
   included do
-    devise :database_authenticatable, :validatable
+    devise :database_authenticatable, :validatable, :lockable
 
     validates :username, uniqueness: true
 
