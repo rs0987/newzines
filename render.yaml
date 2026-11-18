@@ -19,8 +19,6 @@ services:
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
-      - key: SOLID_QUEUE_IN_PUMA
-        value: "true"
 
 databases:
   - name: newzines-db
