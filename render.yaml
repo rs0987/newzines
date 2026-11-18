@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: newzines
+    runtime: docker
+    plan: starter
+    region: singapore
+    dockerContext: ./web
+    dockerfilePath: ./web/Dockerfile
+    # Render のプロキシが前に立つので Thruster は使わず、Render が渡す PORT で Puma を直接待ち受ける
+    dockerCommand: ./bin/rails server
+    healthCheckPath: /up
+    buildFilter:
+      paths:
+        - web/**
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: newzines-db
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: SOLID_QUEUE_IN_PUMA
+        value: "true"
+
+databases:
+  - name: newzines-db
+    plan: basic-256mb
+    region: singapore
+    postgresMajorVersion: "18"
+    databaseName: newzines_production
+    user: newzines
+    ipAllowList: []
