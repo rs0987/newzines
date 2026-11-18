@@ -55,6 +55,43 @@ RSpec.describe "スタジオサイトのログインとログアウト", type: :
           expect(response).to have_http_status(:unprocessable_content)
         end
       end
+
+      context "9 回続けてパスワードを間違えたあと" do
+        before do
+          9.times do
+            post account_session_path, params: { account: { username: "writer01", password: "wrongpassword123" } }
+          end
+        end
+
+        it "パスワードが正しければログインできる" do
+          post account_session_path, params: { account: { username: "writer01", password: "password12345678" } }
+
+          expect(response).to redirect_to(studio_root_path(studio.slug))
+        end
+      end
+
+      context "10 回続けてパスワードを間違えたあと" do
+        before do
+          10.times do
+            post account_session_path, params: { account: { username: "writer01", password: "wrongpassword123" } }
+          end
+        end
+
+        it "パスワードが正しくてもログインさせない" do
+          post account_session_path, params: { account: { username: "writer01", password: "password12345678" } }
+          get studio_root_path(studio.slug)
+
+          expect(response).to redirect_to(new_account_session_path)
+        end
+
+        it "1 時間を過ぎればログインできる" do
+          travel 1.hour + 1.second do
+            post account_session_path, params: { account: { username: "writer01", password: "password12345678" } }
+
+            expect(response).to redirect_to(studio_root_path(studio.slug))
+          end
+        end
+      end
     end
 
     context "ログイン前にスタジオのページを開こうとしていたとき" do
