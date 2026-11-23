@@ -53,4 +53,22 @@
       <%= component :zine_page, page:, number: %>
     <% end %>
   </div>
+
+  <section aria-label="奥付" class="flex justify-center gap-2 px-4 py-8 w-full">
+    <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
+      <dt>発行日</dt>
+
+      <dd>
+        <time><%= @zine.published_at.to_date.iso8601 %></time>
+      </dd>
+
+      <dt>スタジオ</dt>
+
+      <dd><%= @zine.studio.name %></dd>
+
+      <dt>責任編集者</dt>
+
+      <dd><%= @zine.editor.account.username %></dd>
+    </dl>
+  </section>
 <% end %>

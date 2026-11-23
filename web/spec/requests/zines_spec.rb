@@ -35,6 +35,18 @@ RSpec.describe "公開サイトの ZINE", type: :request do
       expect(link.text.squish).to eq "夏の名画座 1"
     end
 
+    it "奥付に、発行日、スタジオ名、責任編集者を表示する" do
+      editor = create(:writer, account: create(:account, username: "writer01"))
+      create(:studio_membership, studio:, writer: editor)
+      zine = create(:zine, studio:, editor:, title: "映画の夏", published_at: Time.zone.parse("2026-11-08 10:00"))
+
+      get zine_path(zine)
+
+      colophon = Nokogiri::HTML(response.body).at_css("section[aria-label='奥付']")
+      pairs = colophon.css("dt").map { |term| [ term.text.squish, term.next_element.text.squish ] }
+      expect(pairs).to eq [ [ "発行日", "2026-11-08" ], [ "スタジオ", "映画好きの集まり" ], [ "責任編集者", "writer01" ] ]
+    end
+
     it "未発行なら 404 を返す" do
       zine = create(:zine, studio:, title: "映画の夏", published_at: nil)
 
