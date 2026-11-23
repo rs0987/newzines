@@ -69,6 +69,10 @@
             </li>
 
             <li>
+              <%= link_to "ZINE 一覧", zines_path, class: ("menu-active" if controller_name == "zines") %>
+            </li>
+
+            <li>
               <%= link_to "このサイトについて", about_path, class: ("menu-active" if controller_name == "abouts") %>
             </li>
           </ul>

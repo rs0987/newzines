@@ -3,6 +3,26 @@ require "rails_helper"
 RSpec.describe "公開サイトの ZINE", type: :request do
   let(:studio) { create(:studio, name: "映画好きの集まり", slug: "cinema01") }
 
+  describe "GET /zines" do
+    it "発行済みの ZINE を、発行日時の新しい順に表示する" do
+      create(:zine, studio:, title: "映画の春", published_at: 2.days.ago)
+      create(:zine, studio:, title: "映画の夏", published_at: 1.day.ago)
+
+      get zines_path
+
+      titles = Nokogiri::HTML(response.body).css("h3").map(&:text)
+      expect(titles).to eq [ "映画の夏", "映画の春" ]
+    end
+
+    it "未発行の ZINE は表示しない" do
+      create(:zine, studio:, title: "映画の秋", published_at: nil)
+
+      get zines_path
+
+      expect(response.body).not_to include("映画の秋")
+    end
+  end
+
   describe "GET /zines/:id" do
     it "発行済みなら、タイトルと説明を表示する" do
       zine = create(:zine, studio:, title: "映画の夏", description: "夏に観たい名作を紹介します", published_at: Time.current)
