@@ -2,7 +2,10 @@
 
 <html data-theme="lofi" class="overflow-y-scroll">
   <head>
-    <title><%= content_for?(:title) ? "#{yield(:title)} | NewZINES" : "NewZINES" %></title>
+    <title>
+      <%= content_for?(:title) ? "#{yield(:title)} | NewZINES" : "NewZINES" %>
+    </title>
+
     <%= render "layouts/head" %>
   </head>
 
@@ -18,7 +21,12 @@
     >
       <input id="reader-menu" type="checkbox" class="drawer-toggle">
 
-      <div class="drawer-content flex min-h-screen flex-col border-base-content md:border-x">
+      <div
+        class="
+          drawer-content flex min-h-screen flex-col border-base-content
+          md:border-x
+        "
+      >
         <div
           class="
             sticky top-0 z-20 flex h-14 items-center gap-2 border-b
@@ -64,7 +72,12 @@
           <%= yield :toc %>
         <% end %>
       <% else %>
-        <div class="sticky top-0 col-start-3 row-start-1 hidden h-screen flex-col p-4 lg:flex">
+        <div
+          class="
+            sticky top-0 col-start-3 row-start-1 hidden h-screen flex-col
+            p-4 lg:flex
+          "
+        >
           <%= image_tag "books.png", alt: "", class: "mt-auto w-48 self-end p-4" %>
         </div>
       <% end %>
@@ -74,6 +87,7 @@
       <%# タブレット幅とスマホ幅では、もくじをメニューとは別のドロワーにして右から開く %>
       <div class="drawer drawer-end lg:hidden">
         <input id="reader-toc" type="checkbox" class="drawer-toggle">
+
         <div class="drawer-content"></div>
 
         <div class="drawer-side z-40">

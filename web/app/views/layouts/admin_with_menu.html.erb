@@ -3,7 +3,12 @@
     <input id="admin-menu" type="checkbox" class="drawer-toggle">
 
     <div class="drawer-content min-w-0">
-      <div class="sticky top-0 z-20 flex h-14 items-center gap-2 border-b border-base-300 bg-base-100 px-2 md:hidden">
+      <div
+        class="
+          sticky top-0 z-20 flex h-14 items-center gap-2 border-b
+          border-base-300 bg-base-100 px-2 md:hidden
+        "
+      >
         <button
           type="button"
           aria-label="管理メニュー"
@@ -15,6 +20,7 @@
         >
           <%= component :hamburger_icon %>
         </button>
+
         <%= link_to "NewZINES 管理者サイト", admin_root_path, class: "text-lg font-bold" %>
       </div>
 
@@ -29,7 +35,10 @@
       <nav
         id="admin-menu-panel"
         aria-label="管理メニュー"
-        class="flex min-h-full w-64 flex-col gap-2 border-r border-base-300 bg-base-100 py-4"
+        class="
+          flex min-h-full w-64 flex-col gap-2 border-r border-base-300
+          bg-base-100 py-4
+        "
       >
         <%= link_to "NewZINES 管理者サイト", admin_root_path, class: "btn btn-ghost mx-2 justify-start text-lg" %>
 
@@ -37,6 +46,7 @@
           <li>
             <%= link_to "ダッシュボード", admin_root_path, class: ("menu-active" if controller_name == "dashboards") %>
           </li>
+
           <li>
             <%= link_to "スタジオ", admin_studios_path, class: ("menu-active" if controller_name.in?(%w[studios invitations])) %>
           </li>
@@ -49,10 +59,16 @@
                 <span class="text-xs"><%= current_administrator.username.first.upcase %></span>
               </div>
             </div>
+
             <%= current_administrator.username %>
           </summary>
 
-          <ul class="menu dropdown-content z-30 w-full rounded-box bg-base-100 p-2 shadow">
+          <ul
+            class="
+              menu dropdown-content z-30 w-full rounded-box bg-base-100 p-2
+              shadow
+            "
+          >
             <li>
               <%# ボタンを横幅いっぱいにするため、daisyUI が form に付ける grid を flex で上書きする %>
               <%= button_to "Log out", destroy_administrator_session_path, method: :delete,

@@ -2,6 +2,7 @@
 <nav aria-label="ページ送り" class="join">
   <%= paginator.first_page_tag unless current_page.first? %>
   <%= paginator.prev_page_tag unless current_page.first? %>
+
   <% paginator.each_page do |page| -%>
     <% if page.display_tag? -%>
       <%= paginator.page_tag page %>
@@ -9,6 +10,7 @@
       <%= paginator.gap_tag %>
     <% end -%>
   <% end -%>
+
   <% unless current_page.out_of_range? %>
     <%= paginator.next_page_tag unless current_page.last? %>
     <%= paginator.last_page_tag unless current_page.last? %>

@@ -40,7 +40,9 @@
     <%= component :card, title: "発行" do %>
       <div class="flex flex-wrap items-center gap-4">
         <% if @zine.published_at? %>
-          <p class="flex-1"><%= l @zine.published_at, format: :short %> に発行しました。</p>
+          <p class="flex-1">
+            <%= l @zine.published_at, format: :short %> に発行しました。
+          </p>
 
           <%= button_to "発行取り消し", studio_zine_publication_path(@studio.slug, @zine), method: :delete,
                         disabled: !policy([ :studios, @zine ]).unpublish?,

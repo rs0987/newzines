@@ -11,7 +11,10 @@
 
   <% if @pages.any? %>
     <%# ハンドルの外で離されると、ハンドルの mouseup が来ないので、window の mouseup で戻す %>
-    <div data-controller="sortable" data-action="mouseup@window->sortable#release">
+    <div
+      data-controller="sortable"
+      data-action="mouseup@window->sortable#release"
+    >
       <%= component :table_layout do %>
         <table class="table">
           <thead>

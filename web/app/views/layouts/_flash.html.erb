@@ -7,9 +7,27 @@
             class: [ "alert", type == "alert" ? "alert-error" : "alert-success" ],
             data: { controller: "flash", flash_timeout_value: (5000 unless type == "alert") } do %>
         <span><%= message %></span>
-        <button type="button" aria-label="閉じる" class="btn btn-square btn-ghost btn-sm" data-action="flash#dismiss">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+
+        <button
+          type="button"
+          aria-label="閉じる"
+          class="btn btn-square btn-ghost btn-sm"
+          data-action="flash#dismiss"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-5"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18 18 6M6 6l12 12"
+            />
           </svg>
         </button>
       <% end %>
