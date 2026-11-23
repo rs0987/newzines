@@ -6,7 +6,7 @@ RSpec.describe "公開サイトの「このサイトについて」", type: :req
       get about_path
 
       title = Nokogiri::HTML(response.body).at_css("h1").text
-      expect(title).to eq "このサイトについて"
+      expect(title.squish).to eq "このサイトについて"
     end
   end
 end
