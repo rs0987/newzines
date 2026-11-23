@@ -2,7 +2,12 @@
   <% if breadcrumbs? || actions? %>
     <%# 狭い画面では、管理者サイトの上の帯（h-14）の真下に固定する %>
     <%# 下線を左右の端まで引くため、本文の左右の余白（px-4 md:px-8）を負のマージンで打ち消す %>
-    <div class="sticky top-14 md:top-0 z-10 -mx-4 flex items-center gap-4 border-b border-base-300 bg-base-100 h-14 px-4 md:-mx-8 md:px-8">
+    <div
+      class="
+        sticky top-14 md:top-0 z-10 -mx-4 flex items-center gap-4 border-b
+        border-base-300 bg-base-100 h-14 px-4 md:-mx-8 md:px-8
+      "
+    >
       <% if breadcrumbs? %>
         <nav aria-label="パンくずリスト" class="breadcrumbs text-sm">
           <ul>

@@ -10,7 +10,7 @@ RSpec.describe "公開サイトの ZINE", type: :request do
       get zine_path(zine)
 
       html = Nokogiri::HTML(response.body)
-      expect([ html.at_css("h1").text, html.at_css("h1").next_element.text ]).to eq [ "映画の夏", "夏に観たい名作を紹介します" ]
+      expect([ html.at_css("h1").text.squish, html.at_css("h1").next_element.text.squish ]).to eq [ "映画の夏", "夏に観たい名作を紹介します" ]
     end
 
     it "ページを並び順のとおりに表示する" do

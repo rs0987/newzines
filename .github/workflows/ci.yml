@@ -74,6 +74,22 @@ jobs:
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
+  format_erb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      # 保存時に整形する VS Code の Herb 拡張機能と結果がずれないよう、バージョンを固定する
+      - name: Check ERB formatting
+        run: npx --yes @herb-tools/formatter@0.11.2 --check
+
   test:
     runs-on: ubuntu-latest
 

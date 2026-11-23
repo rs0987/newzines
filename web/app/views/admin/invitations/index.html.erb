@@ -31,7 +31,11 @@
           <% @invitations.each do |invitation| %>
             <tr>
               <td><%= invitation.username %></td>
-              <td><%= component :invitation_status_badge, status: invitation.status %></td>
+
+              <td>
+                <%= component :invitation_status_badge, status: invitation.status %>
+              </td>
+
               <td><%= l invitation.expires_at, format: :short %></td>
               <td><%= invitation.inviter.username %></td>
               <td><%= l invitation.created_at, format: :short %></td>
