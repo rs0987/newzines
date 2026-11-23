@@ -1,0 +1,17 @@
+<% content_for :title, "ZINE 一覧" %>
+
+<%= component :public_page_layout, title: "ZINE 一覧" do %>
+  <section class="flex flex-col items-center gap-4 px-4">
+    <% if @zines.any? %>
+      <ul class="flex w-full flex-col gap-4">
+        <% @zines.each do |zine| %>
+          <li><%= component :zine_card, zine: %></li>
+        <% end %>
+      </ul>
+
+      <%= paginate @zines %>
+    <% else %>
+      <p>まだ発行された ZINE はありません。</p>
+    <% end %>
+  </section>
+<% end %>

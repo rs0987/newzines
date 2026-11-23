@@ -36,7 +36,7 @@ Rails.application.routes.draw do
 
   root "homes#show"
   resource :about, only: %i[show]
-  resources :zines, only: %i[show]
+  resources :zines, only: %i[index show]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

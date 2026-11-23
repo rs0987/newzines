@@ -8,6 +8,8 @@
           <li><%= component :zine_card, zine: %></li>
         <% end %>
       </ul>
+
+      <%= link_to "もっと見る", zines_path, class: "btn" %>
     <% else %>
       <p>まだ発行された ZINE はありません。</p>
     <% end %>
