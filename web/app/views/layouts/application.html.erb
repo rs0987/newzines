@@ -62,6 +62,16 @@
           class="flex min-h-full w-64 flex-col gap-2 bg-base-100 p-4 md:w-full"
         >
           <%= link_to "NewZINES", root_path, class: "text-2xl font-bold" %>
+
+          <ul class="menu w-full">
+            <li>
+              <%= link_to "ホーム", root_path, class: ("menu-active" if controller_name == "homes") %>
+            </li>
+
+            <li>
+              <%= link_to "このサイトについて", about_path, class: ("menu-active" if controller_name == "abouts") %>
+            </li>
+          </ul>
         </nav>
       </div>
 
