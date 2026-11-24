@@ -10,6 +10,50 @@ RSpec.describe Idea, type: :model do
     expect(idea).to be_valid
   end
 
+  describe ".unarchived" do
+    it "アーカイブしていないネタだけを返す" do
+      create(:idea, studio:, writer:, title: "一覧のネタ")
+      create(:idea, studio:, writer:, title: "アーカイブしたネタ", archived_at: Time.current)
+
+      ideas = described_class.unarchived
+
+      expect(ideas.map(&:title)).to eq [ "一覧のネタ" ]
+    end
+  end
+
+  describe ".archived" do
+    it "アーカイブしたネタだけを返す" do
+      create(:idea, studio:, writer:, title: "一覧のネタ")
+      create(:idea, studio:, writer:, title: "アーカイブしたネタ", archived_at: Time.current)
+
+      ideas = described_class.archived
+
+      expect(ideas.map(&:title)).to eq [ "アーカイブしたネタ" ]
+    end
+  end
+
+  describe "#archive!" do
+    it "今の日時をアーカイブした日時として記録する" do
+      idea = create(:idea, studio:, writer:)
+
+      freeze_time do
+        idea.archive!
+
+        expect(idea.reload.archived_at).to eq Time.current
+      end
+    end
+  end
+
+  describe "#unarchive!" do
+    it "アーカイブした日時を消す" do
+      idea = create(:idea, studio:, writer:, archived_at: Time.current)
+
+      idea.unarchive!
+
+      expect(idea.reload.archived_at).to be_nil
+    end
+  end
+
   describe "title" do
     it "改行を空白に置き換える" do
       idea = build(:idea, studio:, writer:, title: "夏の\r\n名画座")
