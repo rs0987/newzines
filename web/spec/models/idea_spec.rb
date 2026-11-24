@@ -10,6 +10,22 @@ RSpec.describe Idea, type: :model do
     expect(idea).to be_valid
   end
 
+  describe "title" do
+    it "改行を空白に置き換える" do
+      idea = build(:idea, studio:, writer:, title: "夏の\r\n名画座")
+
+      expect(idea.title).to eq "夏の 名画座"
+    end
+  end
+
+  describe "body" do
+    it "改行を空白に置き換える" do
+      idea = build(:idea, studio:, writer:, body: "名画座の\n夏の特集")
+
+      expect(idea.body).to eq "名画座の 夏の特集"
+    end
+  end
+
   describe "writer" do
     it "スタジオのメンバーでなければ無効である" do
       idea = build(:idea, studio:, writer: create(:writer))

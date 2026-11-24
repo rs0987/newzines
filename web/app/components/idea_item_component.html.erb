@@ -1,0 +1,12 @@
+<div
+  id="<%= dom_id(@idea) %>"
+  class="grid grid-cols-[1fr_2fr] divide-x divide-base-300"
+>
+  <dt>
+    <%= component :idea_cell, idea: @idea, field: "title", editing: @editing_field == "title" %>
+  </dt>
+
+  <dd>
+    <%= component :idea_cell, idea: @idea, field: "body", editing: @editing_field == "body" %>
+  </dd>
+</div>

@@ -50,6 +50,10 @@
           <li>
             <%= link_to "ZINE", studio_zines_path(@studio.slug), class: ("menu-active" if controller_name.in?(%w[zines pages writings])) %>
           </li>
+
+          <li>
+            <%= link_to "ネタ帳", studio_ideas_path(@studio.slug), class: ("menu-active" if controller_name == "ideas") %>
+          </li>
         </ul>
 
         <details class="dropdown dropdown-top border-t border-base-300 px-2 pt-2">

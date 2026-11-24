@@ -1,0 +1,21 @@
+<turbo-frame id="<%= frame_id %>" class="block h-full">
+  <% if @editing %>
+    <%# daisyUI の入力欄は枠の外側にフォーカスの線を出し、隣のセルにはみ出すので、線をセルの内側に引き直す。入力欄自身の枠と影は、セルの罫線と重なるので消す %>
+    <%= form_with model: @idea, url: update_path, class: "h-full", data: { controller: "inline-edit", action: "turbo:submit-start->inline-edit#lock" } do |f| %>
+      <%= f.text_area @field,
+            rows: 1,
+            placeholder: label,
+            class: "textarea textarea-md block min-h-full w-full resize-none rounded-none border-0 text-base shadow-none focus:outline-2 focus:-outline-offset-2 focus:outline-primary",
+            aria: { label: },
+            data: { inline_edit_target: "input", action: "input->inline-edit#resize blur->inline-edit#submit keydown.enter->inline-edit#submitOnEnter" } %>
+    <% end %>
+  <% else %>
+    <%= link_to edit_path, class: "block h-full min-h-10 cursor-cell px-3 py-2 text-base hover:outline-2 hover:-outline-offset-2 hover:outline-primary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary" do %>
+      <% if value.present? %>
+        <%= value %>
+      <% else %>
+        <span class="text-base-content/60"><%= label %></span>
+      <% end %>
+    <% end %>
+  <% end %>
+</turbo-frame>

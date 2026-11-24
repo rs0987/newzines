@@ -1,0 +1,3 @@
+<%= turbo_stream.append "ideas" do %>
+  <%= component :idea_item, idea: @idea, editing_field: "title" %>
+<% end %>
