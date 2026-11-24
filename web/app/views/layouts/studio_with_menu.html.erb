@@ -52,7 +52,7 @@
           </li>
 
           <li>
-            <%= link_to "ネタ帳", studio_ideas_path(@studio.slug), class: ("menu-active" if controller_name == "ideas") %>
+            <%= link_to "ネタ帳", studio_ideas_path(@studio.slug), class: ("menu-active" if controller_name.in?(%w[ideas archived_ideas])) %>
           </li>
         </ul>
 
