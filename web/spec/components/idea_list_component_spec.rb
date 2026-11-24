@@ -1,10 +1,40 @@
 require "rails_helper"
 
 RSpec.describe IdeaListComponent, type: :component do
-  it "content をリストの中に表示する" do
-    html = render_inline(described_class.new) { "ネタの行" }
+  describe "content" do
+    context "あるとき" do
+      it "リストの中に表示する" do
+        html = render_inline(described_class.new) { "ネタの行" }
 
-    expect(html.at_css("dl#ideas").text.squish).to eq "ネタの行"
+        expect(html.at_css("dl#ideas").text.squish).to eq "ネタの行"
+      end
+
+      it "ネタがないことを表示しない" do
+        html = render_inline(described_class.new) { "ネタの行" }
+
+        expect(html.text).not_to include("ネタがありません")
+      end
+    end
+
+    context "空のとき" do
+      it "ネタがないことを表示する" do
+        html = render_inline(described_class.new) { "" }
+
+        expect(html.at_css("dl#ideas").next_element.text.squish).to eq "ネタがありません"
+      end
+    end
+  end
+
+  describe "status" do
+    it "archived を指定すると、紙を一段暗い色にする" do
+      html = render_inline(described_class.new(status: :archived)) { "ネタの行" }
+
+      expect(html.at_css("dl#ideas").parent["class"]).to include("bg-base-200")
+    end
+
+    it "用意していない状態を指定すると、エラーを出す" do
+      expect { described_class.new(status: :deleted) }.to raise_error(KeyError)
+    end
   end
 
   describe "footer" do

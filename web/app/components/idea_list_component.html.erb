@@ -1,6 +1,9 @@
 <div>
   <div class="relative pt-4">
-    <div aria-hidden="true" class="absolute inset-x-0 top-0 flex justify-evenly">
+    <div
+      aria-hidden="true"
+      class="absolute inset-x-0 top-0 flex justify-evenly"
+    >
       <% RING_COUNT.times do %>
         <div class="relative h-8 w-3 max-md:even:hidden">
           <div
@@ -12,8 +15,8 @@
 
           <div
             class="
-              absolute top-0 left-1/2 h-7 w-1.5 -translate-x-1/2 rounded-full
-              bg-neutral
+              absolute top-0 left-1/2 h-7 w-1.5 -translate-x-1/2
+              rounded-full bg-neutral
             "
           ></div>
         </div>
@@ -24,12 +27,16 @@
     <div
       class="
         flex min-h-75 flex-col overflow-hidden rounded-box border border-base-300 pt-6
-        shadow-[0_6px_0_var(--color-primary)]
+        shadow-[0_6px_0_var(--color-primary)] <%= @paper_class %>
       "
     >
-      <dl id="ideas" class="divide-y divide-base-300">
-        <%= content %>
-      </dl>
+      <%# 空のときに :empty が効くように、改行や空白も含めて何も出力しない %>
+      <dl id="ideas" class="peer divide-y divide-base-300"><%= content.presence %></dl>
+
+      <% if content.blank? %>
+        <%# 一覧で 1 件目を Turbo Stream で足したときに、読み込み直さなくても消えるようにする %>
+        <p class="hidden px-3 py-2 peer-empty:block">ネタがありません</p>
+      <% end %>
 
       <% if footer? %>
         <%# ネタが少なくて紙に余白があっても、紙の一番下に置く %>

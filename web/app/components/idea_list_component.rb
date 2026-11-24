@@ -23,4 +23,13 @@ class IdeaListComponent < ApplicationComponent
 
   renders_many :tabs, TabComponent
   renders_one :footer
+
+  PAPER_COLORS = {
+    active: "bg-base-100",
+    archived: "bg-base-200"
+  }.freeze
+
+  def initialize(status: :active)
+    @paper_class = PAPER_COLORS.fetch(status)
+  end
 end
