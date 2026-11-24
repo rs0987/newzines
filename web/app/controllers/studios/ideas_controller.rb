@@ -3,7 +3,7 @@ class Studios::IdeasController < Studios::BaseController
   before_action :set_field, only: %i[edit update]
 
   def index
-    @ideas = policy_scope([ :studios, @studio.ideas ]).order(:id)
+    @ideas = policy_scope([ :studios, @studio.ideas.unarchived ]).order(:id)
   end
 
   def create
@@ -38,7 +38,7 @@ class Studios::IdeasController < Studios::BaseController
   private
 
     def set_idea
-      @idea = @studio.ideas.find(params.expect(:id))
+      @idea = @studio.ideas.unarchived.find(params.expect(:id))
     end
 
     def set_field

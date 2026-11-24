@@ -19,13 +19,14 @@ RSpec.describe "スタジオサイトのネタ帳", type: :request do
     context "ログインしているとき" do
       before { sign_in writer.account }
 
-      it "ネタの一覧を表示する" do
-        create(:idea, studio:, writer:, title: "夏の名画座")
+      it "アーカイブしていないネタだけを表示する" do
+        create(:idea, studio:, writer:, title: "一覧のネタ")
+        create(:idea, studio:, writer:, title: "アーカイブしたネタ", archived_at: Time.current)
 
         get studio_ideas_path(studio.slug)
 
         titles = Nokogiri::HTML(response.body).css("dl#ideas dt").map { |title| title.text.squish }
-        expect(titles).to eq [ "夏の名画座" ]
+        expect(titles).to eq [ "一覧のネタ" ]
       end
     end
   end
