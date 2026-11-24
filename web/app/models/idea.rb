@@ -2,6 +2,9 @@ class Idea < ApplicationRecord
   belongs_to :studio
   belongs_to :writer
 
+  # 入力欄では Enter で保存するので改行は入らないが、貼り付けると入るため、空白に置き換える
+  normalizes :title, :body, with: ->(text) { text.gsub(/\R/, " ") }
+
   validate :writer_must_be_studio_member
 
   private
