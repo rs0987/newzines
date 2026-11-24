@@ -58,6 +58,13 @@ RSpec.describe "スタジオサイトのネタ帳", type: :request do
         expect(stream.at_css("template textarea[name='idea[title]']")).to be_present
         expect(stream.at_css("template > div")["id"]).to eq "idea_#{idea.id}"
       end
+
+      it "ネタがないことを示す文を、Turbo Stream で消す" do
+        post studio_ideas_path(studio.slug), headers: turbo_stream_headers
+
+        stream = Nokogiri::HTML.fragment(response.body).at_css("turbo-stream[action='remove'][target='ideas_empty']")
+        expect(stream).to be_present
+      end
     end
   end
 

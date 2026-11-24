@@ -30,12 +30,13 @@
         shadow-[0_6px_0_var(--color-primary)] <%= @paper_class %>
       "
     >
-      <%# 空のときに :empty が効くように、改行や空白も含めて何も出力しない %>
-      <dl id="ideas" class="peer divide-y divide-base-300"><%= content.presence %></dl>
+      <dl id="ideas" class="divide-y divide-base-300">
+        <%= content %>
+      </dl>
 
       <% if content.blank? %>
-        <%# 一覧で 1 件目を Turbo Stream で足したときに、読み込み直さなくても消えるようにする %>
-        <p class="hidden px-3 py-2 peer-empty:block">ネタがありません</p>
+        <%# 1 件目を Turbo Stream で足したときに消せるように、id を付ける %>
+        <p id="ideas_empty" class="px-3 py-2">ネタがありません</p>
       <% end %>
 
       <% if footer? %>

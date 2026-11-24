@@ -20,7 +20,7 @@ RSpec.describe IdeaListComponent, type: :component do
       it "ネタがないことを表示する" do
         html = render_inline(described_class.new) { "" }
 
-        expect(html.at_css("dl#ideas").next_element.text.squish).to eq "ネタがありません"
+        expect(html.at_css("#ideas_empty").text.squish).to eq "ネタがありません"
       end
     end
   end
