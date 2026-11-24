@@ -9,12 +9,17 @@ ja:
       studio_membership: スタジオメンバー
       zine: ZINE
       page: ページ
+      idea: ネタ
     errors:
       models:
         zine:
           attributes:
             editor:
               not_studio_member: はスタジオのメンバーから選んでください
+        idea:
+          attributes:
+            writer:
+              not_studio_member: はスタジオのメンバーである必要があります
     attributes:
       administrator:
         username: ユーザー名
@@ -60,6 +65,12 @@ ja:
         draft: 下書き
         reviewing: 確認中
         confirmed: 確定
+      idea:
+        studio: スタジオ
+        writer: ライター
+        title: タイトル
+        body: 本文
+        archived_at: アーカイブ日時
   views:
     pagination:
       first: "« 最初"
