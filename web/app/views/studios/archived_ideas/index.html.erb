@@ -1,0 +1,15 @@
+<% content_for :title, "ネタ帳のアーカイブ" %>
+
+<%= component :page_layout, title: "ネタ帳のアーカイブ" do |page| %>
+  <% page.with_breadcrumb "ネタ帳", studio_ideas_path(@studio.slug) %>
+  <% page.with_breadcrumb "アーカイブ" %>
+
+  <%= component :idea_list, status: :archived do |list| %>
+    <% list.with_tab name: "一覧", path: studio_ideas_path(@studio.slug), color: :info %>
+    <% list.with_tab name: "アーカイブ", path: studio_archived_ideas_path(@studio.slug), color: :warning, current: true %>
+
+    <% @ideas.each do |idea| %>
+      <%= component :archived_idea_item, idea: %>
+    <% end %>
+  <% end %>
+<% end %>

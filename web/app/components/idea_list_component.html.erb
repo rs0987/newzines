@@ -1,40 +1,59 @@
-<div class="relative pt-4">
-  <div aria-hidden="true" class="absolute inset-x-0 top-0 flex justify-evenly">
-    <% RING_COUNT.times do %>
-      <div class="relative h-8 w-3 max-md:even:hidden">
-        <div
-          class="
-            absolute bottom-0 left-1/2 size-2.5 -translate-x-1/2
-            rounded-full bg-base-300
-          "
-        ></div>
+<div>
+  <div class="relative pt-4">
+    <div
+      aria-hidden="true"
+      class="absolute inset-x-0 top-0 flex justify-evenly"
+    >
+      <% RING_COUNT.times do %>
+        <div class="relative h-8 w-3 max-md:even:hidden">
+          <div
+            class="
+              absolute bottom-0 left-1/2 size-2.5 -translate-x-1/2
+              rounded-full bg-base-300
+            "
+          ></div>
 
-        <div
-          class="
-            absolute top-0 left-1/2 h-7 w-1.5 -translate-x-1/2 rounded-full
-            bg-neutral
-          "
-        ></div>
-      </div>
-    <% end %>
+          <div
+            class="
+              absolute top-0 left-1/2 h-7 w-1.5 -translate-x-1/2
+              rounded-full bg-neutral
+            "
+          ></div>
+        </div>
+      <% end %>
+    </div>
+
+    <%# ノートの厚みに見せるため、ぼかさない影を primary の色で下にずらして付ける。border にすると、外側の灰色の線が無くなるため %>
+    <div
+      class="
+        flex min-h-75 flex-col overflow-hidden rounded-box border border-base-300 pt-6
+        shadow-[0_6px_0_var(--color-primary)] <%= @paper_class %>
+      "
+    >
+      <dl id="ideas" class="divide-y divide-base-300">
+        <%= content %>
+      </dl>
+
+      <% if content.blank? %>
+        <%# 1 件目を Turbo Stream で足したときに消せるように、id を付ける %>
+        <p id="ideas_empty" class="px-3 py-2">ネタがありません</p>
+      <% end %>
+
+      <% if footer? %>
+        <%# ネタが少なくて紙に余白があっても、紙の一番下に置く %>
+        <div class="mt-auto border-t border-base-300">
+          <%= footer %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
-  <%# ノートの厚みに見せるため、ぼかさない影を primary の色で下にずらして付ける。border にすると、外側の灰色の線が無くなるため %>
-  <div
-    class="
-      flex min-h-75 flex-col overflow-hidden rounded-box border border-base-300 pt-6
-      shadow-[0_6px_0_var(--color-primary)]
-    "
-  >
-    <dl id="ideas" class="divide-y divide-base-300">
-      <%= content %>
-    </dl>
-
-    <% if footer? %>
-      <%# ネタが少なくて紙に余白があっても、紙の一番下に置く %>
-      <div class="mt-auto border-t border-base-300">
-        <%= footer %>
-      </div>
-    <% end %>
-  </div>
+  <% if tabs? %>
+    <%# 一覧とアーカイブは別の画面なので、ARIA のタブ（tablist）ではなく、今いるページを aria-current で示すリンクにする %>
+    <nav aria-label="タブの切り替え" class="tabs tabs-lift tabs-bottom px-4">
+      <% tabs.each do |tab| %>
+        <%= tab %>
+      <% end %>
+    </nav>
+  <% end %>
 </div>

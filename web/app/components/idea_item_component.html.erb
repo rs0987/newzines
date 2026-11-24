@@ -1,6 +1,6 @@
 <div
   id="<%= dom_id(@idea) %>"
-  class="grid grid-cols-[1fr_2fr] divide-x divide-base-300"
+  class="grid grid-cols-[1fr_2fr_auto] divide-x divide-base-300"
 >
   <dt>
     <%= component :idea_cell, idea: @idea, field: "title", editing: @editing_field == "title" %>
@@ -8,5 +8,11 @@
 
   <dd>
     <%= component :idea_cell, idea: @idea, field: "body", editing: @editing_field == "body" %>
+  </dd>
+
+  <dd class="flex items-center px-1">
+    <%= button_to studio_idea_archive_path(@idea.studio.slug, @idea), aria: { label: "アーカイブ" }, class: "btn btn-square btn-ghost btn-xs" do %>
+      <%= component :archive_icon %>
+    <% end %>
   </dd>
 </div>
