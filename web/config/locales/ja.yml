@@ -9,6 +9,7 @@ ja:
       studio_membership: スタジオメンバー
       zine: ZINE
       page: ページ
+      idea: ネタ
     errors:
       models:
         zine:
@@ -60,6 +61,12 @@ ja:
         draft: 下書き
         reviewing: 確認中
         confirmed: 確定
+      idea:
+        studio: スタジオ
+        writer: ライター
+        title: タイトル
+        body: 本文
+        archived_at: アーカイブ日時
   views:
     pagination:
       first: "« 最初"

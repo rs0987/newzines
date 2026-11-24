@@ -3,6 +3,7 @@ class Studio < ApplicationRecord
   has_many :studio_memberships, dependent: :destroy
   has_many :writers, through: :studio_memberships
   has_many :zines, dependent: :destroy
+  has_many :ideas, dependent: :destroy
 
   attr_readonly :slug
 
