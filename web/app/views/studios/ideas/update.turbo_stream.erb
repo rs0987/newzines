@@ -1,0 +1,3 @@
+<%= turbo_stream.replace dom_id(@idea, @field) do %>
+  <%= component :idea_cell, idea: @idea, field: @field %>
+<% end %>

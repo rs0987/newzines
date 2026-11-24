@@ -1,0 +1,18 @@
+<% content_for :title, "ネタ帳" %>
+
+<%= component :page_layout, title: "ネタ帳" do |page| %>
+  <% page.with_breadcrumb "ネタ帳" %>
+
+  <%= component :idea_list do |list| %>
+    <% list.with_footer do %>
+      <%= button_to studio_ideas_path(@studio.slug), class: "btn btn-ghost btn-sm btn-block justify-start" do %>
+        <span aria-hidden="true">＋</span>
+        ネタを追加
+      <% end %>
+    <% end %>
+
+    <% @ideas.each do |idea| %>
+      <%= component :idea_item, idea: %>
+    <% end %>
+  <% end %>
+<% end %>
