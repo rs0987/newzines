@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
   scope "studios/:studio_slug", module: :studios, as: :studio do
     root "dashboards#show"
+    resources :ideas, only: %i[index create edit update]
+
     resources :zines do
       resource :page_order, only: %i[update]
       resource :publication, only: %i[create destroy]
