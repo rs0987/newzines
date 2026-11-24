@@ -1,0 +1,2 @@
+class ArrowUturnLeftIconComponent < ApplicationComponent
+end

@@ -7,6 +7,10 @@ class Studios::IdeaPolicy < Studios::ApplicationPolicy
     studio_member?
   end
 
+  def destroy?
+    studio_member?
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.where(studio_id: StudioMembership.where(writer: user.writer).select(:studio_id))

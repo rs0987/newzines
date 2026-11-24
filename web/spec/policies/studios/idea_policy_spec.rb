@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Studios::IdeaPolicy do
   let(:studio) { create(:studio, name: "映画好きの集まり", slug: "cinema01") }
 
-  permissions :create?, :update? do
+  permissions :create?, :update?, :destroy? do
     it "スタジオのメンバーには許可する" do
       writer = create(:studio_membership, studio:, role: :member).writer
 
