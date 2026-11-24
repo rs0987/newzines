@@ -12,6 +12,15 @@ RSpec.describe IdeaItemComponent, type: :component do
     expect(html.text.squish).to eq "夏の名画座 名画座の夏の特集を回る"
   end
 
+  it "ネタをアーカイブするボタンを表示する" do
+    idea = create(:idea, studio:, writer:)
+
+    html = render_inline(described_class.new(idea:))
+
+    form = html.at_css("form:has(button)")
+    expect([ form.at_css("button")["aria-label"], form["action"] ]).to eq [ "アーカイブ", "/studios/#{studio.slug}/ideas/#{idea.id}/archive" ]
+  end
+
   describe "editing_field" do
     it "編集中のフィールドは入力欄で、そうでないフィールドはリンクで表示する" do
       idea = create(:idea, studio:, writer:, title: "夏の名画座", body: "名画座の夏の特集を回る")
