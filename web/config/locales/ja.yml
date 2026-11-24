@@ -16,6 +16,10 @@ ja:
           attributes:
             editor:
               not_studio_member: はスタジオのメンバーから選んでください
+        idea:
+          attributes:
+            writer:
+              not_studio_member: はスタジオのメンバーである必要があります
     attributes:
       administrator:
         username: ユーザー名
