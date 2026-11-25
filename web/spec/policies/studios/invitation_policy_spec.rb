@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Studios::InvitationPolicy do
   let(:studio) { create(:studio) }
 
-  permissions :new?, :create? do
+  permissions :new?, :create?, :cancel? do
     it "スタジオのオーナーには許可する" do
       writer = create(:studio_membership, studio:, role: :owner).writer
 

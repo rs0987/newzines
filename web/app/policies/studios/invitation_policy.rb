@@ -1,6 +1,10 @@
 class Studios::InvitationPolicy < Studios::ApplicationPolicy
   def create?
-    record.studio.studio_memberships.exists?(writer: user.writer, role: :owner)
+    studio_owner?
+  end
+
+  def cancel?
+    studio_owner?
   end
 
   class Scope < ApplicationPolicy::Scope
@@ -8,4 +12,10 @@ class Studios::InvitationPolicy < Studios::ApplicationPolicy
       scope.where(studio_id: StudioMembership.where(writer: user.writer).select(:studio_id))
     end
   end
+
+  private
+
+    def studio_owner?
+      record.studio.studio_memberships.exists?(writer: user.writer, role: :owner)
+    end
 end
