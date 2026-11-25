@@ -3,9 +3,6 @@ class Invitation < ApplicationRecord
 
   include HasUsername
 
-  # inviter_id を読み書きしないのは、Contract のリリースで消すため
-  self.ignored_columns += %w[inviter_id]
-
   belongs_to :studio
   belongs_to :inviter_administrator, class_name: "Administrator", optional: true
   belongs_to :inviter_writer, class_name: "Writer", optional: true
