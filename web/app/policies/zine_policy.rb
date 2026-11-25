@@ -1,6 +1,6 @@
 class ZinePolicy < ApplicationPolicy
   def show?
-    record.published_at?
+    record.published?
   end
 
   class Scope < ApplicationPolicy::Scope

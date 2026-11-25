@@ -16,11 +16,11 @@ class Studios::ZinePolicy < Studios::ApplicationPolicy
   end
 
   def publish?
-    zine_editor? && !record.published_at? && record.publishable?
+    zine_editor? && !record.published? && record.publishable?
   end
 
   def unpublish?
-    zine_editor? && record.published_at?
+    zine_editor? && record.published?
   end
 
   class Scope < ApplicationPolicy::Scope
