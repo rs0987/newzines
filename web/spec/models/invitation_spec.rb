@@ -79,11 +79,25 @@ RSpec.describe Invitation, type: :model do
     end
   end
 
-  describe "inviter_administrator" do
-    it "保存すると、inviter と同じ管理者になる" do
-      invitation = create(:invitation, inviter:)
+  describe "inviter" do
+    it "管理者を入れると、招待者（管理者）として保存される" do
+      administrator = create(:administrator)
+      invitation = create(:invitation, inviter: administrator)
 
-      expect(invitation.reload.inviter_administrator).to eq inviter
+      expect(invitation.reload.inviter_administrator).to eq administrator
+    end
+
+    it "ライターを入れると、招待者（ライター）として保存される" do
+      writer = create(:writer)
+      invitation = create(:invitation, inviter: writer)
+
+      expect(invitation.reload.inviter_writer).to eq writer
+    end
+
+    it "空なら無効である" do
+      invitation = build(:invitation, inviter: nil)
+
+      expect(invitation).not_to be_valid
     end
   end
 

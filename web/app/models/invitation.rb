@@ -4,7 +4,6 @@ class Invitation < ApplicationRecord
   include HasUsername
 
   belongs_to :studio
-  belongs_to :inviter, class_name: "Administrator"
   belongs_to :inviter_administrator, class_name: "Administrator", optional: true
   belongs_to :inviter_writer, class_name: "Writer", optional: true
 
@@ -13,10 +12,9 @@ class Invitation < ApplicationRecord
 
   attr_reader :token
 
+  validates :inviter, presence: true
   validate :username_not_reserved, on: :create
 
-  # 読み込みを inviter_administrator に切り替えるまでは、inviter の値をコピーしておく
-  before_save -> { self.inviter_administrator = inviter }
   before_create :issue_token
   before_create -> { self.expires_at = 7.days.from_now }
 
@@ -40,6 +38,19 @@ class Invitation < ApplicationRecord
       :expired
     else
       :pending
+    end
+  end
+
+  def inviter
+    inviter_administrator || inviter_writer
+  end
+
+  def inviter=(inviter)
+    case inviter
+    when Administrator
+      self.inviter_administrator = inviter
+    when Writer
+      self.inviter_writer = inviter
     end
   end
 
