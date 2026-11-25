@@ -1,0 +1,39 @@
+<% content_for :title, "招待 URL" %>
+
+<%= component :page_layout, title: "招待 URL" do |page| %>
+  <% page.with_breadcrumb "メンバー一覧", studio_memberships_path(@studio.slug) %>
+  <% page.with_breadcrumb "招待 URL" %>
+
+  <%= component :card, title: "「#{@invitation.username}」への招待を作成しました" do %>
+    <div role="alert" class="alert alert-warning">
+      <span>この URL はこの画面でしか表示されません。コピーして、招待する人に送ってください。</span>
+    </div>
+
+    <div class="join w-full" data-controller="clipboard">
+      <input
+        type="text"
+        value="<%= new_studio_registration_url(token: @invitation.token) %>"
+        readonly
+        autocomplete="off"
+        aria-label="招待 URL"
+        class="input join-item w-full"
+        data-clipboard-target="source"
+      >
+
+      <button
+        type="button"
+        class="btn btn-primary join-item"
+        data-action="clipboard#copy"
+        data-clipboard-target="button"
+      >
+        コピー
+      </button>
+    </div>
+
+    <p>有効期限：<%= l @invitation.expires_at, format: :short %></p>
+
+    <div class="card-actions justify-end">
+      <%= link_to "メンバー一覧へ", studio_memberships_path(@studio.slug), class: "btn" %>
+    </div>
+  <% end %>
+<% end %>
