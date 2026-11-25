@@ -10,7 +10,11 @@
   <div class="flex flex-col gap-6">
     <%= component :card, title: "基本情報" do |card| %>
       <% card.with_action do %>
-        <%= link_to "編集", edit_studio_zine_page_path(@studio.slug, @zine, @page), class: "btn btn-sm" %>
+        <% if policy([ :studios, @page ]).update? %>
+          <%= link_to "編集", edit_studio_zine_page_path(@studio.slug, @zine, @page), class: "btn btn-sm" %>
+        <% else %>
+          <button type="button" class="btn btn-sm" disabled>編集</button>
+        <% end %>
       <% end %>
 
       <%= component :description_list do |list| %>
@@ -77,6 +81,7 @@
         </div>
 
         <%= button_to "削除", studio_zine_page_path(@studio.slug, @zine, @page), method: :delete,
+                      disabled: !policy([ :studios, @page ]).destroy?,
                       form: { data: { turbo_confirm: "「#{display_title}」を削除します。本文も削除されます。よろしいですか？" } },
                       class: "btn btn-outline btn-error" %>
       </div>

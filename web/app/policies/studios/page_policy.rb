@@ -28,7 +28,7 @@ class Studios::PagePolicy < Studios::ApplicationPolicy
   end
 
   def send_back?
-    zine_editor? && (record.reviewing? || record.confirmed?)
+    zine_editor? && (record.reviewing? || record.confirmed?) && !record.zine.published?
   end
 
   class Scope < ApplicationPolicy::Scope
