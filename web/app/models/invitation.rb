@@ -10,8 +10,7 @@ class Invitation < ApplicationRecord
   belongs_to :inviter_administrator, class_name: "Administrator", optional: true
   belongs_to :inviter_writer, class_name: "Writer", optional: true
 
-  # NULL を許すのは、バッチ処理で埋めるまでは役割の無い招待が残っているため
-  enum :role, { member: 0, owner: 1 }, default: :member, validate: { allow_nil: true }
+  enum :role, { member: 0, owner: 1 }, default: :member, validate: true
 
   attr_reader :token
 

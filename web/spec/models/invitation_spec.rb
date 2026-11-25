@@ -107,6 +107,12 @@ RSpec.describe Invitation, type: :model do
 
       expect(invitation.role).to eq "member"
     end
+
+    it "空なら無効である" do
+      invitation = build(:invitation, role: nil)
+
+      expect(invitation).not_to be_valid
+    end
   end
 
   describe "token" do
