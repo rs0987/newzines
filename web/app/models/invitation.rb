@@ -53,6 +53,10 @@ class Invitation < ApplicationRecord
     end
   end
 
+  def inviter_username
+    inviter_administrator&.username || inviter_writer&.account&.username
+  end
+
   def pending?
     status == :pending
   end
