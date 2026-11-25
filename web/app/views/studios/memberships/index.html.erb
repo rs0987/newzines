@@ -3,6 +3,14 @@
 <%= component :page_layout, title: "メンバー一覧" do |page| %>
   <% page.with_breadcrumb "メンバー一覧" %>
 
+  <% page.with_action do %>
+    <% if policy([ :studios, Invitation.new(studio: @studio) ]).create? %>
+      <%= link_to "メンバーを招待", new_studio_invitation_path(@studio.slug), class: "btn btn-primary" %>
+    <% else %>
+      <button type="button" class="btn btn-primary" disabled>メンバーを招待</button>
+    <% end %>
+  <% end %>
+
   <%= component :table_layout do %>
     <table id="memberships" class="table">
       <thead>
