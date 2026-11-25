@@ -79,6 +79,22 @@ RSpec.describe Invitation, type: :model do
     end
   end
 
+  describe "inviter_administrator" do
+    it "保存すると、inviter と同じ管理者になる" do
+      invitation = create(:invitation, inviter:)
+
+      expect(invitation.reload.inviter_administrator).to eq inviter
+    end
+  end
+
+  describe "role" do
+    it "指定しなければメンバーになる" do
+      invitation = Invitation.new
+
+      expect(invitation.role).to eq "member"
+    end
+  end
+
   describe "token" do
     it "作成すると発行され、そのトークンで検索できる" do
       invitation = create(:invitation, studio:, inviter:, username: "writer01")
@@ -126,6 +142,35 @@ RSpec.describe Invitation, type: :model do
       invitation = travel_to(8.days.ago) { create(:invitation, studio:, inviter:, username: "writer01") }
 
       expect(invitation.status).to eq :expired
+    end
+  end
+
+  describe "#backfill_inviter_administrator_and_role!" do
+    # 列を足す前に作られた招待を再現するため、コールバックを通さずに空にする
+    it "招待者（管理者）が空なら、inviter の管理者を入れる" do
+      invitation = create(:invitation, inviter:)
+      invitation.update_columns(inviter_administrator_id: nil)
+
+      invitation.backfill_inviter_administrator_and_role!
+
+      expect(invitation.reload.inviter_administrator).to eq inviter
+    end
+
+    it "役割が空なら、オーナーにする" do
+      invitation = create(:invitation, inviter:)
+      invitation.update_columns(role: nil)
+
+      invitation.backfill_inviter_administrator_and_role!
+
+      expect(invitation.reload.role).to eq "owner"
+    end
+
+    it "役割が入っていれば、そのままにする" do
+      invitation = create(:invitation, inviter:, role: :member)
+
+      invitation.backfill_inviter_administrator_and_role!
+
+      expect(invitation.reload.role).to eq "member"
     end
   end
 

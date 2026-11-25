@@ -125,11 +125,11 @@ RSpec.describe "管理者サイトの招待管理", type: :request do
         let(:administrator) { create(:administrator, role: :editor) }
 
         context "入力が正しいとき" do
-          it "ログイン中の管理者を招待者として、スタジオへの招待を作成する" do
+          it "ログイン中の管理者を招待者として、スタジオのオーナーへの招待を作成する" do
             post admin_studio_invitations_path(studio), params: valid_params
 
             invitation = Invitation.find_by(username: "writer01")
-            expect([ invitation.studio, invitation.inviter ]).to eq [ studio, administrator ]
+            expect([ invitation.studio, invitation.inviter, invitation.role ]).to eq [ studio, administrator, "owner" ]
           end
 
           it "招待 URL をコピーできる画面を表示する" do

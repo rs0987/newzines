@@ -5,11 +5,18 @@ class Invitation < ApplicationRecord
 
   belongs_to :studio
   belongs_to :inviter, class_name: "Administrator"
+  belongs_to :inviter_administrator, class_name: "Administrator", optional: true
+  belongs_to :inviter_writer, class_name: "Writer", optional: true
+
+  # NULL を許すのは、バッチ処理で埋めるまでは役割の無い招待が残っているため
+  enum :role, { member: 0, owner: 1 }, default: :member, validate: { allow_nil: true }
 
   attr_reader :token
 
   validate :username_not_reserved, on: :create
 
+  # 読み込みを inviter_administrator に切り替えるまでは、inviter の値をコピーしておく
+  before_save -> { self.inviter_administrator = inviter }
   before_create :issue_token
   before_create -> { self.expires_at = 7.days.from_now }
 
@@ -34,6 +41,12 @@ class Invitation < ApplicationRecord
     else
       :pending
     end
+  end
+
+  # 一時的なバッチ処理用。Contract のリリースで temporary:backfill_invitation_inviter_administrator_and_role と一緒に消す
+  def backfill_inviter_administrator_and_role!
+    # 役割が無ければオーナーにするのは、これまでの招待はすべて管理者がオーナーを招待したものだったため
+    update!(inviter_administrator: inviter, role: role || :owner)
   end
 
   def pending?
