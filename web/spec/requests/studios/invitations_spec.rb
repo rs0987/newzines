@@ -98,4 +98,50 @@ RSpec.describe "スタジオサイトのメンバー招待", type: :request do
       end
     end
   end
+
+  describe "PATCH /studios/:studio_slug/invitations/:id/cancel" do
+    let(:invitation) { create(:invitation, studio:, username: "writer02") }
+
+    context "ログインしていないとき" do
+      it "招待をキャンセルしない" do
+        patch cancel_studio_invitation_path(studio.slug, invitation)
+
+        expect(invitation.reload.canceled_at).to be_nil
+      end
+
+      it "ログイン画面にリダイレクトする" do
+        patch cancel_studio_invitation_path(studio.slug, invitation)
+
+        expect(response).to redirect_to(new_account_session_path)
+      end
+    end
+
+    context "ログインしているとき" do
+      before { sign_in writer.account }
+
+      context "受諾待ちのとき" do
+        it "招待をキャンセルする" do
+          patch cancel_studio_invitation_path(studio.slug, invitation)
+
+          expect(invitation.reload.status).to eq :canceled
+        end
+
+        it "303 で招待一覧にリダイレクトする" do
+          patch cancel_studio_invitation_path(studio.slug, invitation)
+
+          expect([ response.status, response.location ]).to eq [ 303, studio_invitations_url(studio.slug) ]
+        end
+      end
+
+      context "受諾済みのとき" do
+        let(:invitation) { create(:invitation, studio:, username: "writer02", accepted_at: Time.current) }
+
+        it "招待をキャンセルしない" do
+          patch cancel_studio_invitation_path(studio.slug, invitation)
+
+          expect(invitation.reload.status).to eq :accepted
+        end
+      end
+    end
+  end
 end

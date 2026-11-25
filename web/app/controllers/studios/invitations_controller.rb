@@ -22,6 +22,18 @@ class Studios::InvitationsController < Studios::BaseController
     end
   end
 
+  def cancel
+    @invitation = @studio.invitations.find(params.expect(:id))
+    authorize [ :studios, @invitation ]
+
+    if @invitation.pending?
+      @invitation.cancel!
+      redirect_to studio_invitations_path(@studio.slug), notice: "招待をキャンセルしました", status: :see_other
+    else
+      redirect_to studio_invitations_path(@studio.slug), alert: "受諾待ちの招待だけキャンセルできます", status: :see_other
+    end
+  end
+
   private
 
     def invitation_params
