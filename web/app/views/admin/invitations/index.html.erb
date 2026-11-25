@@ -21,6 +21,7 @@
             <th>ユーザー名</th>
             <th>状態</th>
             <th>有効期限</th>
+            <th>招待者の種別</th>
             <th>招待者</th>
             <th>作成日時</th>
             <th></th>
@@ -37,7 +38,8 @@
               </td>
 
               <td><%= l invitation.expires_at, format: :short %></td>
-              <td><%= invitation.inviter.username %></td>
+              <td><%= invitation.inviter.model_name.human %></td>
+              <td><%= invitation.inviter_username %></td>
               <td><%= l invitation.created_at, format: :short %></td>
 
               <td class="text-right">

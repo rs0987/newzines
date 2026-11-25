@@ -3,7 +3,7 @@ class Admin::InvitationsController < Admin::BaseController
 
   def index
     @invitations = policy_scope([ :admin, @studio.invitations ])
-                     .includes(:inviter_administrator, :inviter_writer)
+                     .includes(:inviter_administrator, inviter_writer: :account)
                      .order(created_at: :desc)
                      .page(params[:page])
   end
