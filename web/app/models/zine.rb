@@ -27,6 +27,10 @@ class Zine < ApplicationRecord
   validates :description, length: { maximum: 200 }
   validate :editor_must_be_studio_member
 
+  def published?
+    published_at?
+  end
+
   def publishable?
     pages.exists? && pages.where.not(status: :confirmed).none?
   end

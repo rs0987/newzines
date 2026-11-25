@@ -85,6 +85,20 @@ RSpec.describe Zine, type: :model do
     end
   end
 
+  describe "#published?" do
+    it "発行日時があれば true を返す" do
+      zine = build(:zine, studio:, editor:, title: "映画の夏", published_at: Time.current)
+
+      expect(zine.published?).to be true
+    end
+
+    it "発行日時がなければ false を返す" do
+      zine = build(:zine, studio:, editor:, title: "映画の夏", published_at: nil)
+
+      expect(zine.published?).to be false
+    end
+  end
+
   describe "#publishable?" do
     let(:zine) { create(:zine, studio:, editor:, title: "映画の夏") }
 
