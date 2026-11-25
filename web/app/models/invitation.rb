@@ -71,7 +71,7 @@ class Invitation < ApplicationRecord
 
       if account.save
         writer = Writer.create!(account:)
-        studio.studio_memberships.create!(writer:, role: :owner)
+        studio.studio_memberships.create!(writer:, role:)
         update!(accepted_at: Time.current)
       end
     end

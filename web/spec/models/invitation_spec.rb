@@ -181,13 +181,13 @@ RSpec.describe Invitation, type: :model do
         expect(account).to have_attributes(persisted?: true, username: "writer01")
       end
 
-      it "作ったアカウントを、ライターとしてスタジオのオーナーにする" do
-        invitation = create(:invitation, studio:, inviter:, username: "writer01")
+      it "作ったアカウントを、ライターとして招待の役割でスタジオに所属させる" do
+        invitation = create(:invitation, studio:, inviter:, username: "writer01", role: :member)
 
         account = invitation.accept(password: "password12345678")
 
         studio_membership = account.writer.studio_memberships.sole
-        expect(studio_membership).to have_attributes(studio:, role: "owner")
+        expect(studio_membership).to have_attributes(studio:, role: "member")
       end
 
       it "招待を受諾済みにする" do
