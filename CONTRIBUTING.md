@@ -35,12 +35,13 @@
 | リリース | やること |
 | --- | --- |
 | 1. Expand | 新しい列やテーブルを、NULL 可・デフォルト無しで足すだけにする。アプリのコードは変えない |
-| 2. 両方に書く | アプリを新旧両方に書き込むようにする。既存のデータは rake タスクで新しい列にコピーする |
+| 2. 両方に書く | アプリを新旧両方に書き込むようにする。既存のデータは一度だけのバッチ処理で新しい列にコピーする（[バッチ処理](#バッチ処理)） |
 | 3. 読み先を変える | アプリを新しい列だけを読むようにして、古い列は `ignored_columns` で見なくする |
 | 4. Contract | 古い列を消して、NOT NULL・デフォルト・チェック制約などを付ける |
 
 - 1 のリリースでアプリのコードも変えると、アプリが先に動いたときに、まだ無い列を読みにいってしまう
 - 3 を挟まずに 4 をすると、起動中のアプリが覚えている古い列を読みにいってしまう
+- 一度だけのバッチ処理は、4 のリリースでスペックと一緒に消す（NOT NULL を付けた時点で、埋めるデータが無くなるため）
 
 ### インデックス
 
@@ -69,6 +70,57 @@ end
 # 既存のテーブルに足すときも change_table の中に書く
 change_table :pages do |t|
   t.index %i[zine_id position]
+end
+```
+
+## バッチ処理
+
+バッチ処理は rake タスクで書く。
+
+### 一度だけ流すもの
+
+データの移行など、一度だけ流すタスクは `lib/tasks/temporary/` に置き、`temporary:` の名前空間を付ける。
+
+- 名前空間で一時的なものだと分かり、消し忘れを探しやすくするため
+- 役目が終わったら、スペックと一緒に消す
+
+### 書き方
+
+- 何度流しても結果が変わらないようにする（処理がまだ済んでいないレコードだけを対象にする）
+  - 途中で止まっても、そのまま流し直せるようにするため
+- 最初に対象の件数を、処理中は何件目かとレコードの id を出力する
+  - 進捗と、止まったときにどこまで進んだかを知るため
+- レコードは `find_each` で少しずつ読む（一度にすべてをメモリに載せないため）
+- タスクの前に、実行するコマンドをコメントで書く（そのままコピーして流せるようにするため）
+- 1 件ごとの処理はモデルのメソッドに書き、テストはモデルスペックに書く。タスクは対象を選ぶことと出力だけにする
+  - タスクのスペックは、タスクの読み込みが重なるなど書きにくいため
+  - 一度だけ流すもののメソッドは、タスクと一緒に消す
+
+```ruby
+namespace :temporary do
+  # bundle exec rake temporary:backfill_invitation_inviter_administrator
+  desc "既存の招待の inviter_id を inviter_administrator_id にコピーする"
+  task backfill_invitation_inviter_administrator: :environment do
+    invitations = Invitation.where(inviter_administrator_id: nil)
+    total = invitations.count
+    puts "#{total} 件の招待を処理します"
+
+    invitations.find_each.with_index(1) do |invitation, index|
+      puts "[#{index}/#{total}] Invitation id=#{invitation.id}"
+      invitation.backfill_inviter_administrator!
+    end
+
+    puts "完了しました"
+  end
+end
+```
+
+```ruby
+class Invitation < ApplicationRecord
+  # 一時的なバッチ処理用。temporary:backfill_invitation_inviter_administrator と一緒に消す
+  def backfill_inviter_administrator!
+    update!(inviter_administrator: inviter)
+  end
 end
 ```
 
