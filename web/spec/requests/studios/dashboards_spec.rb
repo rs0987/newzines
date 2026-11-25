@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "スタジオサイトのトップ", type: :request do
   let(:studio) { create(:studio, name: "映画好きの集まり", slug: "cinema01") }
-  let(:writer) { create(:writer, account: create(:account, username: "writer01", password: "password12345678")) }
+  let(:writer) { create(:writer, account: create(:account, username: "writer01")) }
 
   describe "GET /studios/:studio_slug" do
     context "ログインしていないとき" do
@@ -47,7 +47,7 @@ RSpec.describe "スタジオサイトのトップ", type: :request do
     end
 
     context "ライターではないアカウントでログインしているとき" do
-      before { sign_in create(:account, username: "reader01", password: "password12345678") }
+      before { sign_in create(:account, username: "reader01") }
 
       it "404 を返す" do
         get studio_root_path(studio.slug)

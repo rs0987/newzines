@@ -12,7 +12,7 @@ RSpec.describe "管理者サイトのダッシュボード", type: :request do
 
     context "管理者としてログインしているとき" do
       before do
-        administrator = create(:administrator, username: "admin01", password: "password12345678")
+        administrator = create(:administrator, username: "admin01")
         sign_in administrator
       end
 

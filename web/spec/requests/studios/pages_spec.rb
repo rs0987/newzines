@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "スタジオサイトのページ管理", type: :request do
   let(:studio) { create(:studio, name: "映画好きの集まり", slug: "cinema01") }
-  let(:writer) { create(:writer, account: create(:account, username: "writer01", password: "password12345678")) }
+  let(:writer) { create(:writer, account: create(:account, username: "writer01")) }
   let(:zine) { create(:zine, studio:, editor: writer, title: "映画の夏") }
 
   before { create(:studio_membership, studio:, writer:, role: :member) }

@@ -93,7 +93,7 @@ RSpec.describe "管理者のログインとログアウト", type: :request do
   describe "DELETE /admin/sign_out" do
     context "ログインしているとき" do
       before do
-        administrator = create(:administrator, username: "admin01", password: "password12345678")
+        administrator = create(:administrator, username: "admin01")
         sign_in administrator
       end
 
