@@ -134,8 +134,8 @@ RSpec.describe "スタジオサイトのログインとログアウト", type: :
   describe "DELETE /studios/sign_out" do
     context "アカウントと管理者の両方でログインしているとき" do
       before do
-        sign_in create(:account, username: "writer01", password: "password12345678")
-        sign_in create(:administrator, username: "admin01", password: "password12345678")
+        sign_in create(:account, username: "writer01")
+        sign_in create(:administrator, username: "admin01")
       end
 
       it "ログイン画面にリダイレクトする" do
