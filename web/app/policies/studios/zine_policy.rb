@@ -8,11 +8,11 @@ class Studios::ZinePolicy < Studios::ApplicationPolicy
   end
 
   def update?
-    studio_member?
+    studio_member? && !record.published?
   end
 
   def destroy?
-    studio_member?
+    studio_member? && !record.published?
   end
 
   def publish?

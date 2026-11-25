@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Studios::ZinePolicy do
   let(:studio) { create(:studio, name: "映画好きの集まり", slug: "cinema01") }
 
-  permissions :show?, :create?, :update?, :destroy? do
+  permissions :show?, :create? do
     it "スタジオのメンバーには許可する" do
       writer = create(:writer)
       create(:studio_membership, studio:, writer:, role: :member)
@@ -22,6 +22,44 @@ RSpec.describe Studios::ZinePolicy do
       account = create(:account)
 
       expect(described_class).not_to permit(account, build(:zine, studio:, title: "映画の夏"))
+    end
+  end
+
+  permissions :update?, :destroy? do
+    context "スタジオのメンバーのとき" do
+      let(:writer) { create(:studio_membership, studio:, role: :member).writer }
+
+      it "未発行なら許可する" do
+        zine = build(:zine, studio:, title: "映画の夏", published_at: nil)
+
+        expect(described_class).to permit(writer.account, zine)
+      end
+
+      it "発行済みなら許可しない" do
+        zine = build(:zine, studio:, title: "映画の夏", published_at: Time.current)
+
+        expect(described_class).not_to permit(writer.account, zine)
+      end
+    end
+
+    context "責任編集者のとき" do
+      let(:editor) { create(:studio_membership, studio:, role: :member).writer }
+
+      it "発行済みなら許可しない" do
+        zine = build(:zine, studio:, editor:, title: "映画の夏", published_at: Time.current)
+
+        expect(described_class).not_to permit(editor.account, zine)
+      end
+    end
+
+    context "スタジオのメンバーではないライターのとき" do
+      let(:writer) { create(:studio_membership, studio: create(:studio, name: "本の虫", slug: "books01"), role: :owner).writer }
+
+      it "未発行でも許可しない" do
+        zine = build(:zine, studio:, title: "映画の夏", published_at: nil)
+
+        expect(described_class).not_to permit(writer.account, zine)
+      end
     end
   end
 

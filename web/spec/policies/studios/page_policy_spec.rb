@@ -4,7 +4,7 @@ RSpec.describe Studios::PagePolicy do
   let(:studio) { create(:studio, name: "映画好きの集まり", slug: "cinema01") }
   let(:zine) { create(:zine, studio:, title: "映画の夏") }
 
-  permissions :show?, :create?, :update?, :destroy? do
+  permissions :show? do
     it "スタジオのメンバーには許可する" do
       writer = create(:writer)
       create(:studio_membership, studio:, writer:, role: :member)
@@ -17,6 +17,37 @@ RSpec.describe Studios::PagePolicy do
       create(:studio_membership, studio: create(:studio, name: "本の虫", slug: "books01"), writer:, role: :owner)
 
       expect(described_class).not_to permit(writer.account, build(:page, zine:, title: "夏の名画座"))
+    end
+  end
+
+  permissions :create?, :update?, :destroy? do
+    context "スタジオのメンバーのとき" do
+      let(:writer) { create(:studio_membership, studio:, role: :member).writer }
+
+      it "ZINE が未発行なら許可する" do
+        zine.update!(published_at: nil)
+        page = build(:page, zine:, title: "夏の名画座")
+
+        expect(described_class).to permit(writer.account, page)
+      end
+
+      it "ZINE が発行済みなら許可しない" do
+        zine.update!(published_at: Time.current)
+        page = build(:page, zine:, title: "夏の名画座")
+
+        expect(described_class).not_to permit(writer.account, page)
+      end
+    end
+
+    context "スタジオのメンバーではないライターのとき" do
+      let(:writer) { create(:studio_membership, studio: create(:studio, name: "本の虫", slug: "books01"), role: :owner).writer }
+
+      it "ZINE が未発行でも許可しない" do
+        zine.update!(published_at: nil)
+        page = build(:page, zine:, title: "夏の名画座")
+
+        expect(described_class).not_to permit(writer.account, page)
+      end
     end
   end
 
@@ -86,6 +117,13 @@ RSpec.describe Studios::PagePolicy do
 
       it "下書きなら許可しない" do
         expect(described_class).not_to permit(editor.account, build(:page, zine:, title: "夏の名画座", status: :draft))
+      end
+
+      it "ZINE が発行済みなら、確定でも許可しない" do
+        zine.update!(published_at: Time.current)
+        page = build(:page, zine:, title: "夏の名画座", status: :confirmed)
+
+        expect(described_class).not_to permit(editor.account, page)
       end
     end
 
