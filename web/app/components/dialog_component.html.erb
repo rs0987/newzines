@@ -1,0 +1,22 @@
+<dialog
+  id="<%= @id %>"
+  class="modal"
+  aria-labelledby="<%= title_id %>"
+>
+  <%# 表のセルの中に置いても、ダイアログの中身はセルの文字寄せに引きずられないようにする %>
+  <div class="modal-box text-left">
+    <h2 id="<%= title_id %>" class="text-lg font-bold"><%= @title %></h2>
+
+    <%= content %>
+
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">閉じる</button>
+      </form>
+    </div>
+  </div>
+
+  <form method="dialog" class="modal-backdrop">
+    <button>閉じる</button>
+  </form>
+</dialog>
