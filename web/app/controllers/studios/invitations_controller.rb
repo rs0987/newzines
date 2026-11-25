@@ -1,4 +1,11 @@
 class Studios::InvitationsController < Studios::BaseController
+  def index
+    @invitations = policy_scope([ :studios, @studio.invitations ])
+                     .includes(:inviter_administrator, inviter_writer: :account)
+                     .order(created_at: :desc)
+                     .page(params[:page])
+  end
+
   def new
     @invitation = @studio.invitations.build
     authorize [ :studios, @invitation ]

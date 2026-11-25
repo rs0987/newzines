@@ -1,0 +1,52 @@
+<% content_for :title, "招待一覧" %>
+
+<%= component :page_layout, title: "招待一覧" do |page| %>
+  <% page.with_breadcrumb "メンバー一覧", studio_memberships_path(@studio.slug) %>
+  <% page.with_breadcrumb "招待一覧" %>
+
+  <% page.with_action do %>
+    <% if policy([ :studios, Invitation.new(studio: @studio) ]).create? %>
+      <%= link_to "メンバーを招待", new_studio_invitation_path(@studio.slug), class: "btn btn-primary" %>
+    <% else %>
+      <button type="button" class="btn btn-primary" disabled>メンバーを招待</button>
+    <% end %>
+  <% end %>
+
+  <% if @invitations.any? %>
+    <%= component :table_layout do |layout| %>
+      <table id="invitations" class="table">
+        <thead>
+          <tr>
+            <th>ユーザー名</th>
+            <th>状態</th>
+            <th>有効期限</th>
+            <th>招待者の種別</th>
+            <th>招待者</th>
+            <th>作成日時</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @invitations.each do |invitation| %>
+            <tr>
+              <td><%= invitation.username %></td>
+
+              <td>
+                <%= component :invitation_status_badge, status: invitation.status %>
+              </td>
+
+              <td><%= l invitation.expires_at, format: :short %></td>
+              <td><%= invitation.inviter.model_name.human %></td>
+              <td><%= invitation.inviter_username %></td>
+              <td><%= l invitation.created_at, format: :short %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <% layout.with_pagination @invitations %>
+    <% end %>
+  <% else %>
+    <p>招待はまだありません。</p>
+  <% end %>
+<% end %>

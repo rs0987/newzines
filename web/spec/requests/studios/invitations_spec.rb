@@ -6,6 +6,35 @@ RSpec.describe "スタジオサイトのメンバー招待", type: :request do
 
   before { create(:studio_membership, studio:, writer:, role: :owner) }
 
+  describe "GET /studios/:studio_slug/invitations" do
+    context "ログインしていないとき" do
+      it "ログイン画面にリダイレクトする" do
+        get studio_invitations_path(studio.slug)
+
+        expect(response).to redirect_to(new_account_session_path)
+      end
+    end
+
+    context "ログインしているとき" do
+      before { sign_in writer.account }
+
+      it "スタジオの招待一覧を表示する" do
+        create(:invitation, studio:, username: "writer02")
+
+        get studio_invitations_path(studio.slug)
+
+        usernames = Nokogiri::HTML(response.body).css("table#invitations tbody tr td:first-child").map { |cell| cell.text.squish }
+        expect(usernames).to eq [ "writer02" ]
+      end
+
+      it "招待が無ければ、無いことを表示する" do
+        get studio_invitations_path(studio.slug)
+
+        expect(response.body).to include("招待はまだありません。")
+      end
+    end
+  end
+
   describe "GET /studios/:studio_slug/invitations/new" do
     context "ログインしていないとき" do
       it "ログイン画面にリダイレクトする" do

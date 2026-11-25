@@ -4,6 +4,10 @@
   <% page.with_breadcrumb "メンバー一覧" %>
 
   <% page.with_action do %>
+    <%= link_to "招待一覧", studio_invitations_path(@studio.slug), class: "btn" %>
+  <% end %>
+
+  <% page.with_action do %>
     <% if policy([ :studios, Invitation.new(studio: @studio) ]).create? %>
       <%= link_to "メンバーを招待", new_studio_invitation_path(@studio.slug), class: "btn btn-primary" %>
     <% else %>
