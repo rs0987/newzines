@@ -79,6 +79,22 @@ RSpec.describe Invitation, type: :model do
     end
   end
 
+  describe "inviter_administrator" do
+    it "保存すると、inviter と同じ管理者になる" do
+      invitation = create(:invitation, inviter:)
+
+      expect(invitation.reload.inviter_administrator).to eq inviter
+    end
+  end
+
+  describe "role" do
+    it "指定しなければメンバーになる" do
+      invitation = Invitation.new
+
+      expect(invitation.role).to eq "member"
+    end
+  end
+
   describe "token" do
     it "作成すると発行され、そのトークンで検索できる" do
       invitation = create(:invitation, studio:, inviter:, username: "writer01")
