@@ -23,6 +23,7 @@
             <th>招待者の種別</th>
             <th>招待者</th>
             <th>作成日時</th>
+            <th></th>
           </tr>
         </thead>
 
@@ -39,6 +40,15 @@
               <td><%= invitation.inviter.model_name.human %></td>
               <td><%= invitation.inviter_username %></td>
               <td><%= l invitation.created_at, format: :short %></td>
+
+              <td class="text-right">
+                <% if invitation.pending? %>
+                  <%= button_to "キャンセル", cancel_studio_invitation_path(@studio.slug, invitation), method: :patch,
+                                disabled: !policy([ :studios, invitation ]).cancel?,
+                                form: { data: { turbo_confirm: "「#{invitation.username}」への招待をキャンセルします。よろしいですか？" } },
+                                class: "btn btn-sm btn-outline btn-error" %>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>
