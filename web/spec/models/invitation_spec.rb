@@ -101,6 +101,24 @@ RSpec.describe Invitation, type: :model do
     end
   end
 
+  describe "#inviter_username" do
+    it "招待者が管理者なら、管理者のユーザー名を返す" do
+      invitation = build(:invitation, inviter: create(:administrator, username: "admin01"))
+
+      inviter_username = invitation.inviter_username
+
+      expect(inviter_username).to eq "admin01"
+    end
+
+    it "招待者がライターなら、アカウントのユーザー名を返す" do
+      invitation = build(:invitation, inviter: create(:writer, account: create(:account, username: "writer01")))
+
+      inviter_username = invitation.inviter_username
+
+      expect(inviter_username).to eq "writer01"
+    end
+  end
+
   describe "role" do
     it "指定しなければメンバーになる" do
       invitation = Invitation.new
