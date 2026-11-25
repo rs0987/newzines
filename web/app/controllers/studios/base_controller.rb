@@ -17,7 +17,7 @@ class Studios::BaseController < ApplicationController
       # コントローラーの policy_scope を使うと、すべてのアクションで呼んだ扱いになり、verify_policy_scoped で呼び忘れに気づけなくなるため使わない
       @studio_membership = Pundit.policy_scope!(current_account, [ :studios, StudioMembership ])
                              .joins(:studio)
-                             .find_by!(studios: { slug: params.expect(:studio_slug) })
+                             .find_by!(writer: current_account.writer, studios: { slug: params.expect(:studio_slug) })
       @studio = @studio_membership.studio
     end
 
