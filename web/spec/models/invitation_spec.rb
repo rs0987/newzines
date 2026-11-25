@@ -79,11 +79,25 @@ RSpec.describe Invitation, type: :model do
     end
   end
 
-  describe "inviter_administrator" do
-    it "保存すると、inviter と同じ管理者になる" do
-      invitation = create(:invitation, inviter:)
+  describe "inviter" do
+    it "管理者を入れると、招待者（管理者）として保存される" do
+      administrator = create(:administrator)
+      invitation = create(:invitation, inviter: administrator)
 
-      expect(invitation.reload.inviter_administrator).to eq inviter
+      expect(invitation.reload.inviter_administrator).to eq administrator
+    end
+
+    it "ライターを入れると、招待者（ライター）として保存される" do
+      writer = create(:writer)
+      invitation = create(:invitation, inviter: writer)
+
+      expect(invitation.reload.inviter_writer).to eq writer
+    end
+
+    it "空なら無効である" do
+      invitation = build(:invitation, inviter: nil)
+
+      expect(invitation).not_to be_valid
     end
   end
 
@@ -92,6 +106,12 @@ RSpec.describe Invitation, type: :model do
       invitation = Invitation.new
 
       expect(invitation.role).to eq "member"
+    end
+
+    it "空なら無効である" do
+      invitation = build(:invitation, role: nil)
+
+      expect(invitation).not_to be_valid
     end
   end
 
@@ -145,35 +165,6 @@ RSpec.describe Invitation, type: :model do
     end
   end
 
-  describe "#backfill_inviter_administrator_and_role!" do
-    # 列を足す前に作られた招待を再現するため、コールバックを通さずに空にする
-    it "招待者（管理者）が空なら、inviter の管理者を入れる" do
-      invitation = create(:invitation, inviter:)
-      invitation.update_columns(inviter_administrator_id: nil)
-
-      invitation.backfill_inviter_administrator_and_role!
-
-      expect(invitation.reload.inviter_administrator).to eq inviter
-    end
-
-    it "役割が空なら、オーナーにする" do
-      invitation = create(:invitation, inviter:)
-      invitation.update_columns(role: nil)
-
-      invitation.backfill_inviter_administrator_and_role!
-
-      expect(invitation.reload.role).to eq "owner"
-    end
-
-    it "役割が入っていれば、そのままにする" do
-      invitation = create(:invitation, inviter:, role: :member)
-
-      invitation.backfill_inviter_administrator_and_role!
-
-      expect(invitation.reload.role).to eq "member"
-    end
-  end
-
   describe "#cancel!" do
     it "キャンセル日時を記録する" do
       invitation = create(:invitation, studio:, inviter:, username: "writer01")
@@ -196,13 +187,13 @@ RSpec.describe Invitation, type: :model do
         expect(account).to have_attributes(persisted?: true, username: "writer01")
       end
 
-      it "作ったアカウントを、ライターとしてスタジオのオーナーにする" do
-        invitation = create(:invitation, studio:, inviter:, username: "writer01")
+      it "作ったアカウントを、ライターとして招待の役割でスタジオに所属させる" do
+        invitation = create(:invitation, studio:, inviter:, username: "writer01", role: :member)
 
         account = invitation.accept(password: "password12345678")
 
         studio_membership = account.writer.studio_memberships.sole
-        expect(studio_membership).to have_attributes(studio:, role: "owner")
+        expect(studio_membership).to have_attributes(studio:, role: "member")
       end
 
       it "招待を受諾済みにする" do

@@ -3,20 +3,20 @@ class Invitation < ApplicationRecord
 
   include HasUsername
 
+  # inviter_id を読み書きしないのは、Contract のリリースで消すため
+  self.ignored_columns += %w[inviter_id]
+
   belongs_to :studio
-  belongs_to :inviter, class_name: "Administrator"
   belongs_to :inviter_administrator, class_name: "Administrator", optional: true
   belongs_to :inviter_writer, class_name: "Writer", optional: true
 
-  # NULL を許すのは、バッチ処理で埋めるまでは役割の無い招待が残っているため
-  enum :role, { member: 0, owner: 1 }, default: :member, validate: { allow_nil: true }
+  enum :role, { member: 0, owner: 1 }, default: :member, validate: true
 
   attr_reader :token
 
+  validates :inviter, presence: true
   validate :username_not_reserved, on: :create
 
-  # 読み込みを inviter_administrator に切り替えるまでは、inviter の値をコピーしておく
-  before_save -> { self.inviter_administrator = inviter }
   before_create :issue_token
   before_create -> { self.expires_at = 7.days.from_now }
 
@@ -43,10 +43,17 @@ class Invitation < ApplicationRecord
     end
   end
 
-  # 一時的なバッチ処理用。Contract のリリースで temporary:backfill_invitation_inviter_administrator_and_role と一緒に消す
-  def backfill_inviter_administrator_and_role!
-    # 役割が無ければオーナーにするのは、これまでの招待はすべて管理者がオーナーを招待したものだったため
-    update!(inviter_administrator: inviter, role: role || :owner)
+  def inviter
+    inviter_administrator || inviter_writer
+  end
+
+  def inviter=(inviter)
+    case inviter
+    when Administrator
+      self.inviter_administrator = inviter
+    when Writer
+      self.inviter_writer = inviter
+    end
   end
 
   def pending?
@@ -66,7 +73,7 @@ class Invitation < ApplicationRecord
 
       if account.save
         writer = Writer.create!(account:)
-        studio.studio_memberships.create!(writer:, role: :owner)
+        studio.studio_memberships.create!(writer:, role:)
         update!(accepted_at: Time.current)
       end
     end
