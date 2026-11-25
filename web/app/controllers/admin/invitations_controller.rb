@@ -14,7 +14,7 @@ class Admin::InvitationsController < Admin::BaseController
   end
 
   def create
-    @invitation = @studio.invitations.build(invitation_params.merge(inviter: current_administrator))
+    @invitation = @studio.invitations.build(invitation_params.merge(inviter: current_administrator, role: :owner))
     authorize [ :admin, @invitation ]
 
     if @invitation.save
