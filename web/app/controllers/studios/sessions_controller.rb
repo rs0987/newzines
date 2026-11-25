@@ -31,6 +31,6 @@ class Studios::SessionsController < Devise::SessionsController
     end
 
     def first_studio
-      policy_scope([ :studios, StudioMembership ]).order(:id).first&.studio
+      policy_scope([ :studios, StudioMembership ]).where(writer: current_account.writer).order(:id).first&.studio
     end
 end

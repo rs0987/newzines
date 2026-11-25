@@ -1,0 +1,31 @@
+<% content_for :title, "メンバー一覧" %>
+
+<%= component :page_layout, title: "メンバー一覧" do |page| %>
+  <% page.with_breadcrumb "メンバー一覧" %>
+
+  <%= component :table_layout do %>
+    <table id="memberships" class="table">
+      <thead>
+        <tr>
+          <th>ユーザー名</th>
+          <th>役割</th>
+          <th>参加日時</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @studio_memberships.each do |studio_membership| %>
+          <tr>
+            <td><%= studio_membership.writer.account.username %></td>
+
+            <td>
+              <%= StudioMembership.human_attribute_name("role.#{studio_membership.role}") %>
+            </td>
+
+            <td><%= l studio_membership.created_at, format: :short %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
