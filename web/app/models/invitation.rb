@@ -43,6 +43,12 @@ class Invitation < ApplicationRecord
     end
   end
 
+  # 一時的なバッチ処理用。Contract のリリースで temporary:backfill_invitation_inviter_administrator_and_role と一緒に消す
+  def backfill_inviter_administrator_and_role!
+    # 役割が無ければオーナーにするのは、これまでの招待はすべて管理者がオーナーを招待したものだったため
+    update!(inviter_administrator: inviter, role: role || :owner)
+  end
+
   def pending?
     status == :pending
   end
