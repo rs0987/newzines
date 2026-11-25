@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_25_170415) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_25_170601) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -49,7 +49,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_170415) do
 
   create_table "invitations", force: :cascade do |t|
     t.bigint "studio_id", null: false
-    t.bigint "inviter_id"
     t.string "username", null: false
     t.string "token_digest", null: false
     t.datetime "expires_at", null: false
@@ -61,11 +60,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_170415) do
     t.bigint "inviter_writer_id"
     t.integer "role", default: 0, null: false
     t.index ["inviter_administrator_id"], name: "index_invitations_on_inviter_administrator_id"
-    t.index ["inviter_id"], name: "index_invitations_on_inviter_id"
     t.index ["inviter_writer_id"], name: "index_invitations_on_inviter_writer_id"
     t.index ["studio_id"], name: "index_invitations_on_studio_id"
     t.index ["token_digest"], name: "index_invitations_on_token_digest", unique: true
     t.index ["username"], name: "index_invitations_on_username"
+    t.check_constraint "inviter_administrator_id IS NOT NULL AND inviter_writer_id IS NULL OR inviter_administrator_id IS NULL AND inviter_writer_id IS NOT NULL", name: "invitations_inviter_presence"
   end
 
   create_table "pages", force: :cascade do |t|
@@ -124,7 +123,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_170415) do
   add_foreign_key "ideas", "studios"
   add_foreign_key "ideas", "writers"
   add_foreign_key "invitations", "administrators", column: "inviter_administrator_id"
-  add_foreign_key "invitations", "administrators", column: "inviter_id"
   add_foreign_key "invitations", "studios"
   add_foreign_key "invitations", "writers", column: "inviter_writer_id"
   add_foreign_key "pages", "writers"
