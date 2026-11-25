@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_25_163338) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_25_170415) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -59,7 +59,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_163338) do
     t.datetime "updated_at", null: false
     t.bigint "inviter_administrator_id"
     t.bigint "inviter_writer_id"
-    t.integer "role"
+    t.integer "role", default: 0, null: false
     t.index ["inviter_administrator_id"], name: "index_invitations_on_inviter_administrator_id"
     t.index ["inviter_id"], name: "index_invitations_on_inviter_id"
     t.index ["inviter_writer_id"], name: "index_invitations_on_inviter_writer_id"
