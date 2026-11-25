@@ -22,6 +22,7 @@
           <th>ユーザー名</th>
           <th>役割</th>
           <th>参加日時</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -35,6 +36,30 @@
             </td>
 
             <td><%= l studio_membership.created_at, format: :short %></td>
+
+            <td class="text-right">
+              <% if policy([ :studios, studio_membership ]).update? %>
+                <% dialog_id = dom_id(studio_membership, :role_dialog) %>
+
+                <button
+                  type="button"
+                  class="btn btn-sm"
+                  commandfor="<%= dialog_id %>"
+                  command="show-modal"
+                >
+                  役割を変更
+                </button>
+
+                <%= component :dialog, id: dialog_id, title: "役割の変更" do %>
+                  <%= turbo_frame_tag dom_id(studio_membership, :role_form),
+                        src: edit_studio_membership_path(@studio.slug, studio_membership), loading: :lazy do %>
+                    <span class="loading loading-spinner"></span>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <button type="button" class="btn btn-sm" disabled>役割を変更</button>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>

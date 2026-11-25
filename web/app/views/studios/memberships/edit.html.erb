@@ -1,0 +1,18 @@
+<% content_for :title, "役割の変更" %>
+
+<%= turbo_frame_tag dom_id(@membership, :role_form) do %>
+  <%# 変更したら画面ごと更新してフラッシュを出すため、送信は Turbo Frame の外で行う %>
+  <%= form_with model: @membership, url: studio_membership_path(@studio.slug, @membership), data: { turbo_frame: "_top" } do |f| %>
+    <%= component :form_layout do |layout| %>
+      <p>「<%= @membership.writer.account.username %>」の役割を変更します。</p>
+
+      <%= component :select_field, f, :role,
+            StudioMembership.roles.keys.map { |role| [ StudioMembership.human_attribute_name("role.#{role}"), role ] },
+            label: "役割" %>
+
+      <% layout.with_action do %>
+        <%= f.submit "変更する", class: "btn btn-primary" %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
