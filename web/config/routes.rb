@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 
   scope "studios/:studio_slug", module: :studios, as: :studio do
     root "dashboards#show"
-    resources :memberships, only: %i[index]
+    resources :memberships, only: %i[index edit update]
     resources :invitations, only: %i[index new create] do
       member { patch :cancel }
     end
