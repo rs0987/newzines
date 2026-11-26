@@ -1,8 +1,4 @@
-<dialog
-  id="<%= @id %>"
-  class="modal"
-  aria-labelledby="<%= title_id %>"
->
+<dialog id="<%= @id %>" class="modal" aria-labelledby="<%= title_id %>">
   <%# 表のセルの中に置いても、ダイアログの中身はセルの文字寄せに引きずられないようにする %>
   <div class="modal-box text-left">
     <h2 id="<%= title_id %>" class="text-lg font-bold"><%= @title %></h2>
